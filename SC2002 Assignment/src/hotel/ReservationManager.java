@@ -76,12 +76,6 @@ public class ReservationManager {
 		return true;
 	}
 	
-	public long createReservNum()
-	{
-		Timestamp temp = Timestamp.from(Instant.now());
-		return temp.getTime();
-	}
-	
 	public String createReservCode()
 	{
 		Random rand = new Random();
@@ -90,7 +84,7 @@ public class ReservationManager {
 		return c+Integer.toString(i);
 	}
 	
-	public void updateReservation(Reservation[] reservlist)
+	public void updateReserv(Reservation[] reservlist)
 	{
 		//long num;
 		String code;
