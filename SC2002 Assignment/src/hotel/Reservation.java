@@ -13,7 +13,6 @@ public class Reservation {
 	}
 	
 	protected Status reservStatus;
-	protected long reservNum;
 	protected String reservCode;
 	protected LocalDate dateCheckIn;
 	protected LocalDate dateCheckOut;
@@ -25,13 +24,33 @@ public class Reservation {
 		return reservStatus;
 	}
 	
+	public LocalDate getCheckInDate()
+	{
+		return dateCheckIn;
+	}
+	
+	public DayOfWeek getCheckInDay()
+	{
+		return dateCheckIn.getDayOfWeek();
+	}
+	
+	public LocalDate getCheckOutDate()
+	{
+		return dateCheckOut;
+	}
+	
+	public DayOfWeek getCheckOutDay()
+	{
+		return dateCheckOut.getDayOfWeek();
+	}
+	
 	public void printReceipt()
 	{
 		System.out.println("\n-----Below is your reservation acknowledgement receipt-----");
 		System.out.printf("Reservation Code: %s\n", reservCode);
 		//guest details
-		System.out.printf("Check-in date: "+dateCheckIn+"\n");
-		System.out.printf("Check-out date: "+dateCheckOut+"\n");
+		System.out.printf("Check-in date: %s %s\n", dateCheckIn, getCheckInDay());
+		System.out.printf("Check-out date: %s %s\n", dateCheckOut, getCheckOutDay());
 		//room info
 		//billing info
 		System.out.printf("No. of Adults: %d\n", numAdult);
