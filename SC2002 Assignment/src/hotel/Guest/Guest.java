@@ -1,4 +1,4 @@
-package hotel;
+package Guest;
 import java.util.Scanner;
 
 public class Guest {
