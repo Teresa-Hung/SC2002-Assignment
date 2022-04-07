@@ -1,4 +1,4 @@
-package hotel;
+package Payment;
 
 public class RoomCharge { 	
 	private int numOfDays, i;
