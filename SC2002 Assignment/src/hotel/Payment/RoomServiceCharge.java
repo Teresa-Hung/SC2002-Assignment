@@ -1,4 +1,4 @@
-package hotel;
+package Payment;
 import java.util.ArrayList;
 
 public class RoomServiceCharge {
