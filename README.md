@@ -3,11 +3,13 @@
 ## Reservation Package
 ### Reservation Class:
 #### Methods
-- ```getReservStatus()```: enum.
-- ```getCheckInDate()``` : LocalDate, refer to [this website](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#parse-java.lang.CharSequence-java.time.format.DateTimeFormatter-).
-- ```getCheckOutDate()```: LocalDate.
-- ```getRCheckInDay()```: enum, get week of day.
-- ```getCheckOutDay()```: enum.
+- ```setReservStatus(ReservStatus s)``` / ```setReservCode(String s)``` / ```setRoom(Room[] roomlist)``` / ```setNumAdult()``` / ```setNumChild()``` 
+- ```setDates(boolean checkin, boolean checkout)```: boolean, checkin & checkout indicate whether to update 
+- ```checkDates(LocalDate dCI, LocalDate dCO)```: boolean, check whether dates are valid
+- ```getReservStatus()```: enum, CONFIRMED / IN_WAITLIST / CHECKED_IN / EXPIRED
+- ```getReservCode()```: String / ```getRoom()```: Room
+- ```getCheckInDate()``` / ```getCheckOutDate()```: LocalDate, refer to [this website](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#parse-java.lang.CharSequence-java.time.format.DateTimeFormatter-).
+- ```getRCheckInDay()``` / ```getCheckOutDay()```: enum, get week of day.
 - ```printReceipt()```: void.
 
 ### ReservationManager Class
