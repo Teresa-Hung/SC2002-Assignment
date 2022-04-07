@@ -1,14 +1,10 @@
 package hotel;
 
-public enum RoomType {SINGLE, DOUBLE, SUITE, VIP_SUITE}
-public enum BedType {TWIN, QUEEN, KING}
-public enum Status {VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE}
-
 public class Room {
 	private int roomNumber = 0;
 	private RoomType roomType;
 	private BedType bedType;
-	private Status status = Status.VACANT;
+	private RoomStatus status = RoomStatus.VACANT;
 	private boolean wifiEnabled = false, smoking = false, balcony = false;
 	private Guest[] guest;
 	
@@ -29,10 +25,10 @@ public class Room {
 	public BedType getBedType() {
 		return bedType;
 	}
-	public Status getStatus() {
+	public RoomStatus getStatus() {
 		return status;
 	}
-	public void setStatus(Status st) {
+	public void setStatus(RoomStatus st) {
 		status = st;
 	}
 	public boolean isWifiEnabled() {
@@ -63,4 +59,7 @@ public class Room {
 	public void removeGuest(Guest gst) {
 		
 	}
+	public enum RoomType {SINGLE, DOUBLE, SUITE, VIP_SUITE}
+	public enum BedType {TWIN, QUEEN, KING}
+	public enum RoomStatus {VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE}
 }
