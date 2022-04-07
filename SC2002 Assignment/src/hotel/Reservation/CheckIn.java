@@ -1,9 +1,9 @@
-package hotel;
+package Reservation;
 
 import java.sql.Timestamp;
 import java.time.*;
 
-import Reservation.Reservation.Status;
+import Reservation.Reservation.ReservStatus;
 
 public class CheckIn {
 
@@ -14,10 +14,8 @@ public class CheckIn {
 	public CheckIn(Reservation reserv)
 	{
 		now = Timestamp.from(Instant.now());
-		//System.out.println(reserv.dateCheckIn+" 14:00:00");
-		//System.out.println(reserv.dateCheckIn.plusDays(1)+" 02:00:00");
-		scheduledCheckIn = Timestamp.valueOf(reserv.dateCheckIn+" 14:00:00"); //2pm on check-in date
-		deadlineCheckIn = Timestamp.valueOf(reserv.dateCheckIn.plusDays(1)+" 02:00:00"); //2am on the next day of check-in date
+		scheduledCheckIn = Timestamp.valueOf(reserv.getCheckInDate()+" 14:00:00"); //2pm on check-in date
+		deadlineCheckIn = Timestamp.valueOf(reserv.getCheckInDate().plusDays(1)+" 02:00:00"); //2am on the next day of check-in date
 	}
 	
 	public boolean checkIn(Reservation reserv)
@@ -28,14 +26,14 @@ public class CheckIn {
 			return false;
 		}
 			
-		reserv.reservStatus = Status.CHECKED_IN;
+		reserv.setReservStatus(ReservStatus.CHECKED_IN);
 		return true;
 	}
 	
 	public void expire(Reservation reserv)
 	{
 		if(now.after(deadlineCheckIn) == true)
-			reserv.reservStatus = Status.EXPIRED;
+			reserv.setReservStatus(ReservStatus.EXPIRED);
 		
 		//empty the room
 		
