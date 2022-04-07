@@ -1,8 +1,8 @@
 package hotel;
 
-enum RoomType {SINGLE, DOUBLE, SUITE, VIP_SUITE}
-enum BedType {TWIN, QUEEN, KING}
-enum Status {VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE}
+public enum RoomType {SINGLE, DOUBLE, SUITE, VIP_SUITE}
+public enum BedType {TWIN, QUEEN, KING}
+public enum Status {VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE}
 
 public class Room {
 	private int roomNumber = 0;
