@@ -1,4 +1,4 @@
-package hotel;
+package Payment;
 
 public class ItemCharge {
 	private String roomServiceItem;
