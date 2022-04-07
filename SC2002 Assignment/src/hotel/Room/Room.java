@@ -1,4 +1,4 @@
-package hotel;
+package Room;
 
 public class Room {
 	private int roomNumber = 0;
