@@ -1,14 +1,14 @@
-package Reservation;
+package reservation;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import Reservation.Reservation.ReservStatus;
-import Room.*;
-import Room.Room.RoomType;
-import Room.Room.Status;
+import reservation.Reservation.ReservStatus;
+import room.*;
+import room.Room.RoomType;
+import room.Room.Status;
 
 public class Reservation {
 	
