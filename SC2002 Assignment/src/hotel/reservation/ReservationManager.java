@@ -1,10 +1,10 @@
-package Reservation;
+package reservation;
 
 import java.util.Scanner;
 import java.util.Random;
 
-import Reservation.Reservation.ReservStatus;
-import Room.*;
+import reservation.Reservation.ReservStatus;
+import room.*;
 
 public class ReservationManager {
 	
