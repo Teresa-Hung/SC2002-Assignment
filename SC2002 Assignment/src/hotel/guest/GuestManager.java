@@ -1,4 +1,4 @@
-package Guest;
+package guest;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
