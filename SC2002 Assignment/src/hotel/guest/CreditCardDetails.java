@@ -1,4 +1,4 @@
-package Guest;
+package guest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
