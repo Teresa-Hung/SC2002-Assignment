@@ -1,4 +1,4 @@
-package Payment;
+package payment;
 
 public class DayTypeCharge {
 	private String dayType;
