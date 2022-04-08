@@ -1,4 +1,4 @@
-package Guest;
+package guest;
 import java.util.Scanner;
 
 public class Guest {
