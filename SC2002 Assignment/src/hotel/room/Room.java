@@ -1,4 +1,4 @@
-package Room;
+package room;
 
 public class Room {
 	private int roomNumber = 0;
