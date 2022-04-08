@@ -1,4 +1,4 @@
-package Reservation;
+package reservation;
 
 import java.sql.Timestamp;
 import java.time.*;
