@@ -12,6 +12,7 @@ public class Guest {
 	private CreditCardDetails creditCardNum;
 	private String contactNum;
 	private boolean paid;
+	private boolean reservStatus;
 	
 	Scanner sc = new Scanner(System.in);
 	//constructor
@@ -26,6 +27,7 @@ public class Guest {
 		creditCardNum = null;
 		contactNum = null;
 		paid = false;
+		reservStatus = false;
 	}
 	
 	//get & set attributes
@@ -33,7 +35,13 @@ public class Guest {
 		return paid;
 	}
 	public void setPaid(boolean pay) {
-		paid = pay;
+		this.paid = pay;
+	}
+	public boolean getReservStatus() {
+		return reservStatus;
+	}
+	public void setReservStatus(boolean status) {
+		this.reservStatus = status;
 	}
 	public void setFName(String f) {
 		this.firstName = f;
