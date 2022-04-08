@@ -1,4 +1,4 @@
-package Payment;
+package payment;
 import java.util.ArrayList;
 
 public class RoomServiceCharge {
