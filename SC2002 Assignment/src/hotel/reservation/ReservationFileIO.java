@@ -70,37 +70,6 @@ public class ReservationFileIO {
 			write(filename,alw);
 	}
 	
-	/*public ArrayList updateReservRecord(ArrayList al, UpdateType type, String reservCode, Object o)
-	{
-		for (int i = 0 ; i < al.size() ; i++) {
-			
-			Reservation reserv = (Reservation)al.get(i);
-		
-			if(reserv.getReservCode().equals(reservCode))
-			{
-				switch(type) 
-				{
-				case RESERVSTATUS:
-					reserv.setReservStatus(ReservStatus.valueOf((String)o));
-				case CHECKINDATE:
-					reserv.setCheckInDate(LocalDate.parse((String)o));
-					break;
-				case CHECKOUTDATE:
-					reserv.setCheckOutDate(LocalDate.parse((String)o));
-					break;
-				case NUMADULT:
-					reserv.setNumAdult((int)o);
-					break;
-				case NUMCHILD:
-					reserv.setNumChild((int)o);
-					break;
-				}
-				break;
-			}
-		}
-		return al;
-	}*/
-	
 	public ArrayList removeReservRecord(ArrayList al)
 	{
 		Scanner sc = new Scanner(System.in);
@@ -148,29 +117,4 @@ public class ReservationFileIO {
 	    }
 	    return data;
 	  }
-
-/*
-// rewrite the file not append
-public static void main(String[] aArgs)  {
-	ReservationFileIO rio = new ReservationFileIO();
-	String filename = "reservation.txt" ;
-	try {
-		// read file containing Professor records.
-		ArrayList al = rio.readReservation(filename);
-		updateReservation(al,UpdateType.CHECKINDATE,"O276","2022-04-14");
-		
-		/*
-		//ArrayList al = new ArrayList();
-		Reservation reserv = new Reservation();
-		ReservationManager rm = new ReservationManager();
-		rm.createReserv(reserv);
-		// al is an array list containing Professor objs
-		al.add(reserv);
-		// write Professor record/s to file.
-		
-		rio.saveReservation(filename, al);
-	}catch (IOException e) {
-		System.out.println("IOException > " + e.getMessage());
-	}
-}*/
 }
