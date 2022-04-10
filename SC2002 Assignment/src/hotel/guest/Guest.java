@@ -1,25 +1,24 @@
 package guest;
 import java.util.Scanner;
+import reservation.Reservation.ReservStatus;
 
 public class Guest {
 	private String firstName;
 	private String lastName;
-	private String email;
 	private String country;
 	private String gender;
 	private String nationality;
 	private String id;
-	private CreditCardDetails creditCardNum;
 	private String contactNum;
+	private CreditCardDetails creditCardNum;
+	private ReservStatus reservStatus;
 	private boolean paid;
-	private boolean reservStatus;
 	
 	Scanner sc = new Scanner(System.in);
 	//constructor
 	public Guest(){
 		firstName = null;
 		lastName = null;
-		email = null;
 		country = null;
 		gender = null;
 		nationality = null;
@@ -27,22 +26,10 @@ public class Guest {
 		creditCardNum = null;
 		contactNum = null;
 		paid = false;
-		reservStatus = false;
+		reservStatus = null;
 	}
 	
 	//get & set attributes
-	public boolean getPaid() {
-		return paid;
-	}
-	public void setPaid(boolean pay) {
-		this.paid = pay;
-	}
-	public boolean getReservStatus() {
-		return reservStatus;
-	}
-	public void setReservStatus(boolean status) {
-		this.reservStatus = status;
-	}
 	public void setFName(String f) {
 		this.firstName = f;
 	}
@@ -54,12 +41,6 @@ public class Guest {
 	}
 	public String getLName() {
 		return lastName;
-	}
-	public void setEmail(String a) {
-		this.email = a;
-	}
-	public String getEmail() {
-		return email;
 	}
 	public void setCountry(String c) {
 		this.country = c;
@@ -96,6 +77,12 @@ public class Guest {
 	}
 	public String getContact() {
 		return contactNum;
+	}
+	public ReservStatus getReservStatus() {
+		return reservStatus;
+	}
+	public boolean getPaid() {
+		return paid;
 	}
 	
 
