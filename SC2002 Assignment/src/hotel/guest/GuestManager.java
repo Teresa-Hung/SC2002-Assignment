@@ -121,6 +121,7 @@ public class GuestManager {
 		}
 	}
 	public Guest updateDetails() {
+		public Guest updateDetails() {
 		System.out.println("Update Details.");
 		if(guestList.size() == 0) {
 			System.out.println("There is no guest registered in the hotel. ");
@@ -133,6 +134,11 @@ public class GuestManager {
 			System.out.println("Guest is not found.");
 			return null;
 		}
+		return updateGuest(curGuest);
+	}
+		
+	public Guest updateGuest(Guest g)
+	{
 		System.out.println("(1) Update first and last name.");
 		System.out.println("(2) Update ID.");
 		System.out.println("(3) Update contact number.");
@@ -146,33 +152,33 @@ public class GuestManager {
 		switch(choice) {
 			case 1:
 				System.out.println("Enter new first name: ");
-				curGuest.setFName(sc.next());
+				g.setFName(sc.next());
 				System.out.println("Enter new last name: ");
-				curGuest.setLName(sc.next());
+				g.setLName(sc.next());
 				break;
 			case 2:
 				System.out.println("Enter new ID (Passport/Driving License): ");
-				curGuest.setId(sc.next());
+				g.setId(sc.next());
 				break;
 			case 3:
 				System.out.println("Enter new contact number: ");
-				curGuest.setContact(sc.next());
+				g.setContact(sc.next());
 				break;
 			case 4:
 				System.out.println("Enter new email: ");
-				curGuest.setEmail(sc.next());
+				g.setEmail(sc.next());
 				break;
 			case 5:
 				System.out.println("Enter new country: ");
-				curGuest.setCountry(sc.next());
+				g.setCountry(sc.next());
 				break;
 			case 6:
 				System.out.println("Update gender: ");
-				curGuest.setGender(sc.next());
+				g.setGender(sc.next());
 				break;
 			case 7:
 				System.out.println("Enter new nationality: ");
-				curGuest.setNatlity(sc.next());
+				g.setNatlity(sc.next());
 				break;
 			case 8:
 				CreditCardDetails ccDetail = new CreditCardDetails();
@@ -189,7 +195,7 @@ public class GuestManager {
 					String s = sc.nextLine();
 					String [] bilAdr = s.split("\\s");
 					ccDetail.setBillAddr(bilAdr);
-					curGuest.setCC(ccDetail);
+					g.setCC(ccDetail);
 					break;
 				}
 				catch(DateTimeParseException e)
@@ -199,8 +205,9 @@ public class GuestManager {
 				}
 		}
 		System.out.println("Guest details updated!");
-		return curGuest; //then print new details in main func
+		return g;
 	}
+	
 	
 	public void displayGuestDetails(Guest g) {
 		CreditCardDetails ccDetail = g.getCC();
