@@ -4,6 +4,8 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import reservation.Reservation.ReservStatus;
+
 public class GuestManager {
 	
 	ArrayList<Guest> guestList = new ArrayList<Guest>();
@@ -46,7 +48,7 @@ public class GuestManager {
 			guest.setId(sc.next());
 			System.out.println("Contact Number: ");
 			guest.setContact(sc.next());
-			System.out.println("Email Address: ");
+			System.out.println("Email: ");
 			guest.setEmail(sc.next());
 			System.out.println("Country: ");
 			guest.setCountry(sc.next());
@@ -65,8 +67,7 @@ public class GuestManager {
 			sc.nextLine();
 			System.out.println("Billing Address: ");
 			String s = sc.nextLine();
-			String [] bilAdr = s.split("\\s");
-			ccDetail.setBillAddr(bilAdr);
+			ccDetail.setBillAddr(s);
 			guest.setCC(ccDetail);
 			System.out.println("Details created!");
 			guestList.add(guest);
@@ -193,9 +194,8 @@ public class GuestManager {
 					sc.nextLine();
 					System.out.println("Enter new billing address: ");
 					String s = sc.nextLine();
-					String [] bilAdr = s.split("\\s");
-					ccDetail.setBillAddr(bilAdr);
-					g.setCC(ccDetail);
+					ccDetail.setBillAddr(s);
+					curGuest.setCC(ccDetail);
 					break;
 				}
 				catch(DateTimeParseException e)
@@ -212,43 +212,40 @@ public class GuestManager {
 	public void displayGuestDetails(Guest g) {
 		CreditCardDetails ccDetail = g.getCC();
 		System.out.println("Display Guest Details.");
-		String fname, lname, email, ctry, gender, natlity, id, contactNum;
-		String holderFname, holderLname, ccNum;
-		String expDate;
-		String[] billAddr;
+		String fname, lname, ctry, gender, natlity, email, id, contactNum;
+		String holderFname, holderLname, ccNum, expDate, billAddr;
+		ReservStatus reservStatus;
 		fname = g.getFName();
 		lname = g.getLName();
-		email = g.getEmail();
 		ctry = g.getCountry();
 		gender = g.getGender();
 		natlity = g.getNatlity();
+		email = g.getEmail();
 		contactNum = g.getContact();
 		id = g.getId();
+		reservStatus = g.getReservStatus();
 		holderFname = ccDetail.getHolderFName();
 		holderLname = ccDetail.getHolderLName();
 		ccNum = ccDetail.getCcNum();
 		expDate = ccDetail.getExpDate().toString();
 		billAddr = ccDetail.getBillAddr();
 		String strReplacement = "************";
-        String lastFourNum = ccNum.substring(ccNum.length() - 4);
-        String newString = strReplacement + lastFourNum;
+        	String lastFourNum = ccNum.substring(ccNum.length() - 4);
+        	String newString = strReplacement + lastFourNum;
 		System.out.println("First Name: " + fname);
 		System.out.println("Last Name: " + lname);
+		System.out.println("ID: " + id);
+		System.out.println("Contact Number: " + contactNum);
 		System.out.println("Email: " + email);
 		System.out.println("Country: " + ctry);
 		System.out.println("Gender: " + gender);
 		System.out.println("Nationality: " + natlity);
-		System.out.println("ID: " + id);
-		System.out.println("Contact Number: " + contactNum);
+		System.out.println("Reservation Status: " + reservStatus);
 		System.out.println("Credit Card Details: ");
 		System.out.println("Holder Name: " + holderFname + " " + holderLname);
 		System.out.println("Credit Card Number: " + newString);
 		System.out.println("Expiry Date: " + expDate);
-		System.out.print("Billing Address: ");
-		for(String w:billAddr){  
-			System.out.print(w + " ");
-			}
-		System.out.println("\n");
+		System.out.println("Billing Address: " + billAddr);
 	}
 
 
