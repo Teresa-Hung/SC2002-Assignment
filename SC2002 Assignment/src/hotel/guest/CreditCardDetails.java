@@ -7,7 +7,7 @@ public class CreditCardDetails {
 	private String holderLName;
 	private String ccNum;
 	private LocalDate expiryDate;
-	private String[] billAddr;
+	private String billAddr;
 	
 	//constructors
 	public CreditCardDetails() {
@@ -44,11 +44,10 @@ public class CreditCardDetails {
 	public LocalDate getExpDate() {
 		return expiryDate;
 	}
-	
-	public void setBillAddr(String[] bilAdr) {
+	public void setBillAddr(String bilAdr) {
 		this.billAddr = bilAdr;
 	}
-	public String[] getBillAddr() {
+	public String getBillAddr() {
 		return billAddr;
 	}
 }
