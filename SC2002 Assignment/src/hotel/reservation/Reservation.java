@@ -28,15 +28,30 @@ public class Reservation {
 	Scanner sc = new Scanner(System.in);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
-	public void setReservStatus(ReservStatus s) {
-		reservStatus = s;
-	}
+	// set methods
+	public void setReservStatus(ReservStatus s) {reservStatus = s;}
+	public void setReservCode(String s) {reservCode = s;}
+	public void setRoom(Room r) {room = r;}
+	public void setGuest(Guest g) {guest = g;}
+	public void setCheckInDate(LocalDate d) {dateCheckIn = d;}
+	public void setCheckOutDate(LocalDate d) {dateCheckOut = d;}
+	public void setNumAdult(int n) {numAdult = n;}
+	public void setNumChild(int n) {numChild = n;}
+	
+	// get methods
+	public ReservStatus getReservStatus() {return reservStatus;}
+	public String getReservCode() {return reservCode;}
+	public Guest getGuest() {return guest;}
+	public Room getRoom() {return room;}
+	public LocalDate getCheckInDate() {return dateCheckIn;}
+	public DayOfWeek getCheckInDay() {return dateCheckIn.getDayOfWeek();}
+	public LocalDate getCheckOutDate() {return dateCheckOut;}
+	public DayOfWeek getCheckOutDay() {return dateCheckOut.getDayOfWeek();}
+	public int getNumAdult() {return numAdult;}
+	public int getNumChild() {return numChild;}
 
-	public void setReservCode(String s) {
-		reservCode = s;
-	}
-
-	public void setRoom(Room[] roomlist) {
+	// other methods
+	public void inputRoom(Room[] roomlist) {
 		System.out.println("Enter the room type: ");
 		RoomType type = RoomType.valueOf(sc.next());
 		// check roomlist, if vacant then assign room to customer
@@ -45,7 +60,7 @@ public class Reservation {
 			if (roomlist[i].getRoomType() == type) {
 				if (roomlist[i].getStatus() == Status.VACANT) {
 					vacant = true;
-					room = roomlist[i];
+					setRoom(roomlist[i]);
 					setReservStatus(ReservStatus.CONFIRMED);
 					break;
 				}
@@ -55,12 +70,7 @@ public class Reservation {
 			setReservStatus(ReservStatus.IN_WAITLIST);
 	}
 	
-	public void setGuest(Guest g)
-	{
-		guest = g;
-	}
-
-	public boolean setDates(boolean checkin, boolean checkout) {
+	public boolean inputDates(boolean checkin, boolean checkout) {
 		try {
 			String date;
 			LocalDate dCI = dateCheckIn, dCO = dateCheckOut;
@@ -76,8 +86,8 @@ public class Reservation {
 			}
 			// if dates are valid, update and return true
 			if (checkDates(dCI, dCO)) {
-				dateCheckIn = dCI;
-				dateCheckOut = dCO;
+				setCheckInDate(dCI);
+				setCheckOutDate(dCO);
 				return true;
 			}
 			return false;
@@ -98,47 +108,14 @@ public class Reservation {
 		return true;
 	}
 
-	public void setNumAdult() {
+	public void inputNumAdult() {
 		System.out.println("Enter the Number of Adults: ");
-		numAdult = sc.nextInt();
+		setNumAdult(sc.nextInt());
 	}
 
-	public void setNumChild() {
+	public void inputNumChild() {
 		System.out.println("Enter the Number of Children: ");
-		numChild = sc.nextInt();
-	}
-
-	public ReservStatus getReservStatus() {
-		return reservStatus;
-	}
-
-	public String getReservCode() {
-		return reservCode;
-	}
-	
-	public Guest getGuest()
-	{
-		return guest;
-	}
-
-	public Room getRoom() {
-		return room;
-	}
-
-	public LocalDate getCheckInDate() {
-		return dateCheckIn;
-	}
-
-	public DayOfWeek getCheckInDay() {
-		return dateCheckIn.getDayOfWeek();
-	}
-
-	public LocalDate getCheckOutDate() {
-		return dateCheckOut;
-	}
-
-	public DayOfWeek getCheckOutDay() {
-		return dateCheckOut.getDayOfWeek();
+		setNumChild(sc.nextInt());
 	}
 
 	public void printReceipt() {
@@ -172,4 +149,3 @@ public class Reservation {
 	}
 
 }
-
