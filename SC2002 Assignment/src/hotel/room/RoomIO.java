@@ -106,13 +106,6 @@ public class RoomIO {
     	String fileName = "48_Hotel_Rooms.txt";
     	ArrayList<Room> roomList = new ArrayList<>();
 		try {
-			
-//			ArrayList<Room> roomList = readRooms(fileName);
-//			for (i = 0 ; i < roomList.size() ; i++) {
-//				Room r = roomList.get(i);
-//				???
-//			}
-			
 			// floor 2: 8 single rooms
 			for (i = 1; i <= 8; i++) {
 				Room r = new Room(RoomType.SINGLE, BedType.QUEEN, 1);
