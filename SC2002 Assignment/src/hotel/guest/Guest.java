@@ -1,6 +1,7 @@
 package guest;
 import java.util.Scanner;
 import reservation.Reservation.ReservStatus;
+import payment.Payment.PaidType;
 
 public class Guest {
 	private String firstName;
@@ -12,7 +13,7 @@ public class Guest {
 	private String contactNum;
 	private CreditCardDetails creditCardNum;
 	private ReservStatus reservStatus;
-	private boolean paid;
+	private PaidType paid;
 	
 	Scanner sc = new Scanner(System.in);
 	//constructor
@@ -25,7 +26,7 @@ public class Guest {
 		id = null;
 		creditCardNum = null;
 		contactNum = null;
-		paid = false;
+		paid = null;
 		reservStatus = null;
 	}
 	
@@ -84,8 +85,11 @@ public class Guest {
 	public ReservStatus getReservStatus() {
 		return reservStatus;
 	}
-	public boolean getPaid() {
-		return paid;
+	public void setPaidType(PaidType p) {
+		this.paid = p;
+	}
+	public PaidType getPaidType(){
+		return p;
 	}
 	
 
