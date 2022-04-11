@@ -78,6 +78,9 @@ public class Guest {
 	public String getContact() {
 		return contactNum;
 	}
+	public void setReservStatus(ReservStatus s){
+		this.reservStatus = s;
+	}
 	public ReservStatus getReservStatus() {
 		return reservStatus;
 	}
