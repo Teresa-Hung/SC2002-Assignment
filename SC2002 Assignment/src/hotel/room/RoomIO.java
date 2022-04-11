@@ -8,8 +8,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-//import guest.Guest;
-//import guest.GuestManager;
 import room.Room.BedType;
 import room.Room.RoomStatus;
 import room.Room.RoomType;
@@ -34,10 +32,6 @@ public class RoomIO {
 			boolean smoking = Boolean.parseBoolean(star.nextToken().trim());
 			boolean balcony = Boolean.parseBoolean(star.nextToken().trim());
 			int maxSize = Integer.parseInt(star.nextToken().trim());
-			
-//			GuestManager gm = new GuestManager();
-//			Guest[] guestList = new Guest[maxSize];
-//			for (int j = 0; j < maxSize; j++) guestList[i] = gm.findById(star.nextToken().trim(), guestlist);
 			
 			// creating room object with details
 			Room r = new Room(roomType, bedType, maxSize);
@@ -67,7 +61,7 @@ public class RoomIO {
 			st.append(Boolean.toString(r.isWifiEnabled()).trim()); st.append(SEPARATOR);// wifiEnabled
 			st.append(Boolean.toString(r.isSmoking()).trim()); st.append(SEPARATOR);	// smoking
 			st.append(Boolean.toString(r.hasBalcony()).trim()); st.append(SEPARATOR);	// balcony
-			st.append(Integer.toString(r.getGuests().length)); st.append(SEPARATOR);	// maxSize
+			st.append(Integer.toString(r.getMaxSize())); st.append(SEPARATOR);			// maxSize
 			
 			stringArray.add(st.toString());
 		}
@@ -99,56 +93,5 @@ public class RoomIO {
 	    	scanner.close();
 	    }
 	    return stringArray;
-	}
-
-	public static void main(String[] aArgs)  {
-		int i;
-    	String fileName = "48_Hotel_Rooms.txt";
-    	ArrayList<Room> roomList = new ArrayList<>();
-		try {
-			// floor 2: 8 single rooms
-			for (i = 1; i <= 8; i++) {
-				Room r = new Room(RoomType.SINGLE, BedType.QUEEN, 1);
-				r.setRoomNumber("020" + i);
-				roomList.add(r);
-			}
-			// floor 3: 8 single rooms
-			for (i = 1; i <= 8; i++) {
-				Room r = new Room(RoomType.SINGLE, BedType.QUEEN, 1);
-				r.setRoomNumber("030" + i);
-				roomList.add(r);
-			}
-			// floor 4: 8 double rooms
-			for (i = 1; i <= 8; i++) {
-				Room r = new Room(RoomType.DOUBLE, BedType.KING, 2);
-				r.setRoomNumber("040" + i);
-				roomList.add(r);
-			}
-			// floor 5: 8 double rooms
-			for (i = 1; i <= 8; i++) {
-				Room r = new Room(RoomType.DOUBLE, BedType.TWIN, 2);
-				r.setRoomNumber("050" + i);
-				roomList.add(r);
-			}
-			// floor 6: 8 suite rooms
-			for (i = 1; i <= 8; i++) {
-				Room r = new Room(RoomType.SUITE, BedType.KING, 4);
-				r.setRoomNumber("060" + i);
-				r.setBalcony(true);
-				roomList.add(r);
-			}
-			// floor 7: 8 vip suite rooms
-			for (i = 1; i <= 8; i++) {
-				Room r = new Room(RoomType.VIP_SUITE, BedType.KING, 6);
-				r.setRoomNumber("070" + i);
-				r.setSmoking(true);
-				r.setBalcony(true);
-				roomList.add(r);
-			}
-			saveRooms(fileName, roomList);
-			System.out.println("default rooms loaded.");
-		} catch (IOException e) {
-			System.out.println("IOException > " + e.getMessage());
-		}
 	}
 }

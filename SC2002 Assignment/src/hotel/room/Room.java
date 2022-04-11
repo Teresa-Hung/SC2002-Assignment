@@ -1,19 +1,17 @@
 package room;
 
-import guest.Guest;
-
 public class Room {
 	private String roomNumber = "0";
 	private RoomType roomType;
 	private BedType bedType;
 	private RoomStatus roomStatus = RoomStatus.VACANT;
 	private boolean wifiEnabled = true, smoking = false, balcony = false;
-	private Guest[] guestList;
+	private int maxSize;
 	
 	public Room(RoomType roomType, BedType bedType, int maxSize) {
 		this.roomType = roomType;
 		this.bedType = bedType;
-		guestList = new Guest[maxSize];
+		this.maxSize = maxSize;
 	}
 	public String getRoomNumber() {return roomNumber;}
 	public void setRoomNumber(String roomNumber) {this.roomNumber = roomNumber;}
@@ -36,30 +34,8 @@ public class Room {
 	public boolean hasBalcony() {return balcony;}
 	public void setBalcony(boolean balcony) {this.balcony = balcony;}
 	
-	public Guest[] getGuests() {return guestList;}
-	
-	public void addGuest(Guest guest) throws Exception {
-		for (int i = 0; i < guestList.length; i++)
-			if (guestList[i] == null) {
-				guestList[i] = guest;
-				return;
-			}
-		throw new Exception("Room is already full.");
-	}
-	
-	public void removeGuest(Guest guest) throws Exception {
-		for (int i = 0; i < guestList.length; i++)
-			if (guest.getId().equals(guestList[i].getId())) {
-				guestList[i] = null;
-				return;
-			}
-		throw new Exception("Guest does not exist.");
-	}
-	
-	public void removeAllGuests() {
-		for (int i = 0; i < guestList.length; i++)
-			guestList[i] = null;
-	}
+	public int getMaxSize() {return maxSize;}
+	public void setMaxSize(int maxSize) {this.maxSize = maxSize;}
 	
 	public enum RoomType {SINGLE, DOUBLE, SUITE, VIP_SUITE}
 	public enum BedType {TWIN, QUEEN, KING}

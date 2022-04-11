@@ -3,7 +3,6 @@ package room;
 import room.Room.BedType;
 import room.Room.RoomStatus;
 import room.Room.RoomType;
-import guest.Guest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,14 +52,8 @@ public class RoomManager {
 		ArrayList<Room> doublee = new ArrayList<>();
 		ArrayList<Room> suite = new ArrayList<>();
 		ArrayList<Room> vip_suite = new ArrayList<>();
-		int i;
-		
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Print room occupancy report unsuccessful.");
-			return;
-		}
-		
-		for (i = 0 ; i < roomList.size() ; i++) {
+
+		for (int i = 0 ; i < roomList.size() ; i++) {
 			Room r = roomList.get(i);
 			switch(r.getRoomType()) {
 			case SINGLE:
@@ -122,14 +115,8 @@ public class RoomManager {
 		ArrayList<Room> occupied = new ArrayList<>();
 		ArrayList<Room> reserved = new ArrayList<>();
 		ArrayList<Room> under_maintenance = new ArrayList<>();
-		int i;
-		
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Print room status report unsuccessful.");
-			return;
-		}
-		
-		for (i = 0 ; i < roomList.size() ; i++) {
+
+		for (int i = 0 ; i < roomList.size() ; i++) {
 			Room r = roomList.get(i);
 			switch(r.getRoomStatus()) {
 			case VACANT:
@@ -154,23 +141,64 @@ public class RoomManager {
 		// print vacant rooms
 		System.out.println("Vacant:");
 		if (vacant.isEmpty()) System.out.println("\tNo rooms are vacant.");
-		else printStatusUtil(vacant);
+		else printRoomUtil(vacant);
 		// print occupied rooms
 		System.out.println("Occupied:");
 		if (occupied.isEmpty()) System.out.println("\tNo rooms are occupied.");
-		else printStatusUtil(occupied);
+		else printRoomUtil(occupied);
 		// print reserved rooms
 		System.out.println("Reserved:");
 		if (reserved.isEmpty()) System.out.println("\tNo rooms are reserved.");
-		else printStatusUtil(reserved);
+		else printRoomUtil(reserved);
 		// print under maintenance rooms
 		System.out.println("Under Maintenance:");
 		if (under_maintenance.isEmpty()) System.out.println("\tNo rooms are under maintenance.");
-		else printStatusUtil(under_maintenance);
+		else printRoomUtil(under_maintenance);
 		System.out.println("-------------------------------------------------------\n");
 	}
 
-	private void printStatusUtil(ArrayList<Room> list) {
+	public void printRoomReport() {
+		int i;
+		ArrayList<Room> wifiEnabled = new ArrayList<>();
+		ArrayList<Room> wifiDisabled = new ArrayList<>();
+		ArrayList<Room> smokingT = new ArrayList<>();
+		ArrayList<Room> smokingF = new ArrayList<>();
+		ArrayList<Room> balconyT = new ArrayList<>();
+		ArrayList<Room> balconyF = new ArrayList<>();
+		
+		for (i = 0 ; i < roomList.size() ; i++) {
+			Room r = roomList.get(i);
+			if (r.isWifiEnabled()) wifiEnabled.add(r);
+			else wifiDisabled.add(r);
+			if (r.isSmoking()) smokingT.add(r);
+			else smokingF.add(r);
+			if (r.hasBalcony()) balconyT.add(r);
+			else balconyF.add(r);
+		}
+		System.out.println("-------------------------------------------------------\n"
+						 + "Print Room Report:\n");
+		System.out.println("WiFi Enabled:");
+		if (wifiEnabled.isEmpty()) System.out.println("\tNo rooms are WiFi Enabled.");
+		else printRoomUtil(wifiEnabled);
+		System.out.println("WiFi Disabled:");
+		if (wifiDisabled.isEmpty()) System.out.println("\tNo rooms are WiFi Disabled.");
+		else printRoomUtil(wifiDisabled);
+		System.out.println("Smoking:");
+		if (smokingT.isEmpty()) System.out.println("\tNo rooms are smoking.");
+		else printRoomUtil(smokingT);
+		System.out.println("Non-Smoking:");
+		if (smokingF.isEmpty()) System.out.println("\tNo rooms are non-smoking.");
+		else printRoomUtil(smokingF);
+		System.out.println("Has Balcony:");
+		if (balconyT.isEmpty()) System.out.println("\tNo rooms have balcony.");
+		else printRoomUtil(balconyT);
+		System.out.println("No Balcony:");
+		if (balconyF.isEmpty()) System.out.println("\tNo rooms have no balcony.");
+		else printRoomUtil(balconyF);
+		System.out.println("-------------------------------------------------------\n");
+	}
+	
+	private void printRoomUtil(ArrayList<Room> list) {
 		int i;
 		list.sort(new RoomComparator());
 		for (i = 0; i < list.size(); i++) {
@@ -182,10 +210,6 @@ public class RoomManager {
 	}
 	
 	public void printRoomDetails(String roomNumber) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Print room details unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			System.out.println("------------------------\n"
@@ -197,22 +221,18 @@ public class RoomManager {
 							 + "WiFi Enabled : " + r.isWifiEnabled() + "\n"
 							 + "Smoking      : " + r.isSmoking() + "\n"
 							 + "Has Balcony  : " + r.hasBalcony() + "\n"
-							 + "Max Capacity : " + r.getGuests().length + " guests\n"
+							 + "Max Capacity : " + r.getMaxSize() + " guests\n"
 							 + "------------------------\n");
 		}
 	}
 	
 	public void addRoom(Room room) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Add room unsuccessful.");
-			return;
-		}
 		if (roomList.size() >= 48) {
 			System.out.println("There are already 48 rooms in the hotel, "
 					+ "remove a room before adding another one.");
 			return;
 		}
-		Room r = findRoom(room.getRoomNumber());
+		Room r = findRoom(room.getRoomNumber(), false);
 		if (r != null) {
 			System.out.println("Room number already exists.");
 			return;
@@ -222,10 +242,6 @@ public class RoomManager {
 	}
 	
 	public void removeRoom(String roomNumber) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Remove room unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			roomList.remove(r);
@@ -233,48 +249,7 @@ public class RoomManager {
 		}
 	}
 	
-	public void addGuest(String roomNumber, Guest gst) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Add guest unsuccessful.");
-			return;
-		}
-		Room r = findRoom(roomNumber);
-		if (r != null) try {
-			r.addGuest(gst);
-			System.out.println("Guest added successfully.");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public void removeGuest(String roomNumber, Guest gst) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Remove guest unsuccessful.");
-			return;
-		}
-		Room r = findRoom(roomNumber);
-		if (r != null) try {
-			r.removeGuest(gst);
-			System.out.println("Guest removed successfully.");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	public void removeAllGuests(String roomNumber) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Remove all guest unsuccessful.");
-			return;
-		}
-		Room r = findRoom(roomNumber);
-		if (r != null) r.removeAllGuests();
-	}
-
 	public void updateRoomNumber(String roomNumber, String newRoomNumber) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Update room number unsuccessful.");
-			return;
-		}
 		Room r = findRoom(newRoomNumber, false);
 		if (r != null) {
 			System.out.println("Room number already exists.");
@@ -285,10 +260,6 @@ public class RoomManager {
 	}
 	
 	public void updateRoomType(String roomNumber, RoomType roomType) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Update room type unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			r.setRoomType(roomType);
@@ -297,10 +268,6 @@ public class RoomManager {
 	}
 	
 	public void updateBedType(String roomNumber, BedType bedType) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Update bed type unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			r.setBedType(bedType);
@@ -309,10 +276,6 @@ public class RoomManager {
 	}
 	
 	public void updateRoomStatus(String roomNumber, RoomStatus status) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Update room status unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			r.setRoomStatus(status);
@@ -321,10 +284,6 @@ public class RoomManager {
 	}
 	
 	public void updateRoomWifi(String roomNumber, boolean wifi) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Update room wifi unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			r.setWifi(wifi);
@@ -333,10 +292,6 @@ public class RoomManager {
 	}
 	
 	public void updateRoomBalcony(String roomNumber, boolean balc) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Update room balcony unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			r.setBalcony(balc);
@@ -345,10 +300,6 @@ public class RoomManager {
 	}
 	
 	public void updateRoomSmoking(String roomNumber, boolean sm) {
-		if (roomList == null || roomList.isEmpty()) {
-			System.out.println("Update room smoking unsuccessful.");
-			return;
-		}
 		Room r = findRoom(roomNumber);
 		if (r != null) {
 			r.setSmoking(sm);
@@ -357,11 +308,9 @@ public class RoomManager {
 	}
 	
 	private void updateDetailsMenu(Scanner sc) {
-		System.out.print("Enter room number: ");
-		String s = sc.next();
-		Room r = findRoom(s);
-		if (r == null) return;
-		System.out.println("Select Details:\n"
+		
+		System.out.println("--------------------\n"
+						 + "Update Details Menu:\n"
 						 + "(1) Room Number\n"
 						 + "(2) Room Type\n"
 						 + "(3) Bed Type\n"
@@ -369,7 +318,12 @@ public class RoomManager {
 						 + "(5) Toggle WiFi\n"
 						 + "(6) Toggle Smoking\n"
 						 + "(7) Toggle Balcony\n"
-						 + "(8) Clear Room");
+						 + "--------------------");
+		System.out.print("Enter room number: ");
+		String s = sc.next();
+		Room r = findRoom(s);
+		if (r == null) return;
+		System.out.print("Enter choice: ");
 		int choice = sc.nextInt();
 		switch (choice) {
 		case 1:
@@ -419,12 +373,8 @@ public class RoomManager {
 			r.setBalcony(!r.hasBalcony());
 			System.out.println("Balcony set to " + r.hasBalcony());
 			break;
-		case 8:
-			r.setRoomStatus(RoomStatus.VACANT);
-			removeAllGuests(s);
-			System.out.println("Room cleared successfully.");
-			break;
 		default:
+			System.out.println("Invalid option.");
 			break;
 		}
 	}
@@ -434,12 +384,13 @@ public class RoomManager {
 		int choice = 0; String s = null;
 		do {
 			System.out.println("-------------------------------\n"
-							 + "Room Menu Options:\n"
+							 + "Room Menu:\n"
 			        		 + "(1) Print Room Occupancy Report\n"
 			        		 + "(2) Print Room Status Report\n"
-			        		 + "(3) Print Room Details\n"
-			        		 + "(4) Update Room Details\n"
-			        		 + "(5) Exit\n"
+			        		 + "(3) Print Room Report\n"
+			        		 + "(4) Print Room Details\n"
+			        		 + "(5) Update Room Details\n"
+			        		 + "(6) Exit\n"
 			        		 + "-------------------------------");
 			choice = sc.nextInt();
 			switch (choice) {
@@ -450,14 +401,17 @@ public class RoomManager {
 				printStatusReport();
 				break;
 			case 3:
+				printRoomReport();
+				break;
+			case 4:
 				System.out.print("Enter room number: ");
 				s = sc.next();
 				printRoomDetails(s);
 				break;
-			case 4:
+			case 5:
 				updateDetailsMenu(sc);
 				break;
-			case 5:
+			case 6:
 				writeRoomList("48_Hotel_Rooms.txt");
 				break;
 			default:
