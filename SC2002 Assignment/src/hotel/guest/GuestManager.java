@@ -212,7 +212,6 @@ public class GuestManager {
 	
 	public void displayGuestDetails(Guest g) {
 		CreditCardDetails ccDetail = g.getCC();
-		System.out.println("Display Guest Details.");
 		String fname, lname, ctry, gender, natlity, email, id, contactNum;
 		String holderFname, holderLname, ccNum, expDate, billAddr;
 		ReservStatus reservStatus;
