@@ -18,7 +18,7 @@ public class RoomCharge {
 	public double roomRate() {
 		roomCharge = 0.0;
 		for(i=0;i<numOfDays;i++) {
-			roomCharge = roomCharge + brc.baseCharge()*dtc.typeCharge();
+			roomCharge = roomCharge + brc.getBaseCharge()*dtc.typeCharge();
 		}
 		
 		return roomCharge;
