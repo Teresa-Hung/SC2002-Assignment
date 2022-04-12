@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import reservation.Reservation.ReservStatus;
-import payment.Payment.setPaidType;
 
 public class GuestFileIO {
 	public static final String SEPARATOR = "|";
@@ -41,7 +40,7 @@ public class GuestFileIO {
 			ccdetail.setBillAddr(star.nextToken().trim());
 			guest.setCC(ccdetail);
 			guest.setReservStatus(ReservStatus.valueOf(star.nextToken().trim()));
-			guest.setPaidType(PaidType.valueOf(star.nextToken().trim()));
+			guest.setPaid(Integer.valueOf(star.nextToken().trim()));
 			alr.add(guest);
 		}
 		return alr;
@@ -71,7 +70,7 @@ public class GuestFileIO {
 			st.append(SEPARATOR);
 			st.append(guest.getReservStatus());
 			st.append(SEPARATOR);
-			st.append(guest.getPaidType());
+			st.append(guest.getPaid());
 			st.append(SEPARATOR);
 			alw.add(st.toString()) ;
 		}
