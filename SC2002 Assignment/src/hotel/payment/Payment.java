@@ -6,13 +6,15 @@ public class Payment {
 	private double roomCharge;
 	private final double tax = 0.07;
 	private double roomService;
-	private boolean discountPromo;
+	private double discountPromo;
 	
 	RoomCharge rc;
 	RoomServiceCharge rsc;
+	Promotion pr;
 	
 	roomCharge = rc.roomRate();
 	roomService = rsc.roomServiceCharge();
+	discountPromo = pr.getPromoDisc
 	
 	public void calculateTotal(double roomCharge, double roomService, double discountPromo) {
 		totalBill = (roomCharge + roomService)*tax*discountPromo;
