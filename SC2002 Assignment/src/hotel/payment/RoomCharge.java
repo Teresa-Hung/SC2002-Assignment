@@ -32,4 +32,8 @@ public class RoomCharge {
 		
 		return roomCharge;
 	}
+	
+	public long getNumOfDays(){
+		return numOfDays;
+	}
 }
