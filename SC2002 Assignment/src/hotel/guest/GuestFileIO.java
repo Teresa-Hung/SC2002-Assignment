@@ -40,7 +40,7 @@ public class GuestFileIO {
 			ccdetail.setBillAddr(star.nextToken().trim());
 			guest.setCC(ccdetail);
 			guest.setReservStatus(ReservStatus.valueOf(star.nextToken().trim()));
-			guest.setPaid(Integer.valueOf(star.nextToken().trim()));
+			guest.setPaid(Integer.parseInt(star.nextToken().trim()));
 			alr.add(guest);
 		}
 		return alr;
