@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import reservation.Reservation.ReservStatus;
-import payment.Payment.PaidType;
 
 public class GuestManager {
 	
@@ -215,7 +214,7 @@ public class GuestManager {
 		String fname, lname, ctry, gender, natlity, email, id, contactNum;
 		String holderFname, holderLname, ccNum, expDate, billAddr;
 		ReservStatus reservStatus;
-		PaidType paid;
+		int paid;
 		fname = g.getFName();
 		lname = g.getLName();
 		ctry = g.getCountry();
@@ -225,7 +224,7 @@ public class GuestManager {
 		contactNum = g.getContact();
 		id = g.getId();
 		reservStatus = g.getReservStatus();
-		paid = g.getPaidType();
+		paid = g.getPaid();
 		holderFname = ccDetail.getHolderFName();
 		holderLname = ccDetail.getHolderLName();
 		ccNum = ccDetail.getCcNum();
@@ -243,6 +242,7 @@ public class GuestManager {
 		System.out.println("Gender: " + gender);
 		System.out.println("Nationality: " + natlity);
 		System.out.println("Reservation Status: " + reservStatus);
+		System.out.println("Payment Status (0:not paid 1:paid): " + paid);
 		System.out.println("Payment Status: " + paid);
 		System.out.println("Credit Card Details: ");
 		System.out.println("Holder Name: " + holderFname + " " + holderLname);
