@@ -13,7 +13,7 @@ public class Guest {
 	private String contactNum;
 	private CreditCardDetails creditCardNum;
 	private ReservStatus reservStatus;
-	private PaidType paid;
+	private int paid;
 	
 	Scanner sc = new Scanner(System.in);
 	//constructor
@@ -26,7 +26,7 @@ public class Guest {
 		id = null;
 		creditCardNum = null;
 		contactNum = null;
-		paid = null;
+		paid = 0;
 		reservStatus = null;
 	}
 	
@@ -85,10 +85,10 @@ public class Guest {
 	public ReservStatus getReservStatus() {
 		return reservStatus;
 	}
-	public void setPaidType(PaidType p) {
+	public void setPaidType(int p) {
 		this.paid = p;
 	}
-	public PaidType getPaidType(){
+	public int getPaidType(){
 		return p;
 	}
 	
