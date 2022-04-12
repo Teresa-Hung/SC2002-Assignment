@@ -1,16 +1,17 @@
 package payment;
+import reservation.Reservation
 
 public class DayTypeCharge {
 	private String dayType;
 	private double dayTypeCharge;
+	private DayOfWeek inDay, outDay;
 	
-	private void getDayType(String day) {
-		dayType = day;
-	}
 	
-	public double typeCharge() {
+	public double getTypeCharge() {
+		inDay = getCheckInDay();
+		outDay = getCheckOutDay();
 		
-		switch(dayType) {
+		switch(day) {
 		case "Monday", "Tuesday", "Wednesday", "Thursday", "Friday":
 			dayTypeCharge = 1.0;
 		case "Saturday", "Sunday":
