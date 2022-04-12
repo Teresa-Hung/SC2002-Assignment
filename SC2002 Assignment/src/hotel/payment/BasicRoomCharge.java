@@ -1,26 +1,25 @@
 package payment;
+import room.Room.RoomType
 
 public class BasicRoomCharge {
-	private String roomType;
+	private String type;
 	private double roomCharge;
+	private RoomType type;
 	
-	private void getRoomType(String room) {
-		roomType = room;
-	}
-	
-	public double baseCharge() {
+	public double getBaseCharge() {
+		type = getRoomType();
 		
-		switch(roomType) {
-		case "single":
-			roomCharge = 1.0;
-		case "Double":
-			roomCharge = 2.0;
-		case "Deluxe":
-			roomCharge = 3.0;
-		case "VIP Suite":
-			roomCharge = 4.0;
+		switch(type) {
+		case SINGLE:
+			roomCharge = 100.0;
+		case DOUBLE:
+			roomCharge = 150.0;
+		case SUITE:
+			roomCharge = 250.0;
+		case VIP_SUITE:
+			roomCharge = 350.0;
 		}
-		
+	
 		return roomCharge;
 	}
 
