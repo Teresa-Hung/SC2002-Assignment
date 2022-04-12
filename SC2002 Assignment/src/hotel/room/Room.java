@@ -13,28 +13,23 @@ public class Room {
 		this.bedType = bedType;
 		this.maxSize = maxSize;
 	}
+	// get methods
 	public String getRoomNumber() {return roomNumber;}
-	public void setRoomNumber(String roomNumber) {this.roomNumber = roomNumber;}
-	
 	public RoomType getRoomType() {return roomType;}
-	public void setRoomType(RoomType roomType) {this.roomType = roomType;}
-	
 	public BedType getBedType() {return bedType;}
-	public void setBedType(BedType bedType) {this.bedType = bedType;}
-	
 	public RoomStatus getRoomStatus() {return roomStatus;}
-	public void setRoomStatus(RoomStatus roomStatus) {this.roomStatus = roomStatus;}
-	
 	public boolean isWifiEnabled() {return wifiEnabled;}
-	public void setWifi(boolean wifiEnabled) {this.wifiEnabled = wifiEnabled;}
-	
 	public boolean isSmoking() {return smoking;}
-	public void setSmoking(boolean smoking) {this.smoking = smoking;}
-	
 	public boolean hasBalcony() {return balcony;}
-	public void setBalcony(boolean balcony) {this.balcony = balcony;}
-	
 	public int getMaxSize() {return maxSize;}
+	// set methods
+	public void setRoomNumber(String roomNumber) {this.roomNumber = roomNumber;}
+	public void setRoomType(RoomType roomType) {this.roomType = roomType;}
+	public void setBedType(BedType bedType) {this.bedType = bedType;}
+	public void setRoomStatus(RoomStatus roomStatus) {this.roomStatus = roomStatus;}
+	public void setWifi(boolean wifiEnabled) {this.wifiEnabled = wifiEnabled;}
+	public void setSmoking(boolean smoking) {this.smoking = smoking;}
+	public void setBalcony(boolean balcony) {this.balcony = balcony;}
 	public void setMaxSize(int maxSize) {this.maxSize = maxSize;}
 	
 	public enum RoomType {SINGLE, DOUBLE, SUITE, VIP_SUITE}
