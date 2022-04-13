@@ -66,11 +66,17 @@ public class GuestFileIO {
 			st.append(SEPARATOR);
 			st.append(guest.getNatlity());
 			st.append(SEPARATOR);
-			st.append(guest.getCC());
+			st.append(guest.getCC().getHolderFName());
+			st.append(SEPARATOR);
+			st.append(guest.getCC().getHolderLName());
+			st.append(SEPARATOR);
+			st.append(guest.getCC().getCcNum());
+			st.append(SEPARATOR);
+			st.append(guest.getCC().getExpDate());
+			st.append(SEPARATOR);
+			st.append(guest.getCC().getBillAddr());
 			st.append(SEPARATOR);
 			st.append(guest.getReservStatus());
-			st.append(SEPARATOR);
-			st.append(guest.getPaid());
 			st.append(SEPARATOR);
 			alw.add(st.toString()) ;
 		}
