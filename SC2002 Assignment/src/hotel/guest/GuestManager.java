@@ -10,7 +10,6 @@ public class GuestManager {
 	
 	ArrayList<Guest> guestList = new ArrayList<Guest>();
 	Scanner sc = new Scanner(System.in);
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public GuestManager() {
 		guestList = new ArrayList<Guest>();
@@ -57,20 +56,18 @@ public class GuestManager {
 			guest.setGender(sc.next());
 			System.out.println("Nationality: ");
 			guest.setNatlity(sc.next());
-			System.out.println("Credit Card Details: ");
 			System.out.println("Holder name (first and last name): ");
-			ccDetail.setHolderFName(sc.next());
-			ccDetail.setHolderLName(sc.next());
+			guest.setHolderFName(sc.next());
+			guest.setHolderLName(sc.next());
 			System.out.println("Credit Card Number: ");
-			ccDetail.setCcNum(sc.next());
+			guest.setCcNum(sc.next());
 			System.out.println("Expiry Date(dd/mm/yyyy): ");
 			String expdate = LocalDate.parse(sc.next(), formatter);
-			ccDetail.setExpDate(expdate);
+			guest.setExpDate(expdate);
 			sc.nextLine();
 			System.out.println("Billing Address: ");
 			String s = sc.nextLine();
-			ccDetail.setBillAddr(s);
-			guest.setCC(ccDetail);
+			guest.setBillAddr(s);
 			System.out.println("Details created!");
 			guestList.add(guest);
 			return guest;
@@ -187,18 +184,17 @@ public class GuestManager {
 				CreditCardDetails ccDetail = new CreditCardDetails();
 				try {
 					System.out.println("Enter new holder name: ");
-					ccDetail.setHolderFName(sc.next());
-					ccDetail.setHolderLName(sc.next());
+					g.setHolderFName(sc.next());
+					g.setHolderLName(sc.next());
 					System.out.println("Enter new credit card number: ");
-					ccDetail.setCcNum(sc.next());
+					g.setCcNum(sc.next());
 					System.out.println("Enter new expiry date(dd/mm/yyyy): ");
 					String d = LocalDate.parse(sc.next(), formatter);
-					ccDetail.setExpDate(d);
+					g.setExpDate(d);
 					sc.nextLine();
 					System.out.println("Enter new billing address: ");
 					String s = sc.nextLine();
-					ccDetail.setBillAddr(s);
-					curGuest.setCC(ccDetail);
+					g.setBillAddr(s);
 					break;
 				}
 				catch(DateTimeParseException e)
@@ -225,11 +221,11 @@ public class GuestManager {
 		email = g.getEmail();
 		contactNum = g.getContact();
 		id = g.getId();
-		holderFname = ccDetail.getHolderFName();
-		holderLname = ccDetail.getHolderLName();
-		ccNum = ccDetail.getCcNum();
-		expDate = ccDetail.getExpDate().toString();
-		billAddr = ccDetail.getBillAddr();
+		holderFname = g.getHolderFName();
+		holderLname = g.getHolderLName();
+		ccNum = g.getCcNum();
+		expDate = g.getExpDate().toString();
+		billAddr = g.getBillAddr();
 		String strReplacement = "************";
         	String lastFourNum = ccNum.substring(ccNum.length() - 4);
         	String newString = strReplacement + lastFourNum;
