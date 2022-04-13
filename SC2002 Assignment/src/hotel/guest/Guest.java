@@ -18,6 +18,7 @@ public class Guest {
 	private LocalDate expiryDate;
 	private String billAddr;
 	private int paid;
+	private String roomNum;
 	
 	Scanner sc = new Scanner(System.in);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -37,7 +38,9 @@ public class Guest {
 		ccNum = null;
 		expiryDate = null;
 		billAddr = null;
+		roomNum = null;
 		paid = 0;
+		
 	}
 	
 	//get & set attributes
@@ -125,6 +128,12 @@ public class Guest {
 	}
 	public String getBillAddr() {
 		return billAddr;
+	}
+	public void setRoomNum(String r) {
+		this.roomNum = r;
+	}
+	public int getRoomNum(){
+		return roomNum;
 	}
 	public void setPaid(int p) {
 		this.paid = p;
