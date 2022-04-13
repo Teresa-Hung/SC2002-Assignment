@@ -1,4 +1,6 @@
 package guest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Guest {
@@ -9,7 +11,11 @@ public class Guest {
 	private String nationality;
 	private String id;
 	private String contactNum;
-	private CreditCardDetails creditCardNum;
+	private String holderFName;
+	private String holderLName;
+	private String ccNum;
+	private LocalDate expiryDate;
+	private String billAddr;
 	private int paid;
 	
 	Scanner sc = new Scanner(System.in);
@@ -17,12 +23,16 @@ public class Guest {
 	public Guest(){
 		firstName = null;
 		lastName = null;
+		contactNum = null;
 		country = null;
 		gender = null;
 		nationality = null;
 		id = null;
-		creditCardNum = null;
-		contactNum = null;
+		holderFName = null;
+		holderLName = null;
+		ccNum = null;
+		expiryDate = null;
+		billAddr = null;
 		paid = 0;
 	}
 	
@@ -74,6 +84,37 @@ public class Guest {
 	}
 	public String getContact() {
 		return contactNum;
+	}
+	public void setHolderFName(String f) {
+		this.holderFName = f;
+	}
+	public String getHolderFName() {
+		return holderFName;
+	}
+	public void setHolderLName(String l) {
+		this.holderLName = l;
+	}
+	public String getHolderLName() {
+		return holderLName;
+	}
+	public void setCcNum(String a) {
+		this.ccNum = a;
+	}
+	public String getCcNum() {
+		return ccNum;
+	}
+	public void setExpDate(LocalDate e) {
+		this.expiryDate = e;
+		
+	}
+	public LocalDate getExpDate() {
+		return expiryDate;
+	}
+	public void setBillAddr(String bilAdr) {
+		this.billAddr = bilAdr;
+	}
+	public String getBillAddr() {
+		return billAddr;
 	}
 	public void setPaid(int p) {
 		this.paid = p;
