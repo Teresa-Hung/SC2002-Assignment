@@ -2,6 +2,7 @@ package guest;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 
@@ -9,7 +10,8 @@ public class GuestManager {
 	
 	ArrayList<Guest> guestList = new ArrayList<Guest>();
 	Scanner sc = new Scanner(System.in);
-	
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
 	public GuestManager() {
 		guestList = new ArrayList<Guest>();
 	}
@@ -62,7 +64,8 @@ public class GuestManager {
 			System.out.println("Credit Card Number: ");
 			ccDetail.setCcNum(sc.next());
 			System.out.println("Expiry Date(dd/mm/yyyy): ");
-			ccDetail.setExpDate(sc.next());
+			String expdate = LocalDate.parse(sc.next(), formatter);
+			ccDetail.setExpDate(expdate);
 			sc.nextLine();
 			System.out.println("Billing Address: ");
 			String s = sc.nextLine();
@@ -189,7 +192,8 @@ public class GuestManager {
 					System.out.println("Enter new credit card number: ");
 					ccDetail.setCcNum(sc.next());
 					System.out.println("Enter new expiry date(dd/mm/yyyy): ");
-					ccDetail.setExpDate(sc.next());
+					String d = LocalDate.parse(sc.next(), formatter);
+					ccDetail.setExpDate(d);
 					sc.nextLine();
 					System.out.println("Enter new billing address: ");
 					String s = sc.nextLine();
@@ -221,7 +225,6 @@ public class GuestManager {
 		email = g.getEmail();
 		contactNum = g.getContact();
 		id = g.getId();
-		paid = g.getPaid();
 		holderFname = ccDetail.getHolderFName();
 		holderLname = ccDetail.getHolderLName();
 		ccNum = ccDetail.getCcNum();
@@ -238,8 +241,6 @@ public class GuestManager {
 		System.out.println("Country: " + ctry);
 		System.out.println("Gender: " + gender);
 		System.out.println("Nationality: " + natlity);
-		System.out.println("Reservation Status: " + reservStatus);
-		System.out.println("Payment Status: " + paid);
 		System.out.println("Credit Card Details: ");
 		System.out.println("Holder Name: " + holderFname + " " + holderLname);
 		System.out.println("Credit Card Number: " + newString);
