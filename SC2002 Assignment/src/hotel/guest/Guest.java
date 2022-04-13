@@ -83,11 +83,11 @@ public class Guest {
 	public String getEmail() {
 		return email;
 	}
-	public void setCC(CreditCardDetails cc) {
-		this.creditCardNum = cc;
+	public void setCC(String cc) {
+		ccNum = cc;
 	}
-	public CreditCardDetails getCC() {
-		return creditCardNum;
+	public String getCC() {
+		return ccNum;
 	}
 	public void setContact(String num) {
 		this.contactNum = num;
@@ -130,7 +130,7 @@ public class Guest {
 		this.paid = p;
 	}
 	public int getPaid(){
-		return p;
+		return paid;
 	}
 	
 
