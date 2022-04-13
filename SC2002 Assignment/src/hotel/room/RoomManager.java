@@ -20,19 +20,16 @@ public class RoomManager {
 	public RoomManager(String fileName) {
 		try {
 			this.readRoomList(fileName);
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("readRoomList() failed.");
 		}
 	}
 	
-	private void readRoomList(String fileName) throws IOException {
+	private void readRoomList(String fileName) {
 	    try {
 	    	Scanner sc = new Scanner(new FileInputStream(fileName));
 	    	while (sc.hasNextLine()) {
-	    		StringTokenizer star = new StringTokenizer(sc.nextLine() , SEPARATOR);
-				// reading room details
+				StringTokenizer star = new StringTokenizer(sc.nextLine() , SEPARATOR);
 				String roomNumber = star.nextToken().trim();						// roomNumber
 				RoomType roomType = RoomType.valueOf(star.nextToken().trim());		// roomType
 				BedType bedType = BedType.valueOf(star.nextToken().trim());			// bedType
@@ -199,7 +196,7 @@ public class RoomManager {
 		System.out.println("Under Maintenance:");
 		if (under_maintenance.isEmpty()) System.out.println("\tNo rooms are under maintenance.");
 		else printRoomUtil(under_maintenance);
-		System.out.println("-------------------------------------------------------\n");
+		System.out.println("-------------------------------------------------------");
 	}
 
 	public void printRoomReport() {
@@ -218,8 +215,9 @@ public class RoomManager {
 			if (r.hasBalcony()) hasBalcony.add(r);
 			else noBalcony.add(r);
 		}
+		
 		System.out.println("-------------------------------------------------------\n"
-						 + "Print Room Report:\n");
+						 + "Print Room Report:");
 		System.out.println("WiFi Enabled:");
 		if (wifiEnabled.isEmpty()) System.out.println("\tNo rooms are WiFi Enabled.");
 		else printRoomUtil(wifiEnabled);
@@ -238,7 +236,7 @@ public class RoomManager {
 		System.out.println("No Balcony:");
 		if (noBalcony.isEmpty()) System.out.println("\tNo rooms have no balcony.");
 		else printRoomUtil(noBalcony);
-		System.out.println("-------------------------------------------------------\n");
+		System.out.println("-------------------------------------------------------");
 	}
 	
 	private void printRoomUtil(ArrayList<Room> list) {
@@ -254,7 +252,7 @@ public class RoomManager {
 	public void printRoomDetails(String roomNumber) {
 		Room r = findRoom(roomNumber);
 		if (r != null) {
-			System.out.println("------------------------\n"
+			System.out.println("-------------------------------\n"
 							 + "Print Room Details\n"
 							 + "Room Number  : " + r.getRoomNumber() + "\n"
 							 + "Room Type    : " + r.getRoomType() + "\n"
@@ -263,8 +261,8 @@ public class RoomManager {
 							 + "WiFi Enabled : " + r.isWifiEnabled() + "\n"
 							 + "Smoking      : " + r.isSmoking() + "\n"
 							 + "Has Balcony  : " + r.hasBalcony() + "\n"
-							 + "Max Capacity : " + r.getMaxSize() + " guests\n"
-							 + "------------------------\n");
+							 + "Max Size     : " + r.getMaxSize() + " guests\n"
+							 + "-------------------------------");
 		}
 	}
 	
@@ -351,68 +349,80 @@ public class RoomManager {
 	
 	private void updateDetailsUI(Scanner sc) {
 		System.out.print("Enter room number: ");
-		String s = sc.next();
-		System.out.println("--------------------\n"
-						 + "Update Details Menu:\n"
-						 + "(1) Room Number\n"
-						 + "(2) Room Type\n"
-						 + "(3) Bed Type\n"
-						 + "(4) Room Status\n"
-						 + "(5) Toggle WiFi\n"
-						 + "(6) Toggle Smoking\n"
-						 + "(7) Toggle Balcony\n"
-						 + "--------------------");
-		Room r = findRoom(s);
+		Room r = findRoom(sc.next());
 		if (r == null) return;
-		System.out.print("Enter choice: ");
-		int choice = sc.nextInt();
-		switch (choice) {
-		case 1:
+		System.out.print("--------------------\n"
+					   + "Update Details Menu:\n"
+					   + "(1) Room Number\n"
+					   + "(2) Room Type\n"
+					   + "(3) Bed Type\n"
+					   + "(4) Room Status\n"
+					   + "(5) Toggle WiFi\n"
+					   + "(6) Toggle Smoking\n"
+					   + "(7) Toggle Balcony\n"
+					   + "(8) Max Size\n"
+					   + "--------------------\n"
+					   + "Enter option: ");
+		switch (sc.next()) {
+		case "1":
 			System.out.print("Enter new room number: ");
 			String newRoomNumber = sc.next();
-			updateRoomNumber(s, newRoomNumber);
+			r.setRoomNumber(newRoomNumber);
 			break;
-		case 2:
+		case "2":
 			System.out.print("Options: SINGLE, DOUBLE, SUITE, VIP_SUITE\n"
 						   + "Enter new room type: ");
-			RoomType newRoomType = RoomType.valueOf(sc.next().toUpperCase());
 			try {
-				updateRoomType(s, newRoomType);
+				RoomType newRoomType = RoomType.valueOf(sc.next().toUpperCase());
+				r.setRoomType(newRoomType);
+				System.out.println("Room type set to " + newRoomType);
 			} catch (Exception e) {
 				System.out.println("Invalid room type.");
 			}
 			break;
-		case 3:
+		case "3":
 			System.out.print("Options: TWIN, QUEEN, KING\n"
 						   + "Enter new bed type: ");
-			BedType newBedType = BedType.valueOf(sc.next().toUpperCase());
 			try {
-				updateBedType(s, newBedType);
+				BedType newBedType = BedType.valueOf(sc.next().toUpperCase());
+				r.setBedType(newBedType);
+				System.out.println("Bed type set to " + newBedType);
 			} catch (Exception e) {
 				System.out.println("Invalid bed type.");
 			}
 			break;
-		case 4:
+		case "4":
 			System.out.print("Options: VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE\n"
 						   + "Enter new room status: ");
 			try {
 				RoomStatus newRoomStatus = RoomStatus.valueOf(sc.next().toUpperCase());
-				updateRoomStatus(s, newRoomStatus);
+				r.setRoomStatus(newRoomStatus);
+				System.out.println("Room status set to " + newRoomStatus);
 			} catch (Exception e) {
 				System.out.println("Invalid room status.");
 			}
 			break;
-		case 5:
+		case "5":
 			r.setWifi(!r.isWifiEnabled());
 			System.out.println("WiFi Enabled set to " + r.isWifiEnabled() + ".");
 			break;
-		case 6:
+		case "6":
 			r.setSmoking(!r.isSmoking());
 			System.out.println("Smoking set to " + r.isSmoking() + ".");
 			break;
-		case 7:
+		case "7":
 			r.setBalcony(!r.hasBalcony());
 			System.out.println("Balcony set to " + r.hasBalcony() + ".");
+			break;
+		case "8":
+			System.out.print("Enter new max size: ");
+			try {
+				int i = Integer.parseInt(sc.next());
+				r.setMaxSize(i);
+				System.out.println("Max size set to " + i);
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid size.");
+			}
 			break;
 		default:
 			System.out.println("Invalid option.");
@@ -421,8 +431,8 @@ public class RoomManager {
 	}
 	
 	public void roomUI() {
+		String choice;
 		Scanner sc = new Scanner(System.in);
-		int choice = 0; String s = null;
 		do {
 			System.out.println("-------------------------------\n"
 							 + "Room Menu:\n"
@@ -433,32 +443,31 @@ public class RoomManager {
 			        		 + "(5) Update Room Details\n"
 			        		 + "(6) Exit\n"
 			        		 + "-------------------------------");
-			choice = sc.nextInt();
+			choice = sc.next();
 			switch (choice) {
-			case 1:
+			case "1":
 				printOccupancyReport();
 				break;
-			case 2:
+			case "2":
 				printStatusReport();
 				break;
-			case 3:
+			case "3":
 				printRoomReport();
 				break;
-			case 4:
+			case "4":
 				System.out.print("Enter room number: ");
-				s = sc.next();
-				printRoomDetails(s);
+				printRoomDetails(sc.next());
 				break;
-			case 5:
+			case "5":
 				updateDetailsUI(sc);
 				break;
-			case 6:
+			case "6":
 				writeRoomList("48_Hotel_Rooms.txt");
 				break;
 			default:
-				System.out.println("Invalid choice.");
+				System.out.println("Invalid option.");
 			}
-		} while (choice != 6);
+		} while (!choice.equals("6"));
 		sc.close();
 	}
 }
