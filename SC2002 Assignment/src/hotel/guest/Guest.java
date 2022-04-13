@@ -20,6 +20,8 @@ public class Guest {
 	private int paid;
 	
 	Scanner sc = new Scanner(System.in);
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
 	//constructor
 	public Guest(){
 		firstName = null;
