@@ -38,7 +38,7 @@ public class Guest {
 		ccNum = null;
 		expiryDate = null;
 		billAddr = null;
-		roomNum = null;
+		roomNum = "0";
 		paid = 0;
 		
 	}
