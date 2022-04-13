@@ -85,10 +85,10 @@ public class Guest {
 	public ReservStatus getReservStatus() {
 		return reservStatus;
 	}
-	public void setPaidType(int p) {
+	public void setPaid(int p) {
 		this.paid = p;
 	}
-	public int getPaidType(){
+	public int getPaid(){
 		return p;
 	}
 	
