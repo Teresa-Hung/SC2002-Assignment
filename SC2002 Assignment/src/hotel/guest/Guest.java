@@ -132,7 +132,7 @@ public class Guest {
 	public void setRoomNum(String r) {
 		this.roomNum = r;
 	}
-	public int getRoomNum(){
+	public String getRoomNum(){
 		return roomNum;
 	}
 	public void setPaid(int p) {
