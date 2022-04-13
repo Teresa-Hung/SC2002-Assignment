@@ -10,6 +10,7 @@ public class Guest {
 	private String gender;
 	private String nationality;
 	private String id;
+	private String email;
 	private String contactNum;
 	private String holderFName;
 	private String holderLName;
@@ -28,6 +29,7 @@ public class Guest {
 		gender = null;
 		nationality = null;
 		id = null;
+		email = null;
 		holderFName = null;
 		holderLName = null;
 		ccNum = null;
@@ -72,6 +74,12 @@ public class Guest {
 	}
 	public String getId() {
 		return id;
+	}
+	public void setEmail(String e) {
+		this.email = e;
+	}
+	public String getEmail() {
+		return email;
 	}
 	public void setCC(CreditCardDetails cc) {
 		this.creditCardNum = cc;
