@@ -5,15 +5,68 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.FileInputStream;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class GuestManager {
 	
-	ArrayList<Guest> guestList = new ArrayList<Guest>();
-	Scanner sc = new Scanner(System.in);
-
-	public GuestManager() {
-		guestList = new ArrayList<Guest>();
+	public static final String SEPARATOR = "|";
+	ArrayList<Guest> guestList = new ArrayList<>();
+	
+	//constructor
+	public GuestManager(String fileName) {
+		try{
+			this.readGuestList(fileName);
+		} catch (Exception e) {
+			System.out.println("readGuestList() failed.");
+		}
 	}
+	
+	public static ArrayList readGuests(String filename) {
+		try{
+			Scanner sc = new Scanner(new FileInputStream(fileName));
+			while(sc.hasNextLine()) {
+				
+			}
+			
+		}
+		
+		//read string from text file
+		ArrayList stringArray = (ArrayList)read(filename);
+		ArrayList alr = new ArrayList(); //store guests data
+		
+		for(int i=0;i < stringArray.size();i++) {
+			String st = (String)stringArray.get(i);
+			//get individual attributes of the string separated by SEPARATOR
+			StringTokenizer star = new StringTokenizer(st, SEPARATOR);
+			Guest guest = new Guest();
+			CreditCardDetails ccdetail = new CreditCardDetails();
+			guest.setFName(star.nextToken().trim());
+			guest.setLName(star.nextToken().trim());
+			guest.setId(star.nextToken().trim());
+			guest.setContact(star.nextToken().trim());
+			guest.setEmail(star.nextToken().trim());
+			guest.setCountry(star.nextToken().trim());
+			guest.setGender(star.nextToken().trim());
+			guest.setNatlity(star.nextToken().trim());
+			guest.setHolderFName(star.nextToken().trim());
+			guest.setHolderLName(star.nextToken().trim());
+			guest.setCcNum(star.nextToken().trim());
+			guest.setExpDate(star.nextToken().trim());
+			guest.setBillAddr(star.nextToken().trim());
+			guest.setPaid(Integer.parseInt(star.nextToken().trim()));
+			alr.add(guest);
+		}
+		return alr;
+	}
+	
 	public ArrayList<Guest> getList(){
 		return guestList;
 	}
