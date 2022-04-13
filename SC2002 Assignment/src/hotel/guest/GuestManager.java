@@ -210,7 +210,7 @@ public class GuestManager {
 	
 	public void displayGuestDetails(Guest g) {
 		CreditCardDetails ccDetail = g.getCC();
-		String fname, lname, ctry, gender, natlity, email, id, contactNum;
+		String fname, lname, ctry, gender, natlity, email, id, contactNum,rmNum;
 		String holderFname, holderLname, ccNum, expDate, billAddr;
 		int paid;
 		fname = g.getFName();
@@ -221,11 +221,13 @@ public class GuestManager {
 		email = g.getEmail();
 		contactNum = g.getContact();
 		id = g.getId();
+		rmNum = g.getRoomNum();
 		holderFname = g.getHolderFName();
 		holderLname = g.getHolderLName();
 		ccNum = g.getCcNum();
 		expDate = g.getExpDate().toString();
 		billAddr = g.getBillAddr();
+		
 		String strReplacement = "************";
         	String lastFourNum = ccNum.substring(ccNum.length() - 4);
         	String newString = strReplacement + lastFourNum;
@@ -242,6 +244,7 @@ public class GuestManager {
 		System.out.println("Credit Card Number: " + newString);
 		System.out.println("Expiry Date: " + expDate);
 		System.out.println("Billing Address: " + billAddr);
+		System.out.println("Room Number: " + rmNum);
 	}
 
 
