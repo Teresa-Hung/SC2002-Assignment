@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import reservation.Reservation.ReservStatus;
 
 public class GuestFileIO {
 	public static final String SEPARATOR = "|";
@@ -39,7 +38,6 @@ public class GuestFileIO {
 			ccdetail.setExpDate(star.nextToken().trim());
 			ccdetail.setBillAddr(star.nextToken().trim());
 			guest.setCC(ccdetail);
-			guest.setReservStatus(ReservStatus.valueOf(star.nextToken().trim()));
 			guest.setPaid(Integer.parseInt(star.nextToken().trim()));
 			alr.add(guest);
 		}
@@ -75,8 +73,6 @@ public class GuestFileIO {
 			st.append(guest.getCC().getExpDate());
 			st.append(SEPARATOR);
 			st.append(guest.getCC().getBillAddr());
-			st.append(SEPARATOR);
-			st.append(guest.getReservStatus());
 			st.append(SEPARATOR);
 			alw.add(st.toString()) ;
 		}
