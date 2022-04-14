@@ -1,5 +1,6 @@
 public class MenuItems {
-	public MenuItems(double a, String b, String c) {
+	public MenuItems(int number, double a, String b, String c) {
+		this.number = number;
 		this.price = a;
 		this.itemName = b;
 		this.prepMethod = c;
@@ -16,6 +17,7 @@ public class MenuItems {
 	public String getPrep() {
 		return prepMethod;
 	}
+	private int number;
 	private double price;
 	private String itemName;
 	private String prepMethod;
