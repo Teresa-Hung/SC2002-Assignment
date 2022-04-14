@@ -1,36 +1,49 @@
-package payment;
-import /*roomservice class*/
+package miniproj;
 
 public class Payment {
-	private double totalBill;
+	private long numOfDays;
 	private double roomCharge;
-	private final double tax = 0.07;
-	private double roomService;
+	private double roomServiceCharge;
 	private double discountPromo;
+	private double totalBill;
+	private final double tax = 0.07;
 	
-	RoomCharge rc;
-	RoomServiceCharge rsc;
-	Promotion pr;
+	public void setNumOfDays(long days) {
+		numOfDays = days;
+	}
 	
-	roomCharge = rc.roomRate();
-	roomService = rsc.roomServiceCharge();
-	discountPromo = pr.getPromoDisc
+	public void setRoomCharge(double rc) {
+		roomCharge = rc;
+	}
 	
-	public void calculateTotal(double roomCharge, double roomService, double discountPromo) {
-		totalBill = (roomCharge + roomService)*tax*discountPromo;
+	public void setRoomServiceCharge(double rs) {
+		roomServiceCharge = rs;
+	}
+	
+	public void setDiscountPromo(double disc) {
+		discountPromo = disc;
+	}
+	
+	public void calculateTotal() {
+		totalBill = (roomCharge + roomService)*tax*(1.0-discountPromo);
 	}
 	
 	public void printBill() {
-		System.out.println("Room charges: " + rc.roomRate());
-		System.out.println("Room service charges: " + rsc.roomServiceCharge());
+		System.out.println("Room charges: " + roomCharge);	
+		System.out.println("Room service charges: " + roomServiceCharge); 
 		System.out.println("Tax: " + tax);
 		System.out.println("Total amount due: " + totalBill);
+		if(discountPromo == 0.0) {
+			System.out.println("Promo code discount: NIL");
+		}
+		else {
+			System.out.println("Promo code discount: " + discountPromo*100 + "% Off");
+		}
 	}
 	
 	public void printInvoice() {
-		System.out.println("Number of days stayed: " + rc.getNumOfDays());
-		System.out.println("Room service items: " + printOrder(/*filename*/);
-		System.out.println("Room service charges: " + rsc.roomServiceCharge());
+		System.out.println("Number of days stayed: " + numOfDays);
+		System.out.println("Room service charges: " + roomServiceCharge;
 		System.out.println("Tax: " + tax);
 		System.out.println("Total amount due: " + totalBill);
 	}

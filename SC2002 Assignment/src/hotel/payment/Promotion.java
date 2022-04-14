@@ -1,25 +1,25 @@
-package payment;
+package miniproj;
 
 public class Promotion {
-	private String promoCode;
+	private int promoCode;
 	private double promoDiscount;
 	
-	public void setPromoCode(String promotion) {
+	public void setPromoCode(int promotion) {
 		promoCode = promotion;
 	}
 	public double getPromoDisc() {
 		switch(promoCode) {
-		case " ":
+		case 0:
+			promoDiscount = 0.0;
+		case 1:
 			promoDiscount = 0.1;
 		
-		case "  ":
+		case 2:
 			promoDiscount = 0.15;
 			
-		case "   ":
+		case 3:
 			promoDiscount = 0.2;
 		
-		case "NIL":
-			promoDiscount = 1.0;
 		}
 		
 		return promoDiscount;

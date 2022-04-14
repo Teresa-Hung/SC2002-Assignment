@@ -1,23 +1,30 @@
-package payment;
+package miniproj;
 import java.util.ArrayList;
+import roomservice.MenuItems;
+import roomservice.OrderManager
 
 public class RoomServiceCharge {
-	private String roomServiceItem;
 	private int numItems, i;
 	private double totalCharge;
 	
-	ArrayList<ItemCharge> itemlist = new ArrayList<ItemCharge>();
 	
-	public void setNumItems(int items) {
-		numItems = items;
-	}
-	
-	public double roomServiceCharge() {
-		totalCharge = 0.0;
+	public double roomServiceCharge(String roomId) {
+		ArrayList<MenuItems> roomServiceItems;
+		roomServiceItems = om.getOrder("order.txt", roomId, false);
+		numItems = roomServiceItems.size();
 		for(i=0;i<numItems;i++) {
-			totalCharge  = totalCharge + ItemCharge[i].itemCost();
+			totalCharge = totalCharge + roomServiceItems(i).getPrice();
 		}
 		
 		return totalCharge;
+	}
+	
+	
+	public void printAllItems(String roomId) {
+		ArrayList<MenuItems> roomServiceItems;
+		roomServiceItems = om.getOrder("order.txt", roomId, false);
+		for(i=0;i<numItems;i++) {
+			System.out.println(roomServiceItems(i).itemName());
+		}
 	}
 }
