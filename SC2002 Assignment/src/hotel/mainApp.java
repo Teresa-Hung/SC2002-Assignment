@@ -21,14 +21,13 @@ public class mainApp {
 			System.out.println("4) Room Service Information.");
 			System.out.println("5) Payment Information.");
 			System.out.println("6) Quit");
-			choice1 = sc.next();
+			choice1 = sc.nextLine();
 			switch(choice1) {
 				case "1":
 					GuestManager manager = new GuestManager();
 					System.out.println("1) Update Guest Details.");
 					System.out.println("2) Search Guest.");
-					String a = sc.next();
-					switch(a) {
+					switch(sc.nextLine()) {
 						case "1":
 							Guest g = manager.updateDetails();
 							if(g != null)
@@ -67,41 +66,36 @@ public class mainApp {
 					System.out.println("3) Get the menu");
 					System.out.println("4) Get list of orders");
 					System.out.println("5) Update order status");
-					int choice = sc.nextInt();
-					switch(choice) {
-						case 1:{
+					switch(sc.nextLine()) {
+						case "1":
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
-							if(rm.findRoom(room).getRoomStatus() == RoomStatus.VACANT) {
+							if(rm.getRoomStatus(room) == RoomStatus.VACANT) {
 								System.out.println("This room is empty");
 								break;
 							}
 							OrderManager.saveOrder("order.txt",room);
 							break;
-						}
-						case 2:{
+						case "2":
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
-							if(rm.findRoom(room).getRoomStatus() == RoomStatus.VACANT) {
+							if(rm.getRoomStatus(room) == RoomStatus.VACANT) {
 								System.out.println("This room is empty");
 								break;
 							}
 							String id = sc.nextLine();
 							OrderManager.deleteOrder("order.txt",id,room);
 							break;
-						}
-						case 3:{
+						case "3":
 							OrderManager.printMenu("order.txt");
 							break;
-						}
-						case 4:{
+						case "4":
 							OrderManager.printOrder("order.txt");
 							break;
-						}
-						case 5:{
+						case "5":
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
-							if(RoomManager.findRoom(room).getRoomStatus().name()==VACANT) {
+							if(rm.getRoomStatus(room) == RoomStatus.VACANT) {
 								System.out.println("This room is empty");
 								break;
 							}
@@ -110,13 +104,10 @@ public class mainApp {
 							System.out.println("1) Preparing");
 							System.out.println("2) Ready");
 							int status = sc.nextInt();
-							sc.nextLine();
 							OrderManager.changeStatus("order.txt", orderID, room, OrderStatus.values()[status]);
 							break;
-						}
-						default: 
-							System.out.println("Wrong choice");
-							break;
+						default:
+							System.out.println("Invalid choice.");
 					}
 				case "5":
 					Payment pay = new Payment();
@@ -130,15 +121,14 @@ public class mainApp {
 					String reservCode = payingGuest.getReserveCode();
 					ArrayList<Reservation> reservList = resman.getReservList();
 					
-					System.out.println("1) Make Payment\n");
-					System.out.println("2) Print Invoice\n");
-					System.out.println("3) Checkout \n");
-					System.out.println("4) Occupancy Report\n");
-					System.out.println("Enter choice: \n");
-					int choice = sc.nextInt();
+					System.out.println("1) Make Payment");
+					System.out.println("2) Print Invoice");
+					System.out.println("3) Checkout");
+					System.out.println("4) Occupancy Report");
+					System.out.println("Enter choice: ");
 					
-					switch(choice){
-						case 1: 
+					switch(sc.nextLine()){
+						case "1": 
 							if(payingGuest.getPaid() == 1){
 								System.out.println("Payment already made!\n");
 							}
@@ -161,13 +151,12 @@ public class mainApp {
 								
 								// payment type
 								System.out.println("Enter payment type: (1)Cash (2)Credit card\n");
-								paytype = sc.nextInt();
-								switch(paytype) {
-									case 1: 
+								switch(sc.nextLine()) {
+									case "1": 
 										System.out.println("Cash payment successful!\n");
 										payingGuest.setPaid(1);
 										break;
-									case 2:
+									case "2":
 										System.out.println("Billing Details: \n");
 										System.out.println("Name" + payingGuest.getHolderFName() + payingGuest.getHolderLName()\n);
 										System.out.println("Credit card number" + payingGuest.getCcNum()\n);
@@ -175,10 +164,12 @@ public class mainApp {
 										System.out.println("Card payment successful!\n");
 										payingGuest.setPaid(1);
 										break;
+									default:
+										System.out.println("Invalid choice.");
 								}
 							}
 							break;
-						case 2: 
+						case "2": 
 							if(payingGuest.getPaid() == 0) {
 								System.out.println("Payment has not been made!\n");
 							}
@@ -188,15 +179,13 @@ public class mainApp {
 								rsc.printAllItems(guestRoom);
 							}
 							break;
-						case 3:
-							if(payingGuest.getPaid() == 1){
+						case "3":
+							if (payingGuest.getPaid() == 1)
 								rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
-							}
-							else{
+							else
 								System.out.println("Payment has not been made!\n");
-							}
 							break;
-						case 4: 
+						case "4":
 							rm.printOccupancyReport();
 							break;
 						default:
