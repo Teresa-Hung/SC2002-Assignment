@@ -91,6 +91,13 @@ public class RoomManager {
 		return null;
 	}
 	
+	public boolean roomNumberExists(String roomNumber) {
+		if (findRoom(roomNumber) != null)
+			return true;
+		else
+			return false;
+	}
+	
 	public void printOccupancyReport() {
 		ArrayList<Room> single = new ArrayList<>();
 		ArrayList<Room> doublee = new ArrayList<>();
@@ -266,197 +273,79 @@ public class RoomManager {
 		}
 	}
 	
+	public RoomType getRoomType(String roomNumber) {
+		return findRoom(roomNumber).getRoomType();
+	}
+	
+	public BedType getBedType(String roomNumber) {
+		return findRoom(roomNumber).getBedType();
+	}
+	
 	public RoomStatus getRoomStatus(String roomNumber) {
-		Room r = findRoom(roomNumber);
-		if (r != null)
-			return r.getRoomStatus();
-		else
-			return null;
+		return findRoom(roomNumber).getRoomStatus();
+	}
+	
+	public boolean isRoomWifiEnabled(String roomNumber) {
+		return findRoom(roomNumber).isWifiEnabled();
+	}
+	
+	public boolean isRoomSmoking(String roomNumber) {
+		return findRoom(roomNumber).isSmoking();
+	}
+	
+	public boolean roomHasBalcony(String roomNumber) {
+		return findRoom(roomNumber).hasBalcony();
 	}
 	
 	public void updateRoomNumber(String roomNumber, String newRoomNumber) {
-		Room r = findRoom(newRoomNumber, false);
-		if (r != null) {
-			System.out.println("Room number already exists.");
-			return;
-		}
-		findRoom(roomNumber).setRoomNumber(newRoomNumber);
-		System.out.println("Room number updated successfully.");
+		Room r = findRoom(roomNumber);
+		if (r != null)
+			r.setRoomNumber(newRoomNumber);
 	}
 	
 	public void updateRoomType(String roomNumber, RoomType roomType) {
 		Room r = findRoom(roomNumber);
-		if (r != null) {
+		if (r != null)
 			r.setRoomType(roomType);
-			System.out.println("Room type updated successfully.");
-		}
 	}
 	
 	public void updateBedType(String roomNumber, BedType bedType) {
 		Room r = findRoom(roomNumber);
-		if (r != null) {
+		if (r != null)
 			r.setBedType(bedType);
-			System.out.println("Bed type updated successfully.");
-		}
 	}
 	
-	public void updateRoomStatus(String roomNumber, RoomStatus status) {
+	public void updateRoomStatus(String roomNumber, RoomStatus roomStatus) {
 		Room r = findRoom(roomNumber);
-		if (r != null) {
-			r.setRoomStatus(status);
-			System.out.println("Room status updated successfully.");
-		}
+		if (r != null)
+			r.setRoomStatus(roomStatus);
 	}
 	
-	public void updateRoomWifi(String roomNumber, boolean wifi) {
+	public void updateRoomWifi(String roomNumber, boolean wifiEnabled) {
 		Room r = findRoom(roomNumber);
-		if (r != null) {
-			r.setWifi(wifi);
-			System.out.println("Room wifi updated successfully.");
-		}
+		if (r != null)
+			r.setWifi(wifiEnabled);
 	}
 	
-	public void updateRoomBalcony(String roomNumber, boolean balc) {
+	public void updateRoomBalcony(String roomNumber, boolean balcony) {
 		Room r = findRoom(roomNumber);
-		if (r != null) {
-			r.setBalcony(balc);
-			System.out.println("Room balcony updated successfully.");
-		}
+		if (r != null)
+			r.setBalcony(balcony);
 	}
 	
-	public void updateRoomSmoking(String roomNumber, boolean sm) {
+	public void updateRoomSmoking(String roomNumber, boolean smoking) {
 		Room r = findRoom(roomNumber);
-		if (r != null) {
-			r.setSmoking(sm);
-			System.out.println("Room smoking updated successfully.");
-		}
+		if (r != null)
+			r.setSmoking(smoking);
 	}
 	
-	private void updateDetailsUI(Scanner sc) {
-		System.out.print("Enter room number: ");
-		Room r = findRoom(sc.nextLine());
-		if (r == null) return;
-		System.out.print("--------------------\n"
-					   + "Update Details Menu:\n"
-					   + "(1) Room Number\n"
-					   + "(2) Room Type\n"
-					   + "(3) Bed Type\n"
-					   + "(4) Room Status\n"
-					   + "(5) Toggle WiFi\n"
-					   + "(6) Toggle Smoking\n"
-					   + "(7) Toggle Balcony\n"
-					   + "(8) Max Size\n"
-					   + "--------------------\n"
-					   + "Enter option: ");
-		switch (sc.nextLine()) {
-		case "1":
-			System.out.print("Enter new room number: ");
-			String newRoomNumber = sc.nextLine();
-			r.setRoomNumber(newRoomNumber);
-			break;
-		case "2":
-			System.out.print("Options: SINGLE, DOUBLE, SUITE, VIP_SUITE\n"
-						   + "Enter new room type: ");
-			try {
-				RoomType newRoomType = RoomType.valueOf(sc.nextLine().toUpperCase());
-				r.setRoomType(newRoomType);
-				System.out.println("Room type set to " + newRoomType);
-			} catch (Exception e) {
-				System.out.println("Invalid room type.");
-			}
-			break;
-		case "3":
-			System.out.print("Options: TWIN, QUEEN, KING\n"
-						   + "Enter new bed type: ");
-			try {
-				BedType newBedType = BedType.valueOf(sc.nextLine().toUpperCase());
-				r.setBedType(newBedType);
-				System.out.println("Bed type set to " + newBedType);
-			} catch (Exception e) {
-				System.out.println("Invalid bed type.");
-			}
-			break;
-		case "4":
-			System.out.print("Options: VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE\n"
-						   + "Enter new room status: ");
-			try {
-				RoomStatus newRoomStatus = RoomStatus.valueOf(sc.nextLine().toUpperCase());
-				r.setRoomStatus(newRoomStatus);
-				System.out.println("Room status set to " + newRoomStatus);
-			} catch (Exception e) {
-				System.out.println("Invalid room status.");
-			}
-			break;
-		case "5":
-			r.setWifi(!r.isWifiEnabled());
-			System.out.println("WiFi Enabled set to " + r.isWifiEnabled() + ".");
-			break;
-		case "6":
-			r.setSmoking(!r.isSmoking());
-			System.out.println("Smoking set to " + r.isSmoking() + ".");
-			break;
-		case "7":
-			r.setBalcony(!r.hasBalcony());
-			System.out.println("Balcony set to " + r.hasBalcony() + ".");
-			break;
-		case "8":
-			System.out.print("Enter new max size: ");
-			try {
-				int i = Integer.parseInt(sc.nextLine());
-				r.setMaxSize(i);
-				System.out.println("Max size set to " + i);
-			} catch (NumberFormatException e) {
-				System.out.println("Invalid size.");
-			}
-			break;
-		default:
-			System.out.println("Invalid option.");
-			break;
-		}
-	}
-	
-	public void roomUI() {
-		String choice;
-		Scanner sc = new Scanner(System.in);
-		do {
-			System.out.println("-------------------------------\n"
-							 + "Room Menu:\n"
-			        		 + "(1) Print Room Occupancy Report\n"
-			        		 + "(2) Print Room Status Report\n"
-			        		 + "(3) Print Room Report\n"
-			        		 + "(4) Print Room Details\n"
-			        		 + "(5) Update Room Details\n"
-			        		 + "(6) Exit\n"
-			        		 + "-------------------------------");
-			choice = sc.nextLine();
-			switch (choice) {
-			case "1":
-				printOccupancyReport();
-				break;
-			case "2":
-				printStatusReport();
-				break;
-			case "3":
-				printRoomReport();
-				break;
-			case "4":
-				System.out.print("Enter room number: ");
-				printRoomDetails(sc.nextLine());
-				break;
-			case "5":
-				updateDetailsUI(sc);
-				break;
-			case "6":
-				writeRoomList("48_Hotel_Rooms.txt");
-				break;
-			default:
-				System.out.println("Invalid option.");
-			}
-		} while (!choice.equals("6"));
-		sc.close();
+	public void updateRoomMaxSize(String roomNumber, int maxSize) {
+		Room r = findRoom(roomNumber);
+		if (r != null)
+			r.setMaxSize(maxSize);
 	}
 }
-
+	
 class RoomComparator implements Comparator<Room> {
 	@Override
 	public int compare(Room room1, Room room2) {
