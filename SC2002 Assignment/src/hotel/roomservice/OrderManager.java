@@ -28,7 +28,7 @@ public class OrderManager{
 			if(pos2==number) {
 				count++;
 			}
-			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
@@ -38,14 +38,14 @@ public class OrderManager{
 			out.add(add);
 		}
 		Scanner sc = new Scanner(System.in);
-		Menu.printMenu("Menu.txt");
+		printMenu("Menu.txt");
 		int choice;
 		MenuItems item = null;
 		while(true) {
 			try {
 				System.out.println("Enter item choice:");
 				choice = sc.nextInt();
-				item = Menu.readMenu("Menu.txt").get(choice);
+				item = readMenu("Menu.txt").get(choice);
 				break;
 			} catch(Exception e) {
 				System.out.println("That item does not exist");
@@ -93,7 +93,7 @@ public class OrderManager{
 			StringTokenizer star = new StringTokenizer(st,SEP);
 			String pos1 = star.nextToken().trim();
 			String pos2 = star.nextToken().trim();
-			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
@@ -137,7 +137,7 @@ public class OrderManager{
 				found = true;
 				continue;
 			}
-			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
@@ -191,7 +191,7 @@ public class OrderManager{
 			StringTokenizer star = new StringTokenizer(temp,SEP);
 			String pos1 = star.nextToken().trim();
 			String pos2 = star.nextToken().trim();
-			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
@@ -231,6 +231,35 @@ public class OrderManager{
 		}
 		//System.out.println("???");
 		write(filename, alr);
+	}
+	public static ArrayList<MenuItems> readMenu(String filename) throws IOException {
+		//
+		ArrayList in = (ArrayList)read(filename);
+		ArrayList<MenuItems> store = new ArrayList<MenuItems>();
+		for(int i = 0; i < in.size(); i++) {
+			int number = i+1;
+			String st = (String)in.get(i);
+			StringTokenizer star = new StringTokenizer(st, SEP);
+			double price = Double.parseDouble(star.nextToken().trim());
+			String itemName = star.nextToken().trim();
+			String prepMethod = star.nextToken().trim();
+			MenuItems item = new MenuItems(number, price, itemName, prepMethod);
+			store.add(item);
+		}
+		return store;
+	}
+	public static void printMenu(String filename) throws IOException {
+		Scanner sc = new Scanner(new FileInputStream(filename));
+		try {
+			int i = 1;
+			while (sc.hasNextLine()) {
+				System.out.println(i + sc.nextLine());
+				i++;
+			}
+		}
+		finally {
+			sc.close();
+		}
 	}
 	public static void write(String fileName, List data) throws IOException  {
 	    PrintWriter out = new PrintWriter(new FileWriter(fileName));
