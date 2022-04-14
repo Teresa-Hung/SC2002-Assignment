@@ -18,104 +18,124 @@ import java.util.StringTokenizer;
 public class GuestManager {
 	
 	public static final String SEPARATOR = "|";
-	ArrayList<Guest> guestList = new ArrayList<>();
 	
-	//constructor
-	public GuestManager(String fileName) {
-		try{
-			this.readGuestList(fileName);
-		} catch (Exception e) {
-			System.out.println("readGuestList() failed.");
+	public static ArrayList readGuests(String filename) throws IOException {
+		//read string from text file
+		ArrayList stringArray = (ArrayList)read(filename);
+		ArrayList alr = new ArrayList(); //store guests data
+		
+		for(int i=0;i < stringArray.size();i++) {
+			String st = (String)stringArray.get(i);
+			//get individual attributes of the string separated by SEPARATOR
+			StringTokenizer star = new StringTokenizer(st, SEPARATOR);
+			Guest guest = new Guest();
+			CreditCardDetails ccdetail = new CreditCardDetails();
+			guest.setFName(star.nextToken().trim());
+			guest.setLName(star.nextToken().trim());
+			guest.setId(star.nextToken().trim());
+			guest.setContact(star.nextToken().trim());
+			guest.setEmail(star.nextToken().trim());
+			guest.setCountry(star.nextToken().trim());
+			guest.setGender(star.nextToken().trim());
+			guest.setNatlity(star.nextToken().trim());
+			guest.setHolderFName(star.nextToken().trim());
+			guest.setHolderLName(star.nextToken().trim());
+			guest.setCcNum(star.nextToken().trim());
+			guest.setExpDate(star.nextToken().trim());
+			guest.setBillAddr(star.nextToken().trim());
+			guest.setPaid(Integer.parseInt(star.nextToken().trim()));
+			alr.add(guest);
 		}
+		return alr;
 	}
 	
-	//readGuestList from file
-	public static ArrayList readGuestList(String filename) {
-		try{
-			Scanner sc = new Scanner(new FileInputStream(fileName));
-			while(sc.hasNextLine()) {
-				StringTokenizer star = new StringTokenizer(sc.nextLine() , SEPARATOR);
-				String st = (String)stringArray.get(i);
-				//get individual attributes of the string separated by SEPARATOR
-				StringTokenizer star = new StringTokenizer(st, SEPARATOR);
-				Guest g = new Guest();
-				guest.setFName(star.nextToken().trim());
-				guest.setLName(star.nextToken().trim());
-				guest.setId(star.nextToken().trim());
-				guest.setContact(star.nextToken().trim());
-				guest.setEmail(star.nextToken().trim());
-				guest.setCountry(star.nextToken().trim());
-				guest.setGender(star.nextToken().trim());
-				guest.setNatlity(star.nextToken().trim());
-				guest.setHolderFName(star.nextToken().trim());
-				guest.setHolderLName(star.nextToken().trim());
-				guest.setCcNum(star.nextToken().trim());
-				guest.setExpDate(star.nextToken().trim());
-				guest.setBillAddr(star.nextToken().trim());
-				guest.setRoomNum(star.nextToken().trim());
-				guest.setReservCode(star.nextToken().trim());
-				guest.setPaid(Integer.parseInt(star.nextToken().trim()));
-				
-				guestList.add(g);
-				
-			}
-			sc.close();
+	public static void saveGuest(String filename, List al) throws IOException {
+		List alw = new ArrayList();
+		
+		for(int i=0;i<al.size();i++) {
+			Guest guest = (Guest)al.get(i);
+			StringBuilder st =  new StringBuilder();
+			st.append(guest.getFName());
+			st.append(SEPARATOR);
+			st.append(guest.getLName());
+			st.append(SEPARATOR);
+			st.append(guest.getId());
+			st.append(SEPARATOR);
+			st.append(guest.getContact());
+			st.append(SEPARATOR);
+			st.append(guest.getEmail());
+			st.append(SEPARATOR);
+			st.append(guest.getCountry());
+			st.append(SEPARATOR);
+			st.append(guest.getGender());
+			st.append(SEPARATOR);
+			st.append(guest.getNatlity());
+			st.append(SEPARATOR);
+			st.append(guest.getHolderFName());
+			st.append(SEPARATOR);
+			st.append(guest.getHolderLName());
+			st.append(SEPARATOR);
+			st.append(guest.getCcNum());
+			st.append(SEPARATOR);
+			st.append(guest.getExpDate());
+			st.append(SEPARATOR);
+			st.append(guest.getBillAddr());
+			st.append(SEPARATOR);
+			st.append(guest.getPaid());
+			st.append(SEPARATOR);
+			alw.add(st.toString()) ;
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}		
+		write(filename,alw);
 	}
 	
-	public void writeGuestList(String fileName) {
-		try{
-			PrintWriter out = new PrintWriter(new FileWriter(fileName));
-			for(Guest g: guestList){
-				StringBuilder st =  new StringBuilder();
-				st.append(g.getFName());
-				st.append(SEPARATOR);
-				st.append(g.getLName());
-				st.append(SEPARATOR);
-				st.append(g.getId());
-				st.append(SEPARATOR);
-				st.append(g.getContact());
-				st.append(SEPARATOR);
-				st.append(g.getEmail());
-				st.append(SEPARATOR);
-				st.append(g.getCountry());
-				st.append(SEPARATOR);
-				st.append(g.getGender());
-				st.append(SEPARATOR);
-				st.append(g.getNatlity());
-				st.append(SEPARATOR);
-				st.append(g.getHolderFName());
-				st.append(SEPARATOR);
-				st.append(g.getHolderLName());
-				st.append(SEPARATOR);
-				st.append(g.getCcNum());
-				st.append(SEPARATOR);
-				st.append(g.getExpDate());
-				st.append(SEPARATOR);
-				st.append(g.getBillAddr());
-				st.append(SEPARATOR);
-				st.append(g.getRoomNum());
-				st.append(SEPARATOR);
-				st.append(g.getReservCode());
-				st.append(SEPARATOR);
-				st.append(g.getPaid());
-				st.append(SEPARATOR);
-				out.println(st.toString());
+	public ArrayList removeGuest(ArrayList al) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Remove guest record...");
+		System.out.println("Enter guest ID: ");
+		String guestId = sc.next();
+		
+		for(int i=0;i<al.size();i++) {
+			Guest guest = (Guest)al.get(i);
+			if(guest.getId().equals(guestId)) {
+				al.remove(i);
+				System.out.printf("The guest %s is successfully removed.",guestId);
+				return al;
 			}
+		}
+		System.out.println("Guest is not found.");
+		return al;
+	}
+	
+	public static void write(String filename, List data) throws IOException {
+		PrintWriter out = new PrintWriter(new FileWriter(filename));
+		
+		try {
+			for(int i=0;i<data.size();i++) {
+				out.println((String)data.get(i));
+			}
+		}
+		finally {
 			out.close();
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+	}
+	
+	public static List read(String filename) throws IOException {
+		List data = new ArrayList();
+		Scanner scanner = new Scanner(new FileInputStream(filename));
+		try {
+			while(scanner.hasNextLine()) {
+				data.add(scanner.nextLine());
+			}
 		}
+		finally {
+			scanner.close();
+		}
+		return data;
 	}
 	
 	public ArrayList<Guest> getGuestList() {
 		return guestList;
 	}
-	
 	
 	
 	public Guest findById(String id) {
@@ -125,7 +145,6 @@ public class GuestManager {
 		}
 		return null;
 	}
-	
 	
 	
 	public Guest findByName(String firstName, String lastName) {
@@ -311,16 +330,6 @@ public class GuestManager {
 	}
 	
 		
-	public void deleteGuest(Guest g){
-		try{
-			Guest temp = findById(g.getId,guestList);
-			guestList.remove(temp);
-		}
-		catch(NullPointerException e) {
-			System.out.println("Guest is not found in guestList.");
-		}
-		
-	}
 		
 	public void displayGuestDetails(Guest g) {
 		String fname, lname, ctry, gender, natlity, email, id, contactNum,rmNum,reservCode;
