@@ -160,6 +160,7 @@ public class mainApp {
 									case 1: 
 										System.out.println("Cash payment successful!\n");
 										payingGuest.setPaid(1);
+										break;
 									case 2:
 										System.out.println("Billing Details: \n");
 										System.out.println("Name" + payingGuest.getHolderFName() + payingGuest.getHolderLName()\n);
@@ -167,8 +168,10 @@ public class mainApp {
 										System.out.println("Billing address" + payingGuest.getBillAddr()\n);
 										System.out.println("Card payment successful!\n");
 										payingGuest.setPaid(1);
+										break;
 								}
 							}
+							break;
 						case 2: 
 							if(payingGuest.getPaid() == 0) {
 								System.out.println("Payment has not been made!\n");
@@ -178,6 +181,7 @@ public class mainApp {
 								pay.printInvoice();
 								rsc.printAllItems(guestRoom);
 							}
+							break;
 						case 3:
 							if(payingGuest.getPaid() == 1){
 								rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
@@ -185,8 +189,12 @@ public class mainApp {
 							else{
 								System.out.println("Payment has not been made!\n");
 							}
+							break;
 						case 4: 
 							rm.printOccupancyReport();
+							break;
+						default:
+							System.out.println("Invalid choice.");
 					}
 					break;
 				default: 
