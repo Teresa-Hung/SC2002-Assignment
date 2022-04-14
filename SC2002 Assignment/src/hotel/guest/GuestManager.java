@@ -52,6 +52,8 @@ public class GuestManager {
 				guest.setCcNum(star.nextToken().trim());
 				guest.setExpDate(star.nextToken().trim());
 				guest.setBillAddr(star.nextToken().trim());
+				guest.setRoomNum(star.nextToken().trim());
+				guest.setReservCode(star.nextToken().trim());
 				guest.setPaid(Integer.parseInt(star.nextToken().trim()));
 				
 				guestList.add(g);
@@ -94,6 +96,10 @@ public class GuestManager {
 				st.append(g.getExpDate());
 				st.append(SEPARATOR);
 				st.append(g.getBillAddr());
+				st.append(SEPARATOR);
+				st.append(g.getRoomNum());
+				st.append(SEPARATOR);
+				st.append(g.getReservCode());
 				st.append(SEPARATOR);
 				st.append(g.getPaid());
 				st.append(SEPARATOR);
@@ -306,7 +312,7 @@ public class GuestManager {
 	
 	
 	public void displayGuestDetails(Guest g) {
-		String fname, lname, ctry, gender, natlity, email, id, contactNum,rmNum;
+		String fname, lname, ctry, gender, natlity, email, id, contactNum,rmNum,reservCode;
 		String holderFname, holderLname, ccNum, expDate, billAddr;
 		int paid;
 		fname = g.getFName();
@@ -318,6 +324,7 @@ public class GuestManager {
 		contactNum = g.getContact();
 		id = g.getId();
 		rmNum = g.getRoomNum();
+		reservCode = g.getReservCode();
 		holderFname = g.getHolderFName();
 		holderLname = g.getHolderLName();
 		ccNum = g.getCcNum();
@@ -341,6 +348,8 @@ public class GuestManager {
 		System.out.println("Expiry Date: " + expDate);
 		System.out.println("Billing Address: " + billAddr);
 		System.out.println("Room Number: " + rmNum);
+		System.out.println("Reservation Code: " + reservCode);
+
 	}
 
 
