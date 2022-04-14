@@ -11,10 +11,18 @@ import reservation.Reservation;
 
 public class RoomCharge { 	
 	private long numOfDays, i;
-	private double basecharge, roomCharge, dayTypeCharge;
+	private double baseCharge, roomCharge, dayTypeCharge;
 	private LocalDate dateIn, dateOut;
 	private DayOfWeek day;
 	private RoomType rtype;
+	
+	public void RoomCharge() {
+		numOfDays = i = 0;
+		baseCharge = roomCharge = dayTypeCharge = 0.0;
+		dateIn = dateOut = LocalDate.parse("00/00/0000");
+		day = DayOfWeek.MONDAY;
+		rtype = Room.setRoomType(SINGLE);
+	}
 	
 	private void setBaseCharge(Room room) {
 		rtype = room.getRoomType();

@@ -4,6 +4,11 @@ public class Promotion {
 	private int promoCode;
 	private double promoDiscount;
 	
+	public void Promotion() {
+		promoCode = 0;
+		promoDiscount = 0.0;
+	}
+	
 	public void setPromoCode(int promotion) {
 		promoCode = promotion;
 	}

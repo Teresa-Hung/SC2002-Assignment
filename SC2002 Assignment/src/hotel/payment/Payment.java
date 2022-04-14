@@ -8,6 +8,11 @@ public class Payment {
 	private double totalBill;
 	private final double tax = 0.07;
 	
+	public void Payment() {
+		numOfDays = 0;
+		roomCharge = roomServiceCharge = discountPromo = totalBill = 0.0;
+	}
+	
 	public void setNumOfDays(long days) {
 		numOfDays = days;
 	}
