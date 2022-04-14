@@ -49,6 +49,7 @@ public class mainApp {
 					
 					
 					}
+					break;
 				case "3":
 					rm.roomUI();
 					break;
