@@ -101,10 +101,56 @@ public class OrderManager{
 		//System.out.println();
 		if(print == true) {
 			for(int i = 0; i < res.size(); i++) {
-				
+				System.out.println(res.get(i).itemName());
 			}
 		}
 		return res;
+	}
+	public static void deleteOrder(String filename, String id, String number) throws IOException {
+		ArrayList<String> in = (ArrayList)read(filename);
+		ArrayList<Order> out = new ArrayList<Order>();
+		ArrayList alr = new ArrayList();
+		int count = 0;
+		for(int i = 0; i < in.size();i++)
+		{
+			String temp = (String)in.get(i);
+			StringTokenizer star = new StringTokenizer(temp,SEP);
+			String pos1 = star.nextToken().trim();
+			String pos2 = star.nextToken().trim();
+			if(pos2==number) {
+				count++;
+			}
+			if(pos1 == number && pos2==id){
+				continue;
+			}
+			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			String pos3 = star.nextToken().trim();
+			star.nextToken().trim();
+			LocalTime time = LocalTime.parse(star.nextToken().trim());
+			String note = star.nextToken().trim();
+			OrderStatus status= OrderStatus.valueOf(star.nextToken().trim());
+			Order add = new Order(pos1,pos2,pos3,item,time,note,status);
+			out.add(add);
+		}
+		for(int i = 0; i < out.size();i++) {
+			StringBuilder st = new StringBuilder();
+			Order toAdd = out.get(i);
+			st.append(toAdd.getRoom());
+			st.append(SEP);
+			st.append(toAdd.getID());
+			st.append(SEP);
+			st.append(toAdd.getItemID());
+			st.append(SEP);
+			st.append(toAdd.getItem());
+			st.append(SEP);
+			st.append(toAdd.getTime());
+			st.append(SEP);
+			st.append(toAdd.getRemarks());
+			st.append(SEP);
+			st.append(toAdd.getStatus().name());
+			alr.add(st.toString());
+		}
+		write(filename,alr);
 	}
 	public static void printOrder(String filename) throws IOException {
 		Scanner sc = new Scanner(new FileInputStream(filename));
