@@ -55,32 +55,50 @@ public class mainApp {
 					break;
 				case "4":
 					//room service functions
+					//room service functions
 					System.out.println("1) Create order");
-					System.out.println("2) Get room's orders");
+					System.out.println("2) Delete order");
 					System.out.println("3) Get the menu");
 					System.out.println("4) Get list of orders");
 					System.out.println("5) Update order status");
-					String choice = sc.next();
+					int choice = sc.nextInt();
 					switch(choice) {
-						case "1":
+						case 1:{
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
+							if(RoomManager.findRoom(room).getRoomStatus().name()==VACANT) {
+								System.out.println("This room is empty");
+								break;
+							}
 							OrderManager.saveOrder("order.txt",room);
 							break;
-						case "2":
+						}
+						case 2:{
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
-							OrderManager.getOrder("order.txt",room, true);
+							if(RoomManager.findRoom(room).getRoomStatus().name()==VACANT) {
+								System.out.println("This room is empty");
+								break;
+							}
+							String id = sc.nextLine();
+							OrderManager.deleteOrder("order.txt",id,room);
 							break;
-						case "3":
+						}
+						case 3:{
 							Menu.printMenu("order.txt");
 							break;
-						case "4":
+						}
+						case 4:{
 							OrderManager.printOrder("order.txt");
 							break;
-						case "5":
+						}
+						case 5:{
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
+							if(RoomManager.findRoom(room).getRoomStatus().name()==VACANT) {
+								System.out.println("This room is empty");
+								break;
+							}
 							System.out.println("Enter order id");
 							String orderID = sc.nextLine(); 
 							System.out.println("1) Preparing");
@@ -89,10 +107,11 @@ public class mainApp {
 							sc.nextLine();
 							OrderManager.changeStatus("order.txt", orderID, room, OrderStatus.values()[status]);
 							break;
-						default:
-							System.out.println("Invalid choice.");
+						}
+						default: 
+							System.out.println("Wrong choice");
+							break;
 					}
-					break;
 				case "5":
 					// payment
 					break;
