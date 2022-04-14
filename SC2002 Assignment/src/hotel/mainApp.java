@@ -82,7 +82,7 @@ public class mainApp {
 						case 2:{
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
-							if(RoomManager.findRoom(room).getRoomStatus().name()==VACANT) {
+							if(rm.findRoom(room).getRoomStatus() == RoomStatus.VACANT) {
 								System.out.println("This room is empty");
 								break;
 							}
