@@ -85,7 +85,7 @@ public class mainApp {
 							break;
 						}
 						case 3:{
-							Menu.printMenu("order.txt");
+							OrderManager.printMenu("order.txt");
 							break;
 						}
 						case 4:{
