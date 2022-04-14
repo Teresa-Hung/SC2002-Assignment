@@ -19,7 +19,6 @@ public class GuestManager {
 	
 	public static final String SEPARATOR = "|";	
 	private ArrayList<Guest> guestList;
-	private String filename = "guestListDetails.txt";
 	Scanner sc = new Scanner(System.in);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -32,7 +31,7 @@ public class GuestManager {
 		ArrayList alr = new ArrayList(); //store guests data
 		try {
 			//read string from text file
-			ArrayList stringArray = (ArrayList)read();
+			ArrayList stringArray = (ArrayList)read(filename);
 			
 		
 			for(int i=0;i < stringArray.size();i++) {
@@ -109,7 +108,7 @@ public class GuestManager {
 				st.append(SEPARATOR);
 				alw.add(st.toString());
 			}
-			write(alw);
+			write(filename, alw);
 		}
 		catch (IOException e) {
 			System.out.println("IOException > " + e.getMessage());
@@ -118,7 +117,7 @@ public class GuestManager {
 	}
 	
 	
-	public void write(List data) throws IOException {
+	public void write(String filename, List data) throws IOException {
 		PrintWriter out = new PrintWriter(new FileWriter(filename));
 		
 		try {
@@ -131,7 +130,7 @@ public class GuestManager {
 		}
 	}
 	
-	public List read() throws IOException {
+	public List read(String filename) throws IOException {
 		List data = new ArrayList();
 		Scanner scanner = new Scanner(new FileInputStream(filename));
 		try {
