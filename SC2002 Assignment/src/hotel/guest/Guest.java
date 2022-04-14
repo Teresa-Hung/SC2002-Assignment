@@ -19,6 +19,7 @@ public class Guest {
 	private String billAddr;
 	private int paid;
 	private String roomNum;
+	private String reservCode;
 	
 	Scanner sc = new Scanner(System.in);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -40,6 +41,7 @@ public class Guest {
 		billAddr = null;
 		roomNum = "0";
 		paid = 0;
+		reservCode = "0";
 		
 	}
 	
@@ -134,6 +136,12 @@ public class Guest {
 	}
 	public String getRoomNum(){
 		return roomNum;
+	}
+	public void setReservCode(String h) {
+		this.reservCode = h;
+	}
+	public String getReservCode(){
+		return reservCode;
 	}
 	public void setPaid(int p) {
 		this.paid = p;
