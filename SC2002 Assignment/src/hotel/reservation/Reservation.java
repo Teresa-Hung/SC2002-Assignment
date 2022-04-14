@@ -28,6 +28,7 @@ public class Reservation {
 	private int numChild;
 
 	Scanner sc = new Scanner(System.in);
+	GuestManager gm = new GuestManager();
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	// set methods
@@ -143,12 +144,11 @@ public class Reservation {
 	}
 
 	public void printReceipt() {
-		GuestManager gm = new GuestManager();
 		System.out.println("\n-----the reservation acknowledgement receipt is shown as below-----");
-		System.out.printf("Reservation Code: %s\n", reservCode);
+		//System.out.printf("Reservation Code: %s\n", reservCode);
 		// guest details & billing info
 		gm.displayGuestDetails(guest);
-		System.out.printf("Room number: %s\n", room.getRoomNumber());
+		//System.out.printf("Room number: %s\n", room.getRoomNumber());
 		System.out.printf("Room type: %s\n", room.getRoomType());
 		System.out.printf("Bed type: %s\n", room.getBedType());
 		System.out.printf("Check-in Date: %s %s\n", dateCheckIn, getCheckInDay());
