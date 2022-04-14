@@ -22,18 +22,20 @@ public class OrderManager{
 		for(int i = 0; i < in.size();i++)
 		{
 			String temp = (String)in.get(i);
+			//System.out.println(temp);
 			StringTokenizer star = new StringTokenizer(temp,SEP);
 			String pos1 = star.nextToken().trim();
 			String pos2 = star.nextToken().trim();
-			if(pos2==number) {
+			if(pos1.equals(number)){
+				//System.out.println("WORK ");
 				count++;
 			}
-			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos3)-1);
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
 			String note = star.nextToken().trim();
-			OrderStatus status= OrderStatus.valueOf(star.nextToken().trim());
+			OrderStatus status = OrderStatus.valueOf(star.nextToken().trim());
 			Order add = new Order(pos1,pos2,pos3,item,time,note,status);
 			out.add(add);
 		}
@@ -45,7 +47,7 @@ public class OrderManager{
 			try {
 				System.out.println("Enter item choice:");
 				choice = sc.nextInt();
-				item = readMenu("Menu.txt").get(choice);
+				item = readMenu("Menu.txt").get(choice-1);
 				break;
 			} catch(Exception e) {
 				System.out.println("That item does not exist");
@@ -54,11 +56,11 @@ public class OrderManager{
 		sc.nextLine();
 		LocalTime time = LocalTime.now();
 		System.out.println("Remarks for order:");
-		sc.nextLine();
+		//sc.nextLine();
 		String note = sc.nextLine();
 		OrderStatus temp = OrderStatus.RECEIVED;
-		sc.close();
-		Order obj = new Order(Integer.toString(count+1), Integer.toString(choice), number, item, time, note, temp);
+		//sc.close();
+		Order obj = new Order(number, Integer.toString(count+1), Integer.toString(choice), item, time, note, temp);
 		//StringBuilder st = new StringBuilder();
 		out.add(obj);
 		for(int i = 0; i < out.size();i++) {
@@ -76,7 +78,7 @@ public class OrderManager{
 			st.append(SEP);
 			st.append(toAdd.getRemarks());
 			st.append(SEP);
-			st.append(toAdd.getStatus().name());
+			st.append(toAdd.getStatus());
 			alr.add(st.toString());
 		}
 		//System.out.println("???");
@@ -93,8 +95,9 @@ public class OrderManager{
 			StringTokenizer star = new StringTokenizer(st,SEP);
 			String pos1 = star.nextToken().trim();
 			String pos2 = star.nextToken().trim();
-			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
+			//MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos3)-1);
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
 			String note = star.nextToken().trim();
@@ -127,22 +130,27 @@ public class OrderManager{
 		ArrayList<Order> out = new ArrayList<Order>();
 		ArrayList alr = new ArrayList();
 		boolean found = false;
+		System.out.println(id + " " + number);
 		for(int i = 0; i < in.size();i++)
 		{
 			String temp = (String)in.get(i);
 			StringTokenizer star = new StringTokenizer(temp,SEP);
 			String pos1 = star.nextToken().trim();
+			//System.out.println(pos1);
 			String pos2 = star.nextToken().trim();
-			if(pos1 == number && pos2==id){
+			//System.out.println(pos2);
+			if(pos1.equals(number) && pos2.equals(id)){
+				//System.out.println("WORK ");
 				found = true;
 				continue;
 			}
-			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos3)-1);
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
 			String note = star.nextToken().trim();
-			OrderStatus status= OrderStatus.valueOf(star.nextToken().trim());
+			String stringStatus = star.nextToken().trim();
+			OrderStatus status = OrderStatus.valueOf(stringStatus);
 			Order add = new Order(pos1,pos2,pos3,item,time,note,status);
 			out.add(add);
 		}
@@ -191,8 +199,9 @@ public class OrderManager{
 			StringTokenizer star = new StringTokenizer(temp,SEP);
 			String pos1 = star.nextToken().trim();
 			String pos2 = star.nextToken().trim();
-			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
+			//MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			String pos3 = star.nextToken().trim();
+			MenuItems item = readMenu("menu.txt").get(Integer.parseInt(pos2));
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
 			String note = star.nextToken().trim();
@@ -203,9 +212,11 @@ public class OrderManager{
 		for(int i = 0; i < out.size(); i++)
 		{
 			Order toChange = out.get(i);
-			if(toChange.getRoom() == number)
+			System.out.println(toChange.getRoom());
+			if(toChange.getRoom().equals(number))
 			{
-				if(toChange.getID() == id) {
+				System.out.println("OK");
+				if(toChange.getID().equals(id)) {
 					toChange.updateOrder(updatedStatus);
 					break;
 				}
@@ -253,7 +264,7 @@ public class OrderManager{
 		try {
 			int i = 1;
 			while (sc.hasNextLine()) {
-				System.out.println(i + sc.nextLine());
+				System.out.println(i +") " + sc.nextLine());
 				i++;
 			}
 		}
