@@ -113,7 +113,72 @@ public class mainApp {
 							break;
 					}
 				case "5":
-					// payment
+					// create objects
+					Payment pay = new Payment();
+					Promotion promo = new Promotion();
+					RoomCharge rc = new RoomCharge();
+					RoomServiceCharge rsc = new RoomServiceCharge();
+					Guest payingGuest = manager.searchGuest();
+					ReservationManager resman = new ReservationManager();
+					
+					String guestRoom = payingGuest.getRoomNum();
+					String reservCode = payingGuest.getReserveCode();
+					ArrayList<Reservation> reservList = resman.getReservList();
+					
+					System.out.println("1) Make Payment\n");
+					System.out.println("2) Print Invoice\n");
+					System.out.println("Enter choice: \n");
+					int choice = sc.nextInt();
+					
+					switch(choice){
+						case 1: 
+							if(payingGuest.getPaid() == 1){
+								System.out.println("Payment already made!\n");
+							}
+							else{
+								// bill before promo code
+								pay.setRoomCharge(rc.getRoomCharge(reservList, reservCode));
+								pay.setRoomServiceCharge(rsc.roomServiceCharge(guestRoom));
+								pay.setDiscountPromo(0.0);
+								pay.calculateTotal();
+								pay.printBill
+								
+								// bill after promo code
+								System.out.println("Enter promo code: (0)NIL, (1)10% (2)15% (3)20%\n");
+								int promocode = sc.nextInt();
+								promo.setPromoCode(promocode);
+								
+								pay.setDiscountPromo(promo.getPromoDisc());
+								pay.calculateTotal();
+								pay.printBill();
+								
+								// payment type
+								System.out.println("Enter payment type: (1)Cash (2)Credit card\n");
+								paytype = sc.nextInt();
+								switch(paytype) {
+									case 1: 
+										System.out.println("Cash payment successful!\n");
+										guest.setPaid(1);
+									case 2:
+										System.out.println("Card payment successful!\n");
+										guest.setPaid(1);
+								}
+							}
+						case 2: 
+							if(payingGuest.getPaid() == 0) {
+								System.out.println("Payment has not been made!\n");
+							}
+							else {
+								//print final invoice
+								pay.printInvoice();
+								rsc.printAllItems(guestRoom);
+							}
+					}
+					
+						
+					//delete guest
+							
+					//set room to vacant
 					break;
 				default: 
 					System.out.println("Invalid choice.");
