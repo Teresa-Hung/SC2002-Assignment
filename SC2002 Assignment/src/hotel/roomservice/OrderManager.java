@@ -106,7 +106,7 @@ public class OrderManager{
 			out.add(add);
 		}
 		for(int i = 0; i < out.size(); i++) {
-			if(out.get(i).getRoom()==id) {
+			if(out.get(i).getRoom().equals(id)) {
 				found = true;
 				res.add(out.get(i).getItem());
 			}
@@ -130,7 +130,7 @@ public class OrderManager{
 		ArrayList<Order> out = new ArrayList<Order>();
 		ArrayList alr = new ArrayList();
 		boolean found = false;
-		System.out.println(id + " " + number);
+		//System.out.println(id + " " + number);
 		for(int i = 0; i < in.size();i++)
 		{
 			String temp = (String)in.get(i);
@@ -212,10 +212,10 @@ public class OrderManager{
 		for(int i = 0; i < out.size(); i++)
 		{
 			Order toChange = out.get(i);
-			System.out.println(toChange.getRoom());
+			//System.out.println(toChange.getRoom());
 			if(toChange.getRoom().equals(number))
 			{
-				System.out.println("OK");
+				//System.out.println("OK");
 				if(toChange.getID().equals(id)) {
 					toChange.updateOrder(updatedStatus);
 					break;
