@@ -3,8 +3,8 @@ import java.util.Scanner;
 import java.io.IOException;
 enum OrderStatus{RECEIVED, PREPARING, READY}
 public class Order {
-	public Order(int id, int itemID, int number, MenuItems item, LocalTime time, String note, OrderStatus temp) {
-		this.orderID = id;
+	public Order(String number, String orderID, String itemID, MenuItems item, LocalTime time, String note, OrderStatus temp) {
+		this.orderID = orderID;
 		this.itemID = itemID;
 		this.roomNumber = number;
 		this.item = item;
@@ -12,10 +12,13 @@ public class Order {
 		this.remarks = note;
 		this.status = temp;
 	}
-	public int getID() {
+	public String getID() {
 		return this.orderID;
 	}
-	public int getRoom() {
+	public String getItemID() {
+		return this.itemID;
+	}
+	public String getRoom() {
 		return this.roomNumber;
 	}
 	public LocalTime getTime() {
@@ -33,9 +36,9 @@ public class Order {
 	public MenuItems getItem() {
 		return this.item;
 	}
-	private int orderID;
-	private int itemID;
-	private int roomNumber;
+	private String orderID;
+	private String itemID;
+	private String roomNumber;
 	private MenuItems item;
 	private LocalTime orderTime;
 	private String remarks;
