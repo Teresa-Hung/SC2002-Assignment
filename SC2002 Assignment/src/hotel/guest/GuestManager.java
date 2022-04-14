@@ -18,11 +18,15 @@ import java.util.StringTokenizer;
 public class GuestManager {
 	
 	public static final String SEPARATOR = "|";	
-	private ArrayList<Guest> guestList = new ArrayList<>();
+	private ArrayList<Guest> guestList;
 	private String filename = "guestListDetails.txt";
 	Scanner sc = new Scanner(System.in);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+	public GuestManager()
+	{
+		guestList = readGuests();
+	}
 	
 	public ArrayList readGuests(){
 		ArrayList alr = new ArrayList(); //store guests data
