@@ -113,7 +113,6 @@ public class mainApp {
 							break;
 					}
 				case "5":
-					// create objects
 					Payment pay = new Payment();
 					Promotion promo = new Promotion();
 					RoomCharge rc = new RoomCharge();
@@ -127,6 +126,8 @@ public class mainApp {
 					
 					System.out.println("1) Make Payment\n");
 					System.out.println("2) Print Invoice\n");
+					System.out.println("3) Checkout \n");
+					System.out.println("4) Occupancy Report\n");
 					System.out.println("Enter choice: \n");
 					int choice = sc.nextInt();
 					
@@ -158,10 +159,14 @@ public class mainApp {
 								switch(paytype) {
 									case 1: 
 										System.out.println("Cash payment successful!\n");
-										guest.setPaid(1);
+										payingGuest.setPaid(1);
 									case 2:
+										System.out.println("Billing Details: \n");
+										System.out.println("Name" + payingGuest.getHolderFName() + payingGuest.getHolderLName()\n);
+										System.out.println("Credit card number" + payingGuest.getCcNum()\n);
+										System.out.println("Billing address" + payingGuest.getBillAddr()\n);
 										System.out.println("Card payment successful!\n");
-										guest.setPaid(1);
+										payingGuest.setPaid(1);
 								}
 							}
 						case 2: 
@@ -173,12 +178,16 @@ public class mainApp {
 								pay.printInvoice();
 								rsc.printAllItems(guestRoom);
 							}
+						case 3:
+							if(payingGuest.getPaid() == 1){
+								rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
+							}
+							else{
+								System.out.println("Payment has not been made!\n");
+							}
+						case 4: 
+							rm.printOccupancyReport();
 					}
-					
-						
-					//delete guest
-							
-					//set room to vacant
 					break;
 				default: 
 					System.out.println("Invalid choice.");
