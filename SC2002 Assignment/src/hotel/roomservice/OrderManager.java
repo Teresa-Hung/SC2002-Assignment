@@ -39,9 +39,19 @@ public class OrderManager{
 		}
 		Scanner sc = new Scanner(System.in);
 		Menu.printMenu("Menu.txt");
-		System.out.println("Enter item choice:");
-		int choice = sc.nextInt();
-		MenuItems item = Menu.readMenu("Menu.txt").get(choice);
+		int choice;
+		MenuItems item = null;
+		while(true) {
+			try {
+				System.out.println("Enter item choice:");
+				choice = sc.nextInt();
+				item = Menu.readMenu("Menu.txt").get(choice);
+				break;
+			} catch(Exception e) {
+				System.out.println("That item does not exist");
+			}
+		}
+		sc.nextLine();
 		LocalTime time = LocalTime.now();
 		System.out.println("Remarks for order:");
 		sc.nextLine();
@@ -76,6 +86,7 @@ public class OrderManager{
 		ArrayList<String> in = (ArrayList)TextDB.read(filename);
 		ArrayList<Order> out = new ArrayList<Order>();
 		ArrayList<MenuItems> res = new ArrayList<MenuItems>();
+		boolean found = false;
 		for(int i = 0; i < in.size();i++)
 		{
 			String st = (String)in.get(i);
@@ -93,6 +104,7 @@ public class OrderManager{
 		}
 		for(int i = 0; i < out.size(); i++) {
 			if(out.get(i).getRoom()==id) {
+				found = true;
 				res.add(out.get(i).getItem());
 			}
 		}
@@ -104,23 +116,25 @@ public class OrderManager{
 				System.out.println(res.get(i).itemName());
 			}
 		}
+		if(found==false) {
+			System.out.println("No order in this room");
+			return null;
+		}
 		return res;
 	}
 	public static void deleteOrder(String filename, String id, String number) throws IOException {
 		ArrayList<String> in = (ArrayList)read(filename);
 		ArrayList<Order> out = new ArrayList<Order>();
 		ArrayList alr = new ArrayList();
-		int count = 0;
+		boolean found = false;
 		for(int i = 0; i < in.size();i++)
 		{
 			String temp = (String)in.get(i);
 			StringTokenizer star = new StringTokenizer(temp,SEP);
 			String pos1 = star.nextToken().trim();
 			String pos2 = star.nextToken().trim();
-			if(pos2==number) {
-				count++;
-			}
 			if(pos1 == number && pos2==id){
+				found = true;
 				continue;
 			}
 			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
@@ -131,6 +145,10 @@ public class OrderManager{
 			OrderStatus status= OrderStatus.valueOf(star.nextToken().trim());
 			Order add = new Order(pos1,pos2,pos3,item,time,note,status);
 			out.add(add);
+		}
+		if(found == false) {
+			System.out.println("The order does not exist");
+			return;
 		}
 		for(int i = 0; i < out.size();i++) {
 			StringBuilder st = new StringBuilder();
