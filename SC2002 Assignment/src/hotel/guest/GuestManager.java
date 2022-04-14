@@ -310,7 +310,18 @@ public class GuestManager {
 		
 	}
 	
-	
+		
+	public void deleteGuest(Guest g){
+		try{
+			Guest temp = findById(g.getId,guestList);
+			guestList.remove(temp);
+		}
+		catch(NullPointerException e) {
+			System.out.println("Guest is not found in guestList.");
+		}
+		
+	}
+		
 	public void displayGuestDetails(Guest g) {
 		String fname, lname, ctry, gender, natlity, email, id, contactNum,rmNum,reservCode;
 		String holderFname, holderLname, ccNum, expDate, billAddr;
