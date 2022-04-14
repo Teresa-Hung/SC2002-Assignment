@@ -17,11 +17,15 @@ import java.util.StringTokenizer;
 
 public class GuestManager {
 	
-	public static final String SEPARATOR = "|";
+	public static final String SEPARATOR = "|";	
+	private ArrayList<Guest> guestList = new ArrayList<>();
+	private String filename = "guestListDetails.txt";
+
 	
 	public static ArrayList readGuests(String filename) throws IOException {
 		//read string from text file
 		ArrayList stringArray = (ArrayList)read(filename);
+		
 		ArrayList alr = new ArrayList(); //store guests data
 		
 		for(int i=0;i < stringArray.size();i++) {
@@ -29,7 +33,6 @@ public class GuestManager {
 			//get individual attributes of the string separated by SEPARATOR
 			StringTokenizer star = new StringTokenizer(st, SEPARATOR);
 			Guest guest = new Guest();
-			CreditCardDetails ccdetail = new CreditCardDetails();
 			guest.setFName(star.nextToken().trim());
 			guest.setLName(star.nextToken().trim());
 			guest.setId(star.nextToken().trim());
@@ -43,6 +46,8 @@ public class GuestManager {
 			guest.setCcNum(star.nextToken().trim());
 			guest.setExpDate(star.nextToken().trim());
 			guest.setBillAddr(star.nextToken().trim());
+			guest.setRoomNum(star.nextToken().trim());
+			guest.setReservCode(star.nextToken().trim());
 			guest.setPaid(Integer.parseInt(star.nextToken().trim()));
 			alr.add(guest);
 		}
@@ -81,6 +86,10 @@ public class GuestManager {
 			st.append(SEPARATOR);
 			st.append(guest.getBillAddr());
 			st.append(SEPARATOR);
+			st.append(guest.getRoomNum());
+			st.append(SEPARATOR);
+			st.append(guest.getReservCode());
+			st.append(SEPARATOR);
 			st.append(guest.getPaid());
 			st.append(SEPARATOR);
 			alw.add(st.toString()) ;
@@ -88,7 +97,7 @@ public class GuestManager {
 		write(filename,alw);
 	}
 	
-	public ArrayList removeGuest(ArrayList al) {
+	/*public ArrayList removeGuest(ArrayList al) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Remove guest record...");
 		System.out.println("Enter guest ID: ");
@@ -104,7 +113,7 @@ public class GuestManager {
 		}
 		System.out.println("Guest is not found.");
 		return al;
-	}
+	} */
 	
 	public static void write(String filename, List data) throws IOException {
 		PrintWriter out = new PrintWriter(new FileWriter(filename));
@@ -157,6 +166,7 @@ public class GuestManager {
 		
 	public Guest createGuest() {
 		try {
+			guestList = readGuests(filename);
 			Guest guest = new Guest();
 			System.out.println("Create Guest Details. ");
 			System.out.println("Please enter details accordingly");
@@ -191,6 +201,7 @@ public class GuestManager {
 			System.out.println("Details created!");
 			guestList.add(guest);
 			return guest;
+			saveGuest(filename, guestList);
 		}
 		
 		catch(DateTimeParseException e)
@@ -202,6 +213,7 @@ public class GuestManager {
 	
 	
 	public Guest searchGuest() { //search by 1. id, 2. name
+		guestList = readGuests(filename);
 		System.out.println("Search Details.");
 		if(guestList.size() == 0) {
 			System.out.println("There is no guest registered in the hotel. ");
@@ -241,6 +253,7 @@ public class GuestManager {
 		}
 	}
 	public Guest updateDetails() {
+		guestList = readGuests(filename);
 		public Guest updateDetails() {
 		System.out.println("Update Details.");
 		if(guestList.size() == 0) {
@@ -259,6 +272,7 @@ public class GuestManager {
 		
 	public Guest updateGuest(Guest g)
 	{
+		guestList = readGuests(filename);
 		try{
 		System.out.println("(1) Update first and last name.");
 		System.out.println("(2) Update ID.");
@@ -325,6 +339,7 @@ public class GuestManager {
 		}
 		System.out.println("Guest details updated!");
 		return g;
+		saveGuest(filename, guestList);
 		}
 		
 	}
