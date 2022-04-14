@@ -1,7 +1,20 @@
+package reservation;
+
+import java.util.Scanner;
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+import java.time.*;
+
+import reservation.Reservation.ReservStatus;
+import room.*;
+import guest.*;
+
 public class ReservationManager {
 
 	Scanner sc = new Scanner(System.in);
-	Room[] roomlist; // read roomlist from file
+	RoomManager Rm = new RoomManager("48_Hotel_Rooms.txt");
+	ArrayList<Room> roomlist = Rm.getRoomList();
 	String[] waitlist = new String[100]; // store the reservation in waitlist
 	int waitlistNum = 0;
 
@@ -15,10 +28,10 @@ public class ReservationManager {
 		GuestManager gm = new GuestManager();
 		reserv.setGuest(gm.createGuest());
 		
-		/*
-		reserv.setRoom(roomlist); // get room
+		// set room details
+		reserv.inputRoom(roomlist); // get room
 		if (reserv.getReservStatus() == ReservStatus.IN_WAITLIST) // put reservation in waitlist
-			waitlist[waitlistNum++] = reserv.getReservCode();*/
+			waitlist[waitlistNum++] = reserv.getReservCode();
 		
 		// get check-in and check-out date
 		if (!reserv.inputDates(true, true))
@@ -38,28 +51,17 @@ public class ReservationManager {
 		return c + Integer.toString(i);
 	}
 	
-	public ArrayList updateReserv(ArrayList al) {
+	public ArrayList<Reservation> updateReserv(ArrayList<Reservation> al) {
 		
+		roomlist = Rm.getRoomList();
 		String code;
 		System.out.println("Update reservation...");
 		System.out.println("Please enter the reservation code: ");
 		code = sc.next();
 
 		// find the target reservation
-		Reservation target = new Reservation();
-		boolean find = false;
-		for (int i = 0; i < al.size(); i++) {
-			Reservation cur = (Reservation) al.get(i);
-			if (cur.getReservCode().compareTo(code) == 0) {
-				target = cur;
-				find = true;
-				break;
-			}
-		}
-		if (find == false) {
-			System.out.println("The reservation code does not exist.");
-			return al;
-		}
+		Reservation target = searchReserv(al,code);
+		if (target == null) return al; // target does not exist
 
 		// update
 		int choice;
@@ -71,7 +73,6 @@ public class ReservationManager {
 		System.out.println("4: Guest details or Billing information");
 		System.out.println("5: Number of Adults");
 		System.out.println("6: Number of Children");
-		System.out.println("");
 		choice = sc.nextInt();
 
 		boolean success = true;
@@ -107,10 +108,21 @@ public class ReservationManager {
 		}
 		if (success)
 			System.out.println("The detail has been successfully updated.");
-		//target.printReceipt();
+		target.printReceipt();
 			
 		return al;
 	}
-
+	
+	public Reservation searchReserv(ArrayList<Reservation> reservlist, String code)
+	{
+		for(int i=0; i<reservlist.size(); i++)
+		{
+			Reservation cur = (Reservation) reservlist.get(i);
+			if(cur.getReservCode().equals(code))
+				return cur;
+		}
+		System.out.printf("The reservation code %s does not exist.\n",code);
+		return null;
+	}
 	// method to manage waitlist
 }
