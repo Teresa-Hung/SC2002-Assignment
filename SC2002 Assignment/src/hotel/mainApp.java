@@ -55,7 +55,45 @@ public class mainApp {
 					
 				case 4:
 					//room service functions
-				
+					System.out.println("1) Create order");
+					System.out.println("2) Get room's orders");
+					System.out.println("3) Get the menu");
+					System.out.println("4) Get list of orders");
+					System.out.println("5) Update order status");
+					int choice = sc.nextInt();
+					switch(choice) {
+						case 1:{
+							System.out.println("Enter room number");
+							String room = sc.nextLine();
+							OrderManager.saveOrder("order.txt",room);
+							break;
+						}
+						case 2:{
+							System.out.println("Enter room number");
+							String room = sc.nextLine();
+							OrderManager.getOrder("order.txt",room, true);
+							break;
+						}
+						case 3:{
+							Menu.printMenu("order.txt");
+							break;
+						}
+						case 4:{
+							OrderManager.printOrder("order.txt");
+							break;
+						}
+						case 5:{
+							System.out.println("Enter room number");
+							String room = sc.nextLine();
+							System.out.println("Enter order id");
+							String orderID = sc.nextLine(); 
+							System.out.println("1) Preparing");
+							System.out.println("2) Ready");
+							int status = sc.nextInt();
+							sc.nextLine();
+							OrderManager.changeStatus("order.txt", orderID, room, OrderStatus.values()[status]);
+							break;
+						}
 					
 				case 5:
 					
