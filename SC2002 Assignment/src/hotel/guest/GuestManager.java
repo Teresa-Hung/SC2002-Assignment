@@ -113,23 +113,6 @@ public class GuestManager {
 		
 	}
 	
-	/*public ArrayList removeGuest(ArrayList al) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Remove guest record...");
-		System.out.println("Enter guest ID: ");
-		String guestId = sc.next();
-		
-		for(int i=0;i<al.size();i++) {
-			Guest guest = (Guest)al.get(i);
-			if(guest.getId().equals(guestId)) {
-				al.remove(i);
-				System.out.printf("The guest %s is successfully removed.",guestId);
-				return al;
-			}
-		}
-		System.out.println("Guest is not found.");
-		return al;
-	} */
 	
 	public void write(List data) throws IOException {
 		PrintWriter out = new PrintWriter(new FileWriter(filename));
