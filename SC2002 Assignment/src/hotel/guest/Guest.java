@@ -20,9 +20,6 @@ public class Guest {
 	private int paid;
 	private String roomNum;
 	private String reservCode;
-	
-	Scanner sc = new Scanner(System.in);
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	//constructor
 	public Guest(){
