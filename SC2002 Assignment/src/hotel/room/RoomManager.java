@@ -266,27 +266,12 @@ public class RoomManager {
 		}
 	}
 	
-	public void addRoom(Room room) {
-		if (roomList.size() >= 48) {
-			System.out.println("There are already 48 rooms in the hotel, "
-					+ "remove a room before adding another one.");
-			return;
-		}
-		Room r = findRoom(room.getRoomNumber(), false);
-		if (r != null) {
-			System.out.println("Room number already exists.");
-			return;
-		}
-		roomList.add(room);
-		System.out.println("Room added successfully.");
-	}
-	
-	public void removeRoom(String roomNumber) {
+	public RoomStatus getRoomStatus(String roomNumber) {
 		Room r = findRoom(roomNumber);
-		if (r != null) {
-			roomList.remove(r);
-			System.out.println("Room removed successfully.");
-		}
+		if (r != null)
+			return r.getRoomStatus();
+		else
+			return null;
 	}
 	
 	public void updateRoomNumber(String roomNumber, String newRoomNumber) {
@@ -349,7 +334,7 @@ public class RoomManager {
 	
 	private void updateDetailsUI(Scanner sc) {
 		System.out.print("Enter room number: ");
-		Room r = findRoom(sc.next());
+		Room r = findRoom(sc.nextLine());
 		if (r == null) return;
 		System.out.print("--------------------\n"
 					   + "Update Details Menu:\n"
@@ -363,17 +348,17 @@ public class RoomManager {
 					   + "(8) Max Size\n"
 					   + "--------------------\n"
 					   + "Enter option: ");
-		switch (sc.next()) {
+		switch (sc.nextLine()) {
 		case "1":
 			System.out.print("Enter new room number: ");
-			String newRoomNumber = sc.next();
+			String newRoomNumber = sc.nextLine();
 			r.setRoomNumber(newRoomNumber);
 			break;
 		case "2":
 			System.out.print("Options: SINGLE, DOUBLE, SUITE, VIP_SUITE\n"
 						   + "Enter new room type: ");
 			try {
-				RoomType newRoomType = RoomType.valueOf(sc.next().toUpperCase());
+				RoomType newRoomType = RoomType.valueOf(sc.nextLine().toUpperCase());
 				r.setRoomType(newRoomType);
 				System.out.println("Room type set to " + newRoomType);
 			} catch (Exception e) {
@@ -384,7 +369,7 @@ public class RoomManager {
 			System.out.print("Options: TWIN, QUEEN, KING\n"
 						   + "Enter new bed type: ");
 			try {
-				BedType newBedType = BedType.valueOf(sc.next().toUpperCase());
+				BedType newBedType = BedType.valueOf(sc.nextLine().toUpperCase());
 				r.setBedType(newBedType);
 				System.out.println("Bed type set to " + newBedType);
 			} catch (Exception e) {
@@ -395,7 +380,7 @@ public class RoomManager {
 			System.out.print("Options: VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE\n"
 						   + "Enter new room status: ");
 			try {
-				RoomStatus newRoomStatus = RoomStatus.valueOf(sc.next().toUpperCase());
+				RoomStatus newRoomStatus = RoomStatus.valueOf(sc.nextLine().toUpperCase());
 				r.setRoomStatus(newRoomStatus);
 				System.out.println("Room status set to " + newRoomStatus);
 			} catch (Exception e) {
@@ -417,7 +402,7 @@ public class RoomManager {
 		case "8":
 			System.out.print("Enter new max size: ");
 			try {
-				int i = Integer.parseInt(sc.next());
+				int i = Integer.parseInt(sc.nextLine());
 				r.setMaxSize(i);
 				System.out.println("Max size set to " + i);
 			} catch (NumberFormatException e) {
@@ -443,7 +428,7 @@ public class RoomManager {
 			        		 + "(5) Update Room Details\n"
 			        		 + "(6) Exit\n"
 			        		 + "-------------------------------");
-			choice = sc.next();
+			choice = sc.nextLine();
 			switch (choice) {
 			case "1":
 				printOccupancyReport();
@@ -456,7 +441,7 @@ public class RoomManager {
 				break;
 			case "4":
 				System.out.print("Enter room number: ");
-				printRoomDetails(sc.next());
+				printRoomDetails(sc.nextLine());
 				break;
 			case "5":
 				updateDetailsUI(sc);
