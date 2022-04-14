@@ -1,9 +1,16 @@
-package sc2002Proj;
+
 import java.util.Scanner;
 
+import guest.Guest;
+import guest.GuestManager;
+import room.Room.RoomStatus;
+import room.RoomManager;
+import roomservice.OrderManager;
+
 public class mainApp {
-	RoomManager rm = new RoomManager("48_Hotel_Rooms.txt");
+	
 	public static void main(String[] args) {
+		RoomManager rm = new RoomManager("48_Hotel_Rooms.txt");
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Hotel reservation system!");
 		String choice1;
@@ -55,7 +62,6 @@ public class mainApp {
 					break;
 				case "4":
 					//room service functions
-					//room service functions
 					System.out.println("1) Create order");
 					System.out.println("2) Delete order");
 					System.out.println("3) Get the menu");
@@ -66,7 +72,7 @@ public class mainApp {
 						case 1:{
 							System.out.println("Enter room number");
 							String room = sc.nextLine();
-							if(RoomManager.findRoom(room).getRoomStatus().name()==VACANT) {
+							if(rm.findRoom(room).getRoomStatus() == RoomStatus.VACANT) {
 								System.out.println("This room is empty");
 								break;
 							}
@@ -200,9 +206,7 @@ public class mainApp {
 				default: 
 					System.out.println("Invalid choice.");
 			}
-		}while(!choice1.equals("6"));
-			
-	rm.writeRoomList("48_Hotel_Rooms.txt") // end of program save room list
+		} while(!choice1.equals("6"));
+	rm.writeRoomList("48_Hotel_Rooms.txt"); // end of program save room list
 	}
-
 }
