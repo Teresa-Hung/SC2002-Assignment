@@ -4,10 +4,10 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import room.*;
-import room.Room.RoomType;
-import room.Room.Status;
+import room.Room.*;
 import guest.*;
 
 public class Reservation {
@@ -19,6 +19,8 @@ public class Reservation {
 	private ReservStatus reservStatus;
 	private String reservCode;
 	private Room room;
+	private RoomType rtype;
+	private BedType btype;
 	private Guest guest;
 	private LocalDate dateCheckIn;
 	private LocalDate dateCheckOut;
@@ -32,6 +34,8 @@ public class Reservation {
 	public void setReservStatus(ReservStatus s) {reservStatus = s;}
 	public void setReservCode(String s) {reservCode = s;}
 	public void setRoom(Room r) {room = r;}
+	public void setRType(RoomType t) {rtype = t;}
+	public void setBType(BedType t) {btype = t;}
 	public void setGuest(Guest g) {guest = g;}
 	public void setCheckInDate(LocalDate d) {dateCheckIn = d;}
 	public void setCheckOutDate(LocalDate d) {dateCheckOut = d;}
@@ -43,6 +47,8 @@ public class Reservation {
 	public String getReservCode() {return reservCode;}
 	public Guest getGuest() {return guest;}
 	public Room getRoom() {return room;}
+	public RoomType getRType() {return rtype;}
+	public BedType getBType() {return btype;}
 	public LocalDate getCheckInDate() {return dateCheckIn;}
 	public DayOfWeek getCheckInDay() {return dateCheckIn.getDayOfWeek();}
 	public LocalDate getCheckOutDate() {return dateCheckOut;}
@@ -51,23 +57,41 @@ public class Reservation {
 	public int getNumChild() {return numChild;}
 
 	// other methods
-	public void inputRoom(Room[] roomlist) {
-		System.out.println("Enter the room type: ");
-		RoomType type = RoomType.valueOf(sc.next());
-		// check roomlist, if vacant then assign room to customer
-		boolean vacant = false;
-		for (int i = 0; i < roomlist.length; i++) {
-			if (roomlist[i].getRoomType() == type) {
-				if (roomlist[i].getStatus() == Status.VACANT) {
-					vacant = true;
-					setRoom(roomlist[i]);
-					setReservStatus(ReservStatus.CONFIRMED);
-					break;
+	public void inputRoom(ArrayList<Room> roomlist) {
+		while(true)
+		{
+			System.out.println("Enter the room type: ");
+			setRType(RoomType.valueOf(sc.next()));
+			System.out.println("Enter the bed type: ");
+			setBType(BedType.valueOf(sc.next()));
+			// check roomlist, if vacant then assign room to customer
+			boolean vacant = false;
+			boolean findbed = false;
+			for (int i = 0; i < roomlist.size(); i++) {
+				Room cur = (Room) roomlist.get(i);
+				if (cur.getRoomType() == rtype) {
+					if(cur.getBedType() == btype)
+					{
+						findbed = true;
+						if (cur.getRoomStatus() == RoomStatus.VACANT) {
+							vacant = true;
+							setRoom(cur);
+							setReservStatus(ReservStatus.CONFIRMED);
+							cur.setRoomStatus(RoomStatus.OCCUPIED);
+							return;
+						}				
+					}
 				}
 			}
+			if(findbed == false)
+			{
+				System.out.println("The entered room type does not have this bed type.");
+				continue;
+			}
+			if (vacant == false) setReservStatus(ReservStatus.IN_WAITLIST);
+			return;
 		}
-		if (vacant == false)
-			setReservStatus(ReservStatus.IN_WAITLIST);
+			
 	}
 	
 	public boolean inputDates(boolean checkin, boolean checkout) {
@@ -119,33 +143,21 @@ public class Reservation {
 	}
 
 	public void printReceipt() {
+		GuestManager gm = new GuestManager();
 		System.out.println("\n-----the reservation acknowledgement receipt is shown as below-----");
 		System.out.printf("Reservation Code: %s\n", reservCode);
-		// guest details
-		System.out.println("Guest Details");
-		System.out.printf("First Name: %s\n", guest.getFName());
-		System.out.printf("Lirst Name: %s\n", guest.getLName());
-		System.out.printf("ID: %s\n", guest.getId());
-		System.out.printf("Contact: %s\n", guest.getContact());
-		System.out.printf("Email: %s\n", guest.getEmail());
-		// System.out.printf("Room number: %d\n", room.getRoomNumber());
-		// System.out.printf("Room type: %d\n", room.getRoomType());
-		// billing info
-		System.out.println("Billing Information");
-		System.out.printf("Credit Card Number: %s\n", guest.getCC().getCcNum());
-		System.out.printf("Card Holder's Name: %s %s\n", guest.getCC().getHolderFName(), guest.getCC().getHolderLName());
-		System.out.printf("Expiry Date: %s\n", guest.getCC().getExpDate());
-		String[] billAdr = guest.getCC().getBillAddr();
-		System.out.printf("Billing Address: ");
-		for(int i=0;i<billAdr.length;i++)
-			System.out.printf("%s ", billAdr[i]);
-		System.out.println("");
+		// guest details & billing info
+		gm.displayGuestDetails(guest);
+		System.out.printf("Room number: %s\n", room.getRoomNumber());
+		System.out.printf("Room type: %s\n", room.getRoomType());
+		System.out.printf("Bed type: %s\n", room.getBedType());
 		System.out.printf("Check-in Date: %s %s\n", dateCheckIn, getCheckInDay());
 		System.out.printf("Check-out Date: %s %s\n", dateCheckOut, getCheckOutDay());
 		System.out.printf("No. of Adults: %d\n", numAdult);
 		System.out.printf("No. of Children: %d\n", numChild);
-		// System.out.printf("Reservation Status: ", reservStatus,"\n");
-		System.out.println("");
+		System.out.printf("Reservation Status: ");
+		System.out.println(reservStatus);
+		System.out.printf("\n\n");
 	}
 
 }
