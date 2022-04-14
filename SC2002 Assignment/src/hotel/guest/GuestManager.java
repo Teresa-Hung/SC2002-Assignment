@@ -29,68 +29,110 @@ public class GuestManager {
 		}
 	}
 	
-	public static ArrayList readGuests(String filename) {
+	//readGuestList from file
+	public static ArrayList readGuestList(String filename) {
 		try{
 			Scanner sc = new Scanner(new FileInputStream(fileName));
 			while(sc.hasNextLine()) {
+				StringTokenizer star = new StringTokenizer(sc.nextLine() , SEPARATOR);
+				String st = (String)stringArray.get(i);
+				//get individual attributes of the string separated by SEPARATOR
+				StringTokenizer star = new StringTokenizer(st, SEPARATOR);
+				Guest g = new Guest();
+				guest.setFName(star.nextToken().trim());
+				guest.setLName(star.nextToken().trim());
+				guest.setId(star.nextToken().trim());
+				guest.setContact(star.nextToken().trim());
+				guest.setEmail(star.nextToken().trim());
+				guest.setCountry(star.nextToken().trim());
+				guest.setGender(star.nextToken().trim());
+				guest.setNatlity(star.nextToken().trim());
+				guest.setHolderFName(star.nextToken().trim());
+				guest.setHolderLName(star.nextToken().trim());
+				guest.setCcNum(star.nextToken().trim());
+				guest.setExpDate(star.nextToken().trim());
+				guest.setBillAddr(star.nextToken().trim());
+				guest.setPaid(Integer.parseInt(star.nextToken().trim()));
+				
+				guestList.add(g);
 				
 			}
-			
+			sc.close();
 		}
-		
-		//read string from text file
-		ArrayList stringArray = (ArrayList)read(filename);
-		ArrayList alr = new ArrayList(); //store guests data
-		
-		for(int i=0;i < stringArray.size();i++) {
-			String st = (String)stringArray.get(i);
-			//get individual attributes of the string separated by SEPARATOR
-			StringTokenizer star = new StringTokenizer(st, SEPARATOR);
-			Guest guest = new Guest();
-			CreditCardDetails ccdetail = new CreditCardDetails();
-			guest.setFName(star.nextToken().trim());
-			guest.setLName(star.nextToken().trim());
-			guest.setId(star.nextToken().trim());
-			guest.setContact(star.nextToken().trim());
-			guest.setEmail(star.nextToken().trim());
-			guest.setCountry(star.nextToken().trim());
-			guest.setGender(star.nextToken().trim());
-			guest.setNatlity(star.nextToken().trim());
-			guest.setHolderFName(star.nextToken().trim());
-			guest.setHolderLName(star.nextToken().trim());
-			guest.setCcNum(star.nextToken().trim());
-			guest.setExpDate(star.nextToken().trim());
-			guest.setBillAddr(star.nextToken().trim());
-			guest.setPaid(Integer.parseInt(star.nextToken().trim()));
-			alr.add(guest);
-		}
-		return alr;
+		catch (IOException e) {
+			e.printStackTrace();
+		}		
 	}
 	
-	public ArrayList<Guest> getList(){
+	public void writeGuestList(String fileName) {
+		try{
+			PrintWriter out = new PrintWriter(new FileWriter(fileName));
+			for(Guest g: guestList){
+				StringBuilder st =  new StringBuilder();
+				st.append(g.getFName());
+				st.append(SEPARATOR);
+				st.append(g.getLName());
+				st.append(SEPARATOR);
+				st.append(g.getId());
+				st.append(SEPARATOR);
+				st.append(g.getContact());
+				st.append(SEPARATOR);
+				st.append(g.getEmail());
+				st.append(SEPARATOR);
+				st.append(g.getCountry());
+				st.append(SEPARATOR);
+				st.append(g.getGender());
+				st.append(SEPARATOR);
+				st.append(g.getNatlity());
+				st.append(SEPARATOR);
+				st.append(g.getHolderFName());
+				st.append(SEPARATOR);
+				st.append(g.getHolderLName());
+				st.append(SEPARATOR);
+				st.append(g.getCcNum());
+				st.append(SEPARATOR);
+				st.append(g.getExpDate());
+				st.append(SEPARATOR);
+				st.append(g.getBillAddr());
+				st.append(SEPARATOR);
+				st.append(g.getPaid());
+				st.append(SEPARATOR);
+				out.println(st.toString());
+			}
+			out.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Guest> getGuestList() {
 		return guestList;
 	}
 	
-	public Guest findById(String id, ArrayList<Guest> list ) {
-		for(Guest guest: list) {
-			if(guest.getId().toLowerCase().equals(id))
-				return guest;
+	
+	
+	public Guest findById(String id) {
+		for(Guest g: guestList){
+			if(g.getId().toLowerCase().equals(id.toLowerCase())
+			   return g;
 		}
 		return null;
 	}
 	
-	public Guest findByName(String fName, String lName, ArrayList<Guest> list) {
-		for(Guest guest: list) {
-			if(guest.getFName().toLowerCase().equals(fName) && guest.getLName().toLowerCase().equals(lName))
-				return guest;
+	
+	
+	public Guest findByName(String firstName, String lastName) {
+		for(Guest g: guestList) {
+			if(g.getFName().toLowerCase().equals(firstName.toLowerCase()) && g.getLName().toLowerCase().equals(lastName.toLowerCase()))
+				return g;
 		}
 		return null;
-	}
-	
+	}		   
+		
 	public Guest createGuest() {
-		Guest guest = new Guest();
-		CreditCardDetails ccDetail = new CreditCardDetails();
 		try {
+			Guest guest = new Guest();
 			System.out.println("Create Guest Details. ");
 			System.out.println("Please enter details accordingly");
 			System.out.println("First Name: ");
@@ -155,13 +197,13 @@ public class GuestManager {
 			case 1:
 				System.out.println("Enter ID: ");
 				String tempId = sc.next();
-				tempGuest = findById(tempId.toLowerCase(), guestList);
+				tempGuest = findById(tempId, guestList);
 				break;
 			case 2:
 				System.out.println("Enter first name and last name: ");
 				String fname = sc.next();
 				String lname = sc.next();
-				tempGuest = findByName(fname.toLowerCase(), lname.toLowerCase(), guestList);
+				tempGuest = findByName(fname, lname, guestList);
 				break;
 			
 		}
@@ -192,6 +234,7 @@ public class GuestManager {
 		
 	public Guest updateGuest(Guest g)
 	{
+		try{
 		System.out.println("(1) Update first and last name.");
 		System.out.println("(2) Update ID.");
 		System.out.println("(3) Update contact number.");
@@ -234,7 +277,6 @@ public class GuestManager {
 				g.setNatlity(sc.next());
 				break;
 			case 8:
-				CreditCardDetails ccDetail = new CreditCardDetails();
 				try {
 					System.out.println("Enter new holder name: ");
 					g.setHolderFName(sc.next());
@@ -258,11 +300,12 @@ public class GuestManager {
 		}
 		System.out.println("Guest details updated!");
 		return g;
+		}
+		
 	}
 	
 	
 	public void displayGuestDetails(Guest g) {
-		CreditCardDetails ccDetail = g.getCC();
 		String fname, lname, ctry, gender, natlity, email, id, contactNum,rmNum;
 		String holderFname, holderLname, ccNum, expDate, billAddr;
 		int paid;
