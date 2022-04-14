@@ -14,7 +14,29 @@ import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 public class OrderManager{
 	public static final String SEP = "|";
-	public static void saveOrder(String filename, int id, int number) throws IOException{
+	public static void saveOrder(String filename, String number) throws IOException{
+		ArrayList<String> in = (ArrayList)read(filename);
+		ArrayList<Order> out = new ArrayList<Order>();
+		ArrayList alr = new ArrayList();
+		int count = 0;
+		for(int i = 0; i < in.size();i++)
+		{
+			String temp = (String)in.get(i);
+			StringTokenizer star = new StringTokenizer(temp,SEP);
+			String pos1 = star.nextToken().trim();
+			String pos2 = star.nextToken().trim();
+			if(pos2==number) {
+				count++;
+			}
+			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			String pos3 = star.nextToken().trim();
+			star.nextToken().trim();
+			LocalTime time = LocalTime.parse(star.nextToken().trim());
+			String note = star.nextToken().trim();
+			OrderStatus status= OrderStatus.valueOf(star.nextToken().trim());
+			Order add = new Order(pos1,pos2,pos3,item,time,note,status);
+			out.add(add);
+		}
 		Scanner sc = new Scanner(System.in);
 		Menu.printMenu("Menu.txt");
 		System.out.println("Enter item choice:");
@@ -26,29 +48,31 @@ public class OrderManager{
 		String note = sc.nextLine();
 		OrderStatus temp = OrderStatus.RECEIVED;
 		sc.close();
-		Order obj = new Order(id, choice, number, item, time, note, temp);
-		StringBuilder st = new StringBuilder();
-		st.append(Integer.toString(id));
-		st.append(SEP);
-		st.append(Integer.toString(choice));
-		st.append(SEP);
-		st.append(Integer.toString(number));
-		st.append(SEP);
-		st.append(item.itemName());
-		st.append(SEP);
-		st.append(time);
-		st.append(SEP);
-		st.append(note);
-		st.append(SEP);
-		st.append(temp.name());
+		Order obj = new Order(Integer.toString(count+1), Integer.toString(choice), number, item, time, note, temp);
+		//StringBuilder st = new StringBuilder();
+		out.add(obj);
+		for(int i = 0; i < out.size();i++) {
+			StringBuilder st = new StringBuilder();
+			Order toAdd = out.get(i);
+			st.append(toAdd.getRoom());
+			st.append(SEP);
+			st.append(toAdd.getID());
+			st.append(SEP);
+			st.append(toAdd.getItemID());
+			st.append(SEP);
+			st.append(toAdd.getItem());
+			st.append(SEP);
+			st.append(toAdd.getTime());
+			st.append(SEP);
+			st.append(toAdd.getRemarks());
+			st.append(SEP);
+			st.append(toAdd.getStatus().name());
+			alr.add(st.toString());
+		}
 		//System.out.println("???");
-		FileWriter fw = new FileWriter("order.txt",true);
-		PrintWriter pw = new PrintWriter(fw);
-		pw.println(st);
-		fw.close();
-		pw.close();
+		write(filename, alr);
 	}
-	public static ArrayList<MenuItems> getOrder(String filename, int id) throws IOException{
+	public static ArrayList<MenuItems> getOrder(String filename, String id, boolean print) throws IOException{
 		ArrayList<String> in = (ArrayList)TextDB.read(filename);
 		ArrayList<Order> out = new ArrayList<Order>();
 		ArrayList<MenuItems> res = new ArrayList<MenuItems>();
@@ -56,10 +80,10 @@ public class OrderManager{
 		{
 			String st = (String)in.get(i);
 			StringTokenizer star = new StringTokenizer(st,SEP);
-			int pos1 = Integer.parseInt(star.nextToken().trim());
-			int pos2 = Integer.parseInt(star.nextToken().trim());
-			MenuItems item = Menu.readMenu("menu.txt").get(pos2);
-			int pos3 = Integer.parseInt(star.nextToken().trim());
+			String pos1 = star.nextToken().trim();
+			String pos2 = star.nextToken().trim();
+			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			String pos3 = star.nextToken().trim();
 			star.nextToken().trim();
 			LocalTime time = LocalTime.parse(star.nextToken().trim());
 			String note = star.nextToken().trim();
@@ -75,6 +99,11 @@ public class OrderManager{
 		// print out the size
 		//System.out.println(" Details Size: " + pDetails.size());
 		//System.out.println();
+		if(print == true) {
+			for(int i = 0; i < res.size(); i++) {
+				
+			}
+		}
 		return res;
 	}
 	public static void printOrder(String filename) throws IOException {
@@ -88,16 +117,82 @@ public class OrderManager{
 			sc.close();
 		}
 	}
-	public static void clearOrder(String filename) throws IOException{
-		PrintWriter writer = new PrintWriter(filename);
-		writer.print("");
-		writer.close();
-	}
-	public static void changeStatus(String filename, int id, OrderStatus status, ArrayList<Order> list ) throws IOException{
-		for(int i = 0; i < list.size(); i++){
-			if(list.get(i).getID()==id) {
-				list.get(i).updateOrder(status);
+	public static void changeStatus(String filename, String id, String number,OrderStatus updatedStatus) throws IOException{
+		ArrayList<String> in = (ArrayList)read(filename);
+		ArrayList<Order> out = new ArrayList<Order>();
+		ArrayList alr = new ArrayList();
+		for(int i = 0; i < in.size();i++)
+		{
+			String temp = (String)in.get(i);
+			StringTokenizer star = new StringTokenizer(temp,SEP);
+			String pos1 = star.nextToken().trim();
+			String pos2 = star.nextToken().trim();
+			MenuItems item = Menu.readMenu("menu.txt").get(Integer.parseInt(pos2));
+			String pos3 = star.nextToken().trim();
+			star.nextToken().trim();
+			LocalTime time = LocalTime.parse(star.nextToken().trim());
+			String note = star.nextToken().trim();
+			OrderStatus status= OrderStatus.valueOf(star.nextToken().trim());
+			Order add = new Order(pos1,pos2,pos3,item,time,note,status);
+			out.add(add);
+		}
+		for(int i = 0; i < out.size(); i++)
+		{
+			Order toChange = out.get(i);
+			if(toChange.getRoom() == number)
+			{
+				if(toChange.getID() == id) {
+					toChange.updateOrder(updatedStatus);
+					break;
+				}
 			}
 		}
+		for(int i = 0; i < out.size();i++) {
+			StringBuilder st = new StringBuilder();
+			Order toAdd = out.get(i);
+			st.append(toAdd.getRoom());
+			st.append(SEP);
+			st.append(toAdd.getID());
+			st.append(SEP);
+			st.append(toAdd.getItemID());
+			st.append(SEP);
+			st.append(toAdd.getItem());
+			st.append(SEP);
+			st.append(toAdd.getTime());
+			st.append(SEP);
+			st.append(toAdd.getRemarks());
+			st.append(SEP);
+			st.append(toAdd.getStatus().name());
+			alr.add(st.toString());
+		}
+		//System.out.println("???");
+		write(filename, alr);
 	}
+	public static void write(String fileName, List data) throws IOException  {
+	    PrintWriter out = new PrintWriter(new FileWriter(fileName));
+
+	    try {
+			for (int i =0; i < data.size() ; i++) {
+	      		out.println((String)data.get(i));
+			}
+	    }
+	    finally {
+	      out.close();
+	    }
+	  }
+
+	  /** Read the contents of the given file. */
+	  public static List read(String fileName) throws IOException {
+		List data = new ArrayList() ;
+	    Scanner scanner = new Scanner(new FileInputStream(fileName));
+	    try {
+	      while (scanner.hasNextLine()){
+	        data.add(scanner.nextLine());
+	      }
+	    }
+	    finally{
+	      scanner.close();
+	    }
+	    return data;
+	 }
 }
