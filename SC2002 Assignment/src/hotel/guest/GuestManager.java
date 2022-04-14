@@ -20,81 +20,97 @@ public class GuestManager {
 	public static final String SEPARATOR = "|";	
 	private ArrayList<Guest> guestList = new ArrayList<>();
 	private String filename = "guestListDetails.txt";
+	Scanner sc = new Scanner(System.in);
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	
-	public static ArrayList readGuests(String filename) throws IOException {
-		//read string from text file
-		ArrayList stringArray = (ArrayList)read(filename);
-		
+	public ArrayList readGuests(){
 		ArrayList alr = new ArrayList(); //store guests data
+		try {
+			//read string from text file
+			ArrayList stringArray = (ArrayList)read();
+			
 		
-		for(int i=0;i < stringArray.size();i++) {
-			String st = (String)stringArray.get(i);
-			//get individual attributes of the string separated by SEPARATOR
-			StringTokenizer star = new StringTokenizer(st, SEPARATOR);
-			Guest guest = new Guest();
-			guest.setFName(star.nextToken().trim());
-			guest.setLName(star.nextToken().trim());
-			guest.setId(star.nextToken().trim());
-			guest.setContact(star.nextToken().trim());
-			guest.setEmail(star.nextToken().trim());
-			guest.setCountry(star.nextToken().trim());
-			guest.setGender(star.nextToken().trim());
-			guest.setNatlity(star.nextToken().trim());
-			guest.setHolderFName(star.nextToken().trim());
-			guest.setHolderLName(star.nextToken().trim());
-			guest.setCcNum(star.nextToken().trim());
-			guest.setExpDate(star.nextToken().trim());
-			guest.setBillAddr(star.nextToken().trim());
-			guest.setRoomNum(star.nextToken().trim());
-			guest.setReservCode(star.nextToken().trim());
-			guest.setPaid(Integer.parseInt(star.nextToken().trim()));
-			alr.add(guest);
+			for(int i=0;i < stringArray.size();i++) {
+				String st = (String)stringArray.get(i);
+				//get individual attributes of the string separated by SEPARATOR
+				StringTokenizer star = new StringTokenizer(st, SEPARATOR);
+				Guest guest = new Guest();
+				guest.setFName(star.nextToken().trim());
+				guest.setLName(star.nextToken().trim());
+				guest.setId(star.nextToken().trim());
+				guest.setContact(star.nextToken().trim());
+				guest.setEmail(star.nextToken().trim());
+				guest.setCountry(star.nextToken().trim());
+				guest.setGender(star.nextToken().trim());
+				guest.setNatlity(star.nextToken().trim());
+				guest.setHolderFName(star.nextToken().trim());
+				guest.setHolderLName(star.nextToken().trim());
+				guest.setCcNum(star.nextToken().trim());
+				guest.setExpDate(LocalDate.parse(star.nextToken().trim()));
+				guest.setBillAddr(star.nextToken().trim());
+				guest.setRoomNum(star.nextToken().trim());
+				guest.setReservCode(star.nextToken().trim());
+				guest.setPaid(Integer.parseInt(star.nextToken().trim()));
+				alr.add(guest);
+			}
+			
+		}
+		catch (IOException e) {
+			System.out.println("IOException > " + e.getMessage());
 		}
 		return alr;
+		
+		
 	}
 	
-	public static void saveGuest(String filename, List al) throws IOException {
+	public void saveGuest(List al) {
 		List alw = new ArrayList();
 		
-		for(int i=0;i<al.size();i++) {
-			Guest guest = (Guest)al.get(i);
-			StringBuilder st =  new StringBuilder();
-			st.append(guest.getFName());
-			st.append(SEPARATOR);
-			st.append(guest.getLName());
-			st.append(SEPARATOR);
-			st.append(guest.getId());
-			st.append(SEPARATOR);
-			st.append(guest.getContact());
-			st.append(SEPARATOR);
-			st.append(guest.getEmail());
-			st.append(SEPARATOR);
-			st.append(guest.getCountry());
-			st.append(SEPARATOR);
-			st.append(guest.getGender());
-			st.append(SEPARATOR);
-			st.append(guest.getNatlity());
-			st.append(SEPARATOR);
-			st.append(guest.getHolderFName());
-			st.append(SEPARATOR);
-			st.append(guest.getHolderLName());
-			st.append(SEPARATOR);
-			st.append(guest.getCcNum());
-			st.append(SEPARATOR);
-			st.append(guest.getExpDate());
-			st.append(SEPARATOR);
-			st.append(guest.getBillAddr());
-			st.append(SEPARATOR);
-			st.append(guest.getRoomNum());
-			st.append(SEPARATOR);
-			st.append(guest.getReservCode());
-			st.append(SEPARATOR);
-			st.append(guest.getPaid());
-			st.append(SEPARATOR);
-			alw.add(st.toString()) ;
+		try {
+			for(int i=0;i<al.size();i++) {
+				Guest guest = (Guest)al.get(i);
+				StringBuilder st =  new StringBuilder();
+				st.append(guest.getFName());
+				st.append(SEPARATOR);
+				st.append(guest.getLName());
+				st.append(SEPARATOR);
+				st.append(guest.getId());
+				st.append(SEPARATOR);
+				st.append(guest.getContact());
+				st.append(SEPARATOR);
+				st.append(guest.getEmail());
+				st.append(SEPARATOR);
+				st.append(guest.getCountry());
+				st.append(SEPARATOR);
+				st.append(guest.getGender());
+				st.append(SEPARATOR);
+				st.append(guest.getNatlity());
+				st.append(SEPARATOR);
+				st.append(guest.getHolderFName());
+				st.append(SEPARATOR);
+				st.append(guest.getHolderLName());
+				st.append(SEPARATOR);
+				st.append(guest.getCcNum());
+				st.append(SEPARATOR);
+				st.append(guest.getExpDate());
+				st.append(SEPARATOR);
+				st.append(guest.getBillAddr());
+				st.append(SEPARATOR);
+				st.append(guest.getRoomNum());
+				st.append(SEPARATOR);
+				st.append(guest.getReservCode());
+				st.append(SEPARATOR);
+				st.append(guest.getPaid());
+				st.append(SEPARATOR);
+				alw.add(st.toString());
+			}
+			write(alw);
 		}
-		write(filename,alw);
+		catch (IOException e) {
+			System.out.println("IOException > " + e.getMessage());
+		}
+		
 	}
 	
 	/*public ArrayList removeGuest(ArrayList al) {
@@ -115,7 +131,7 @@ public class GuestManager {
 		return al;
 	} */
 	
-	public static void write(String filename, List data) throws IOException {
+	public void write(List data) throws IOException {
 		PrintWriter out = new PrintWriter(new FileWriter(filename));
 		
 		try {
@@ -128,7 +144,7 @@ public class GuestManager {
 		}
 	}
 	
-	public static List read(String filename) throws IOException {
+	public List read() throws IOException {
 		List data = new ArrayList();
 		Scanner scanner = new Scanner(new FileInputStream(filename));
 		try {
@@ -149,7 +165,7 @@ public class GuestManager {
 	
 	public Guest findById(String id) {
 		for(Guest g: guestList){
-			if(g.getId().toLowerCase().equals(id.toLowerCase())
+			if(g.getId().toLowerCase().equals(id.toLowerCase()))
 			   return g;
 		}
 		return null;
@@ -166,7 +182,7 @@ public class GuestManager {
 		
 	public Guest createGuest() {
 		try {
-			guestList = readGuests(filename);
+			guestList = readGuests();
 			Guest guest = new Guest();
 			System.out.println("Create Guest Details. ");
 			System.out.println("Please enter details accordingly");
@@ -186,22 +202,21 @@ public class GuestManager {
 			guest.setGender(sc.next());
 			System.out.println("Nationality: ");
 			guest.setNatlity(sc.next());
-			System.out.println("Holder name (first and last name): ");
+			System.out.println("Credit Card Holder Name (first and last name): ");
 			guest.setHolderFName(sc.next());
 			guest.setHolderLName(sc.next());
 			System.out.println("Credit Card Number: ");
 			guest.setCcNum(sc.next());
 			System.out.println("Expiry Date(dd/mm/yyyy): ");
-			String expdate = LocalDate.parse(sc.next(), formatter);
-			guest.setExpDate(expdate);
+			guest.setExpDate(LocalDate.parse(sc.next(), formatter));
 			sc.nextLine();
 			System.out.println("Billing Address: ");
 			String s = sc.nextLine();
 			guest.setBillAddr(s);
 			System.out.println("Details created!");
 			guestList.add(guest);
+			saveGuest(guestList);
 			return guest;
-			saveGuest(filename, guestList);
 		}
 		
 		catch(DateTimeParseException e)
@@ -213,7 +228,7 @@ public class GuestManager {
 	
 	
 	public Guest searchGuest() { //search by 1. id, 2. name
-		guestList = readGuests(filename);
+		guestList = readGuests();
 		System.out.println("Search Details.");
 		if(guestList.size() == 0) {
 			System.out.println("There is no guest registered in the hotel. ");
@@ -234,13 +249,13 @@ public class GuestManager {
 			case 1:
 				System.out.println("Enter ID: ");
 				String tempId = sc.next();
-				tempGuest = findById(tempId, guestList);
+				tempGuest = findById(tempId);
 				break;
 			case 2:
 				System.out.println("Enter first name and last name: ");
 				String fname = sc.next();
 				String lname = sc.next();
-				tempGuest = findByName(fname, lname, guestList);
+				tempGuest = findByName(fname, lname);
 				break;
 			
 		}
@@ -253,8 +268,7 @@ public class GuestManager {
 		}
 	}
 	public Guest updateDetails() {
-		guestList = readGuests(filename);
-		public Guest updateDetails() {
+		guestList = readGuests();
 		System.out.println("Update Details.");
 		if(guestList.size() == 0) {
 			System.out.println("There is no guest registered in the hotel. ");
@@ -262,7 +276,7 @@ public class GuestManager {
 		}
 		System.out.println("Enter Guest ID:");
 		String tempid = sc.next();
-		Guest curGuest = findById(tempid, guestList); 
+		Guest curGuest = findById(tempid); 
 		if(curGuest == null) {
 			System.out.println("Guest is not found.");
 			return null;
@@ -272,8 +286,7 @@ public class GuestManager {
 		
 	public Guest updateGuest(Guest g)
 	{
-		guestList = readGuests(filename);
-		try{
+		guestList = readGuests();
 		System.out.println("(1) Update first and last name.");
 		System.out.println("(2) Update ID.");
 		System.out.println("(3) Update contact number.");
@@ -323,8 +336,7 @@ public class GuestManager {
 					System.out.println("Enter new credit card number: ");
 					g.setCcNum(sc.next());
 					System.out.println("Enter new expiry date(dd/mm/yyyy): ");
-					String d = LocalDate.parse(sc.next(), formatter);
-					g.setExpDate(d);
+					g.setExpDate(LocalDate.parse(sc.next(), formatter));
 					sc.nextLine();
 					System.out.println("Enter new billing address: ");
 					String s = sc.nextLine();
@@ -338,9 +350,8 @@ public class GuestManager {
 				}
 		}
 		System.out.println("Guest details updated!");
+		saveGuest(guestList);
 		return g;
-		saveGuest(filename, guestList);
-		}
 		
 	}
 	
