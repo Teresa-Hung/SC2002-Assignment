@@ -4,7 +4,6 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
@@ -15,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class GuestManager {
+import FileIO;
+
+public class GuestManager implements ReadWrite {
 	
 	public static final String SEPARATOR = "|";	
 	private ArrayList<Guest> guestList;
