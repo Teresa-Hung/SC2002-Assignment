@@ -37,38 +37,10 @@ public class UserInterface {
 			choice = sc.nextLine();
 			switch(choice) {
 				case "1":
-					updateGuestUI(gm, sc);
+					updateGuest(gm, sc);
 					break;
 				case "2":
-					if(gm.getGuestList().size() == 0) {
-						System.out.println("There are no guests registered in the hotel.");
-						return;
-					}
-					System.out.println("(1) Search by ID.");
-					System.out.println("(2) Search by name.");
-					Guest g = null;
-					switch(sc.nextLine()) {
-						case "1":
-							System.out.print("Enter guest ID: ");
-							String tempId = sc.nextLine();
-							g = gm.findById(tempId);
-							break;
-						case "2":
-							System.out.println("Enter first name and last name: ");
-							String fname = sc.next();
-							String lname = sc.next();
-							if (sc.hasNextLine()) sc.nextLine();
-							g = gm.findByName(fname, lname);
-							break;
-						default:
-							System.out.println("Invalid option.");
-					}
-					if(g != null) {
-						System.out.println("Guest found.");
-						gm.displayGuestDetails(g);
-					}
-					else
-						System.out.println("Guest does not exist.");
+					searchGuest(gm, sc);
 					break;
 				case "3":
 					System.out.print("Enter guest ID to remove: ");
