@@ -98,7 +98,7 @@ public class Payment {
 		
 	}
 	
-	public void printAllItems(String roomId) throws IOException{
+	private void printAllItems(String roomId) throws IOException{
 		OrderManager om = new OrderManager();
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
@@ -108,11 +108,7 @@ public class Payment {
 	}
 	
 	public void setPromo(int code) {
-		promoCode = code;
-	}
-	
-	public double getPromoDisc() {
-		switch(promoCode) {
+		switch(code) {
 		case 0:
 			discountPromo = 0.0;
 		case 1:
@@ -124,7 +120,7 @@ public class Payment {
 		default: 
 			System.out.println("Invalid choice.");
 		}	
-		return discountPromo;
+		
 	}
 	
 	public void calculateTotal(Reservation rv) throws IOException {
