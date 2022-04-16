@@ -5,6 +5,7 @@ import java.time.*;
 import room.*;
 import room.Room.*;
 import guest.*;
+import guest.GuestManager;
 
 public class Reservation {
 
@@ -63,7 +64,8 @@ public class Reservation {
 		System.out.println("\n-----the reservation acknowledgement receipt is shown as below-----");
 		//System.out.printf("Reservation Code: %s\n", reservCode);
 		// guest details & billing info
-		guest.displayGuestDetails();
+		GuestManager gm = new GuestManager();
+		gm.displayGuestDetails(guest);
 		//System.out.printf("Room number: %s\n", room.getRoomNumber());
 		System.out.printf("Room type: %s\n", room.getRoomType());
 		System.out.printf("Bed type: %s\n", room.getBedType());
