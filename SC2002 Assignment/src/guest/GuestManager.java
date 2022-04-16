@@ -159,37 +159,6 @@ public class GuestManager implements ReadWrite {
 		System.out.println("Guest does not exist.");
 	}
 	
-	public void guestUI(GuestManager gm, Scanner sc) {
-		String choice;
-		do {
-			System.out.print("-------------------------\n"
-						   + "Guest Menu:\n"
-						   + "(1) Update Guest Details.\n"
-						   + "(2) Search Guest.\n"
-						   + "(3) Remove Guest.\n"
-						   + "(4) Exit.\n"
-						   + "-------------------------\n"
-						   + "Enter option: ");
-			choice = sc.nextLine();
-			switch(choice) {
-				case "1":
-					updateGuest(gm, sc);
-					break;
-				case "2":
-					searchGuest(gm, sc);
-					break;
-				case "3":
-					System.out.print("Enter guest ID to remove: ");
-					gm.removeGuest(sc.nextLine());
-					break;
-				case "4":
-					gm.saveGuest();
-					break;
-				default:
-					System.out.println("Invalid option.");
-			}
-		} while (!choice.equals("4"));
-	}
 	
 	public void searchGuest(GuestManager gm, Scanner sc) { 
 		if(gm.getGuestList().size() == 0) {
