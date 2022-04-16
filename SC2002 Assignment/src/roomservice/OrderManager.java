@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 import main.FileIO.ReadWrite;
+import room.RoomManager;
+import room.Room.RoomStatus;
 import roomservice.Order.OrderStatus;
 import java.time.LocalTime;
 
@@ -198,5 +200,166 @@ public class OrderManager implements ReadWrite {
 		} catch (IOException e) {
 		e.printStackTrace();
 		}
+	}
+	
+	public void roomServiceUI(OrderManager om, RoomManager rm, Scanner sc) {
+		String choice, room;
+		MenuItems item;
+		double price;
+		int number;
+		do {
+			System.out.print("------------------------\n"
+						   + "Room Service Menu:\n"
+						   + "(1) Create Order\n"
+						   + "(2) Delete Order\n"
+						   + "(3) Print Order List\n"
+						   + "(4) Update Order Status\n"
+						   + "(5) Create New Menu Item\n"
+						   + "(6) Remove Menu Item\n"
+						   + "(7) Print Menu\n"
+						   + "(8) Update Menu Item\n"
+						   + "(9) Exit\n"
+						   + "------------------------\n"
+						   + "Enter option: ");
+			choice = sc.nextLine();
+			switch(choice) {
+				case "1":
+					String orderID = om.createOrderID();
+					System.out.print("Enter room number: ");
+					room = sc.nextLine();
+					if (rm.findRoom(room) == null) return;
+					if(rm.getRoomStatus(room) == RoomStatus.VACANT) {
+						System.out.println("This room is empty.");
+						break;
+					}
+					om.printMenu();
+					System.out.println("Enter item choice:");
+					try {
+						item = om.findMenuItem(Integer.parseInt(sc.nextLine()));
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid option.");
+						return;
+					}
+					LocalTime time = LocalTime.now();
+					System.out.println("Remarks for order:");
+					String note = sc.nextLine();
+					OrderStatus status = OrderStatus.RECEIVED;
+					Order order = new Order(orderID, room, item, time, note, status);
+					System.out.println("Order created:");
+					order.printOrder();
+					om.addOrder(order);
+					break;
+				case "2":
+					System.out.print("Enter room number: ");
+					room = sc.nextLine();
+					if (rm.findRoom(room) == null) return;
+					if(rm.getRoomStatus(room) == RoomStatus.VACANT) {
+						System.out.println("This room is empty");
+						break;
+					}
+					om.printRoomCurrentOrders(room);
+					System.out.print("Enter order ID to remove: ");
+					om.removeOrder(sc.nextLine());
+					break;
+				case "3":
+					om.printOrderList();
+					break;
+				case "4":
+					System.out.println("Enter room number");
+					room = sc.nextLine();
+					if (rm.findRoom(room) == null) return;
+					if(rm.getRoomStatus(room) == RoomStatus.VACANT) {
+						System.out.println("This room is empty");
+						break;
+					}
+					System.out.println("Enter order id:");
+					String orderID1 = sc.nextLine(); 
+					System.out.println("(1) Preparing");
+					System.out.println("(2) Ready");
+					int status1 = sc.nextInt();
+					om.updateStatus(orderID1, OrderStatus.values()[status1]);
+					break;
+				case "5":
+					System.out.println("Creating new menu item...");
+					System.out.println("Enter item price: ");
+					try {
+						price = Double.parseDouble(sc.nextLine());
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid price.");
+						return;
+					}
+					System.out.println("Enter item name:");
+					String name = sc.nextLine();
+					System.out.println("Enter preparation method:");
+					String prep = sc.nextLine();
+					item = new MenuItems(price, name, prep);
+					om.addMenuItem(item);
+					System.out.println("New menu item created.");
+					break;
+				case "6":
+					om.printMenu();
+					System.out.print("Enter menu item number to remove: ");
+					try {
+						number = Integer.parseInt(sc.nextLine());
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid number.");
+						return;
+					}
+					om.removeMenuItem(number);
+					break;
+				case "7":
+					om.printMenu();
+					break;
+				case "8":
+					om.printMenu();
+					System.out.print("Enter menu item number to update: ");
+					try {
+						number = Integer.parseInt(sc.nextLine());
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid number.");
+						return;
+					}
+					item = om.findMenuItem(number);
+					System.out.println("-----------------------\n"
+									 + "Enter detail to update:\n"
+									 + "(1) Price\n"
+									 + "(2) Name\n"
+									 + "(3) Preparation Method\n"
+									 + "-----------------------\n"
+									 + "Enter option: ");
+					switch (sc.nextLine()) {
+					case "1":
+						System.out.print("Enter new price: ");
+						try {
+							price = Double.parseDouble(sc.nextLine());
+						} catch (NumberFormatException e) {
+							System.out.println("Invalid number.");
+							break;
+						}
+						item.setPrice(price);
+						System.out.println("Price set to " + item.getPrice());
+						break;
+					case "2":
+						System.out.print("Enter new name: ");
+						item.setItemName(sc.nextLine());
+						System.out.println("Name set to " + item.getItemName());
+						break;
+					case "3":
+						System.out.print("Enter new preparation method: ");
+						item.setPrep(sc.nextLine());
+						System.out.print("Preparation method set to " + item.getPrep());
+						break;
+					default:
+						System.out.println("Invalid option.");
+					}
+					break;
+				case "9":
+					om.saveMenuList();
+					om.saveOrderList();
+					break;
+				default:
+					System.out.println("Invalid option.");
+			}
+		} while (!choice.equals("9"));
 	}
 }
