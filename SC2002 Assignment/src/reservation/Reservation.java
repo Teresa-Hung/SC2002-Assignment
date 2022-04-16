@@ -18,7 +18,7 @@ public class Reservation {
 	private Room room;
 	private RoomType rtype;
 	private BedType btype;
-	private Guest guest;
+	private Guest guest = new Guest();
 	private LocalDate dateCheckIn;
 	private LocalDate dateCheckOut;
 	private int numAdult;

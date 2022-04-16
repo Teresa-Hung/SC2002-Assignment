@@ -1,5 +1,5 @@
 10.0|Bread|Baked|
 15.0|Fish|Steamed|
 20.0|Beef|Fried|
-25.0|Salmon|Smoked|
-30.0|Chicken|Roasted|
+25.0|Salmon|Fried|
+30.0|Chickin|Roasted|

@@ -37,13 +37,10 @@ public class UserInterface {
 			choice = sc.nextLine();
 			switch(choice) {
 				case "1":
-					gm.updateGuest();
-					//updateGuestUI(gm, sc);
+					gm.updateGuest(sc);
 					break;
 				case "2":
-					gm.searchGuest();
-					break;
-					/*if(gm.getGuestList().size() == 0) {
+					if(gm.getGuestList().size() == 0) {
 						System.out.println("There are no guests registered in the hotel.");
 						return;
 					}
@@ -72,7 +69,7 @@ public class UserInterface {
 					}
 					else
 						System.out.println("Guest does not exist.");
-					break; */
+					break;
 				case "3":
 					System.out.print("Enter guest ID to remove: ");
 					gm.removeGuest(sc.nextLine());
@@ -85,138 +82,6 @@ public class UserInterface {
 			}
 		} while (!choice.equals("4"));
 	}
-	
-	/*public static void updateGuestUI(GuestManager gm, Scanner sc) {
-		System.out.print("Enter guest ID: ");
-		String id = sc.nextLine();
-		Guest g = gm.findById(id);
-		if (g == null) {
-			System.out.println("Guest does not exist.");
-			return;
-		}
-		gm.displayGuestDetails(g);
-		System.out.println("-------------------------------\n"
-						 + "Update Guest Menu:\n"
-						 + "(1) Update first and last name.\n"
-						 + "(2) Update ID.\n"
-						 + "(3) Update contact number.\n"
-						 + "(4) Update email.\n"
-						 + "(5) Update country.\n"
-					 	 + "(6) Update gender.\n"
-					 	 + "(7) Update nationality.\n"
-			 			 + "(8) Update credit card details.\n"
-			 			 + "(9) Exit\n"
-			 			 + "-------------------------------\n"
-		 				 + "Enter option:");
-		switch(sc.nextLine()) {
-			case "1":
-				System.out.println("Enter new first name: ");
-				g.setFName(sc.nextLine());
-				System.out.println("Enter new last name: ");
-				g.setLName(sc.nextLine());
-				System.out.println("Guest name set to " + g.getFName() + " " + g.getLName());
-				break;
-			case "2":
-				System.out.println("Enter new ID (Passport/Driving License): ");
-				g.setId(sc.nextLine());
-				System.out.println("New ID set to " + g.getId());
-				break;
-			case "3":
-				System.out.println("Enter new contact number: ");
-				g.setContact(sc.nextLine());
-				System.out.println("New contact number set to " + g.getContact());
-				break;
-			case "4":
-				System.out.println("Enter new email: ");
-				g.setEmail(sc.nextLine());
-				System.out.println("New email set to " + g.getEmail());
-				break;
-			case "5":
-				System.out.println("Enter new country: ");
-				g.setCountry(sc.nextLine());
-				System.out.println("New country set to " + g.getCountry());
-				break;
-			case "6":
-				System.out.println("Update gender: ");
-				g.setGender(sc.nextLine());
-				System.out.println("New gender set to " + g.getGender());
-				break;
-			case "7":
-				System.out.println("Enter new nationality: ");
-				g.setNatlity(sc.nextLine());
-				System.out.println("New nationality set to " + g.getNatlity());
-				break;
-			case "8":
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-				try {
-					System.out.println("Enter new holder name: ");
-					g.setHolderFName(sc.next());
-					g.setHolderLName(sc.next());
-					if (sc.hasNextLine()) sc.nextLine();
-					System.out.println("Enter new credit card number: ");
-					g.setCcNum(sc.nextLine());
-					System.out.println("Enter new expiry date(dd/mm/yyyy): ");
-					g.setExpDate(LocalDate.parse(sc.nextLine(), formatter));
-					sc.nextLine();
-					System.out.println("Enter new billing address: ");
-					String s = sc.nextLine();
-					g.setBillAddr(s);
-					break;
-				} catch (DateTimeParseException e) {
-					System.out.println("The date is invalid.");
-				}
-			case "9":
-				break;
-			default:
-				System.out.println("Invalid option.");
-		}
-		gm.saveGuest();
-	}
-	
-	public static Guest createGuestUI(GuestManager gm, Scanner sc) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		try {
-			Guest guest = new Guest();
-			System.out.println("Create Guest Details.");
-			System.out.println("Please enter details accordingly");
-			System.out.println("First Name: ");
-			guest.setFName(sc.next());
-			System.out.println("Last Name: ");
-			guest.setLName(sc.next());
-			if (sc.hasNextLine()) sc.nextLine();
-			System.out.println("ID (Passport/Driving License): ");
-			guest.setId(sc.nextLine());
-			System.out.println("Contact Number: ");
-			guest.setContact(sc.nextLine());
-			System.out.println("Email: ");
-			guest.setEmail(sc.nextLine());
-			System.out.println("Country: ");
-			guest.setCountry(sc.nextLine());
-			System.out.println("Gender: ");
-			guest.setGender(sc.nextLine());
-			System.out.println("Nationality: ");
-			guest.setNatlity(sc.nextLine());
-			System.out.println("Credit Card Holder Name (first and last name): ");
-			guest.setHolderFName(sc.next());
-			guest.setHolderLName(sc.next());
-			if (sc.hasNextLine()) sc.nextLine();
-			System.out.println("Credit Card Number: ");
-			guest.setCcNum(sc.next());
-			System.out.println("Expiry Date(dd/mm/yyyy): ");
-			guest.setExpDate(LocalDate.parse(sc.next(), formatter));
-			sc.nextLine();
-			System.out.println("Billing Address: ");
-			String s = sc.nextLine();
-			guest.setBillAddr(s);
-			System.out.println("Details created!");
-			gm.addGuest(guest);
-			return guest;
-		} catch (DateTimeParseException e) {
-			System.out.println("The date is invalid.");
-		}
-		return null;
-	} */
-	
 	
 	public static void reservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
 		String choice;
@@ -240,7 +105,8 @@ public class UserInterface {
 				reserv.setReservCode(reservCode);
 				
 				// create guest
-				Guest g = createGuestUI(gm, sc);
+				
+				Guest g = gm.createGuest(sc);
 				if (g == null) return;
 				reserv.setGuest(g);
 				g.setReservCode(reservCode);
@@ -396,7 +262,7 @@ public class UserInterface {
 		String choice;
 		do {
 			System.out.print("-------------------------------\n"
-					+ "Room Menu:\n"
+						+ "Room Menu:\n"
 			        	+ "(1) Print Room Occupancy Report\n"
 			        	+ "(2) Print Room Status Report\n"
 			        	+ "(3) Print Room Report\n"
@@ -404,7 +270,7 @@ public class UserInterface {
 			        	+ "(5) Update Room Details\n"
 			        	+ "(6) Return to Main Menu\n"
 			        	+ "-------------------------------\n"
-					+ "Enter option: ");
+			        	+ "Enter option: ");
 			choice = sc.nextLine();
 			switch (choice) {
 			case "1":
@@ -560,8 +426,8 @@ public class UserInterface {
 					String orderID1 = sc.nextLine(); 
 					System.out.println("(1) Preparing");
 					System.out.println("(2) Ready");
-					int status1 = sc.nextInt();
-					om.updateStatus(orderID1, OrderStatus.values()[status1]);
+					OrderStatus status1 = OrderStatus.valueOf(sc.nextLine().toUpperCase());
+					om.updateStatus(orderID1, status1);
 					break;
 				case "5":
 					System.out.println("Creating new menu item...");
@@ -646,7 +512,6 @@ public class UserInterface {
 			}
 		} while (!choice.equals("9"));
 	}
-	
 	
 	public static void paymentUI(GuestManager gm, ReservationManager resm, RoomManager rm, Scanner sc){
 		String fn, ln, guestRoom, reservCode, choice;

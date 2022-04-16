@@ -27,7 +27,7 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	// reads room data from file
-	private void readRoomList(String fileName) {
+	private void readRoomList(String filename) {
 		ArrayList<String> stringArray = read("roomlist.txt");
     	for (String s: stringArray) {
 			StringTokenizer star = new StringTokenizer(s , SEPARATOR);
@@ -69,10 +69,10 @@ public class RoomManager implements ReadWrite {
 	}
 	
 	@Override
-	public ArrayList<String> read(String fileName) {
+	public ArrayList<String> read(String filename) {
 		ArrayList<String> data = new ArrayList<>();
 		try {
-			Scanner sc = new Scanner(new FileInputStream(fileName));
+			Scanner sc = new Scanner(new FileInputStream(filename));
 			while(sc.hasNextLine())
 				data.add(sc.nextLine());
 			sc.close();
@@ -82,7 +82,7 @@ public class RoomManager implements ReadWrite {
 		return data;
 	}
 	@Override
-	public void write(String fileName, List<String> data) {
+	public void write(String filename, List<String> data) {
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter("roomlist.txt"));
 			for (String s: data)
@@ -399,8 +399,8 @@ public class RoomManager implements ReadWrite {
 		if (r == null)
 			return;
 		try {
-			BedType newRoomStatus = BedType.valueOf(roomStatus);
-			updateBedType(roomNumber, newRoomStatus);
+			RoomStatus newRoomStatus = RoomStatus.valueOf(roomStatus.toUpperCase());
+			updateRoomStatus(roomNumber, newRoomStatus);
 			System.out.println("Bed type set to " + newRoomStatus);
 		} catch (IllegalArgumentException e) {
 			System.out.println("Invalid room status.");

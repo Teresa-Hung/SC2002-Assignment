@@ -39,7 +39,7 @@
 0607|SUITE|KING|VACANT|true|false|true|4|
 0608|SUITE|KING|VACANT|true|false|true|4|
 0701|VIP_SUITE|KING|VACANT|true|true|true|6|
-0702|VIP_SUITE|KING|VACANT|true|true|true|6|
+0702|VIP_SUITE|KING|OCCUPIED|true|true|true|6|
 0703|VIP_SUITE|KING|VACANT|true|true|true|6|
 0704|VIP_SUITE|KING|VACANT|true|true|true|6|
 0705|VIP_SUITE|KING|VACANT|true|true|true|6|

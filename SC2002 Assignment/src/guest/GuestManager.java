@@ -100,9 +100,9 @@ public class GuestManager implements ReadWrite {
 		write("guestListDetails.txt", alw);
 	}
 
-	public void write(String fileName, List<String> data) {
+	public void write(String filename, List<String> data) {
 		try {
-			PrintWriter out = new PrintWriter(new FileWriter(fileName));
+			PrintWriter out = new PrintWriter(new FileWriter(filename));
 			for(int i=0;i<data.size();i++) {
 				out.println(data.get(i));
 			out.close();
@@ -112,13 +112,12 @@ public class GuestManager implements ReadWrite {
 		}
 	}
 	
-	public ArrayList<String> read(String fileName) {
+	public ArrayList<String> read(String filename) {
 		ArrayList<String> data = new ArrayList<>();
 		try {
-			Scanner scanner = new Scanner(new FileInputStream(fileName));
+			Scanner scanner = new Scanner(new FileInputStream(filename));
 			while(scanner.hasNextLine()) {
 				data.add(scanner.nextLine());
-			scanner.close();
 			}
 		} catch (IOException e){
 			e.printStackTrace();
@@ -159,9 +158,8 @@ public class GuestManager implements ReadWrite {
 		System.out.println("Guest does not exist.");
 	}
 	
-	
-	public void searchGuest() { 
-		if(getGuestList().size() == 0) {
+	public void searchGuest(Scanner sc) { 
+		if(guestList.size() == 0) {
 			System.out.println("There are no guests registered in the hotel.");
 			return;
 		}
@@ -196,7 +194,7 @@ public class GuestManager implements ReadWrite {
 		}
 	}
 	
-	public void updateGuest() {
+	public void updateGuest(Scanner sc) {
 		System.out.print("Enter guest ID: ");
 		String id = sc.nextLine();
 		Guest g = findById(id);
@@ -283,7 +281,7 @@ public class GuestManager implements ReadWrite {
 		saveGuest();
 	}
 	
-	public Guest createGuest() {
+	public Guest createGuest(Scanner sc) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		try {
 			Guest guest = new Guest();
@@ -319,7 +317,7 @@ public class GuestManager implements ReadWrite {
 			String s = sc.nextLine();
 			guest.setBillAddr(s);
 			System.out.println("Details created!");
-			gm.addGuest(guest);
+			guestList.add(guest);
 			return guest;
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
