@@ -144,25 +144,4 @@ public class Guest {
 	public int getPaid(){
 		return paid;
 	}
-	
-	public void displayGuestDetails() {
-		String strReplacement = "************";
-        String lastFourNum = ccNum.substring(ccNum.length() - 4);
-        String newString = strReplacement + lastFourNum;
-		System.out.println("First Name: " + firstName);
-		System.out.println("Last Name: " + lastName);
-		System.out.println("ID: " + id);
-		System.out.println("Contact Number: " + contactNum);
-		System.out.println("Email: " + email);
-		System.out.println("Country: " + country);
-		System.out.println("Gender: " + gender);
-		System.out.println("Nationality: " + nationality);
-		System.out.println("Credit Card Details: ");
-		System.out.println("Holder Name: " + holderFName + " " + holderLName);
-		System.out.println("Credit Card Number: " + newString);
-		System.out.println("Expiry Date: " + expiryDate);
-		System.out.println("Billing Address: " + billAddr);
-		System.out.println("Reservation Code: " + reservCode);
-		System.out.println("Room Number: " + roomNum);
-	}
 }
