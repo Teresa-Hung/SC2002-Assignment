@@ -7,7 +7,6 @@ import guest.*;
 import reservation.*;
 import room.*;
 import roomservice.*;
-import ui.UserInterface;
 
 public class mainApp {
 	public static void main(String[] args) throws IOException {
@@ -15,7 +14,6 @@ public class mainApp {
 		ReservationManager resm = new ReservationManager();
 		RoomManager rm = new RoomManager();
 		OrderManager om = new OrderManager();
-		UserInterface ui = new UserInterface();
 		
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Hotel reservation system!");
@@ -30,19 +28,19 @@ public class mainApp {
 			choice = sc.nextLine();
 			switch(choice) {
 				case "1":
-					ui.guestUI(gm, sc);
+					UserInterface.guestUI(gm, sc);
 					break;
 				case "2":
-					ui.reservationUI(resm, rm, gm, sc);
+					UserInterface.reservationUI(resm, rm, gm, sc);
 					break;
 				case "3":
-					ui.roomUI(rm, sc);
+					UserInterface.roomUI(rm, sc);
 					break;
 				case "4":
-					ui.roomServiceUI(om, rm, sc);
+					UserInterface.roomServiceUI(om, rm, sc);
 					break;
 				case "5":
-					ui.paymentUI(gm, resm, rm, sc);
+					UserInterface.paymentUI(gm, resm, rm, sc);
 					break;
 				case "6":
 					resm.writeReservation();// save reservation list

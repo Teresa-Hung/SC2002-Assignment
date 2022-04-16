@@ -1,6 +1,5 @@
 package payment;
 
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -87,7 +86,7 @@ public class Payment {
 		}
 	}
 	
-	private void getRoomServiceCharge(String roomId){
+	private void getRoomServiceCharge(String roomId) {
 		OrderManager om = new OrderManager();
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
@@ -95,10 +94,9 @@ public class Payment {
 		for(i=0;i<numOfItems;i++) {
 			roomServiceCharge = roomServiceCharge + roomServiceItems.get(i).getItem().getPrice();
 		}
-		
 	}
 	
-	private void printAllItems(String roomId){
+	private void printAllItems(String roomId) {
 		OrderManager om = new OrderManager();
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
@@ -142,7 +140,7 @@ public class Payment {
 		}
 	}
 	
-	public void printInvoice(String roomNum){
+	public void printInvoice(String roomNum) {
 		System.out.println("Number of days stayed: " + numOfDays);
 		System.out.println("Room service charges: " + roomServiceCharge);
 		System.out.println("Tax: " + tax);
