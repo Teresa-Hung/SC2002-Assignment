@@ -4,6 +4,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 import room.Room;
 import room.Room.RoomType;
@@ -13,6 +15,8 @@ import reservation.Reservation;
 import reservation.ReservationManager;
 
 public class Payment {
+	
+	private static final DecimalFormat df = new DecimalFormat("0.00");
 	
 	private int i;
 	private long numOfItems;
@@ -24,6 +28,7 @@ public class Payment {
 	private RoomType rtype;
 	private double roomCharge;
 	private double roomServiceCharge;
+	private double taxCharge;
 	private double discountPromo;
 	private double totalBill;
 	private final double tax = 0.07;
@@ -40,15 +45,20 @@ public class Payment {
 	private void setBaseCharge(Room room) {
 		rtype = room.getRoomType();
 		
+		
 		switch(rtype) {
 		case SINGLE:
 			baseCharge = 100.0;
+			break;
 		case DOUBLE:
 			baseCharge = 150.0;
+			break;
 		case SUITE:
 			baseCharge = 250.0;
+			break;
 		case VIP_SUITE:
 			baseCharge = 350.0;
+			break;
 		}
 	}
 	
@@ -64,8 +74,10 @@ public class Payment {
 		switch(dayType) {
 		case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY:
 			dayTypeCharge = 1.0;
+			break;
 		case SATURDAY, SUNDAY:
 			dayTypeCharge = 1.5;
+			break;
 		}
 		return dayTypeCharge;
 	}
@@ -79,6 +91,7 @@ public class Payment {
 		setNumOfDays(rv);
 		
 		day = rv.getCheckInDate().getDayOfWeek();
+		System.out.println(numOfDays);
 		
 		for(i=0;i<numOfDays;i++) {
 			roomCharge = roomCharge + baseCharge*getTypeCharge(day);
@@ -91,8 +104,10 @@ public class Payment {
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
 		numOfItems = roomServiceItems.size();
+		System.out.println(numOfItems);
 		for(i=0;i<numOfItems;i++) {
 			roomServiceCharge = roomServiceCharge + roomServiceItems.get(i).getItem().getPrice();
+			System.out.println(roomServiceItems.get(i).getItem().getItemName());
 		}
 	}
 	
@@ -109,12 +124,16 @@ public class Payment {
 		switch(code) {
 		case 0:
 			discountPromo = 0.0;
+			break;
 		case 1:
 			discountPromo = 0.1;
+			break;
 		case 2:
 			discountPromo = 0.15;
+			break;
 		case 3:
 			discountPromo = 0.2;
+			break;
 		default: 
 			System.out.println("Invalid choice.");
 		}	
@@ -122,30 +141,39 @@ public class Payment {
 	}
 	
 	public void calculateTotal(Reservation rv) {
+		roomCharge = 0.0;
+		roomServiceCharge = 0.0;
 		getRoomCharge(rv.getReservCode());
 		getRoomServiceCharge(rv.getRoom().getRoomNumber());
-		totalBill = (roomCharge + roomServiceCharge)*tax*(1.0-discountPromo);
+		taxCharge = (roomCharge + roomServiceCharge)*tax;
+		totalBill = (roomCharge + roomServiceCharge + taxCharge)*(1.0-discountPromo);
 	}
 	
 	public void printBill() {
-		System.out.println("Room charges: " + roomCharge);	
-		System.out.println("Room service charges: " + roomServiceCharge); 
-		System.out.println("Tax: " + tax);
-		System.out.println("Total amount due: " + totalBill);
+		System.out.println("Room charges: $" + df.format(roomCharge));	
+		System.out.println("Room service charges: $" + df.format(roomServiceCharge)); 
+		System.out.println("Tax: " + df.format(tax*100) + "%, $" + df.format(taxCharge));
+		System.out.println("Total amount due: $" + df.format(totalBill));
 		if(discountPromo == 0.0) {
 			System.out.println("Promo code discount: NIL");
 		}
 		else {
-			System.out.println("Promo code discount: " + discountPromo*100 + "% Off");
+			System.out.println("Promo code discount: " + df.format(discountPromo*100) + "% Off");
 		}
 	}
 	
 	public void printInvoice(String roomNum) {
 		System.out.println("Number of days stayed: " + numOfDays);
-		System.out.println("Room service charges: " + roomServiceCharge);
-		System.out.println("Tax: " + tax);
-		System.out.println("Total amount due: " + totalBill);
-		printAllItems(roomNum);
+		System.out.println("Room charges: $" + df.format(roomCharge));	
+		System.out.println("Room service charges: $" + df.format(roomServiceCharge));
+		if(roomServiceCharge==0.0) {
+			System.out.println("No room service items.");
+		}
+		else {
+			printAllItems(roomNum);
+		}
+		System.out.println("Tax: " + df.format(tax*100) + "%, $" + df.format(taxCharge));
+		System.out.println("Total amount due: " + df.format(totalBill));
 	}
 	
 }
