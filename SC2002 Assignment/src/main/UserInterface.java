@@ -37,10 +37,13 @@ public class UserInterface {
 			choice = sc.nextLine();
 			switch(choice) {
 				case "1":
-					updateGuestUI(gm, sc);
+					gm.updateGuest();
+					//updateGuestUI(gm, sc);
 					break;
 				case "2":
-					if(gm.getGuestList().size() == 0) {
+					gm.searchGuest();
+					break;
+					/*if(gm.getGuestList().size() == 0) {
 						System.out.println("There are no guests registered in the hotel.");
 						return;
 					}
@@ -69,7 +72,7 @@ public class UserInterface {
 					}
 					else
 						System.out.println("Guest does not exist.");
-					break;
+					break; */
 				case "3":
 					System.out.print("Enter guest ID to remove: ");
 					gm.removeGuest(sc.nextLine());
@@ -83,7 +86,7 @@ public class UserInterface {
 		} while (!choice.equals("4"));
 	}
 	
-	public static void updateGuestUI(GuestManager gm, Scanner sc) {
+	/*public static void updateGuestUI(GuestManager gm, Scanner sc) {
 		System.out.print("Enter guest ID: ");
 		String id = sc.nextLine();
 		Guest g = gm.findById(id);
@@ -212,7 +215,7 @@ public class UserInterface {
 			System.out.println("The date is invalid.");
 		}
 		return null;
-	}
+	} */
 	
 	
 	public static void reservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
