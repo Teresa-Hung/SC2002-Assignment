@@ -528,93 +528,101 @@ public class UserInterface {
 		}
 		guestRoom = payingGuest.getRoomNum();
 		reservCode = payingGuest.getReservCode();
-		rv = resm.searchReserv(reservCode);
-		
-		Payment pay = new Payment(rv);
-		
-		do {
-			System.out.print("------------------------\n"
-						   + "Payment Menu:\n"
-						   + "(1) Make Payment\n"
-						   + "(2) Print Invoice\n"
-						   + "(3) Checkout\n"
-						   + "(4) Occupancy Report\n"
-						   + "(5) Exit"
-						   + "------------------------\n"
-						   + "Enter option: ");
-			choice = sc.nextLine();
-			switch(choice) {
-				case "1":
-					if(payingGuest.getPaid() == 1){
-						System.out.println("Payment already made!\n");
-					}
-					else{
-						// bill before promo code
-						pay.calculateTotal(rv);
-						pay.printBill();
-						
-						// bill after promo code
-						System.out.print("------------------------\n"
-								   + "Promo Available:\n"
-								   + "(0) NIL\n"
-								   + "(1) 10%\n"
-								   + "(2) 15%\n"
-								   + "(3) 20%\n"
-								   + "------------------------\n"
-								   + "Enter option: ");
-						pay.setPromo(sc.nextInt());
-						pay.calculateTotal(rv);
-						pay.printBill();
-						
-						// payment type
-						System.out.print("------------------------\n"
-								   + "Payment Type:\n"
-								   + "(1) Cash\n"
-								   + "(2) Credit Card\n"
-								   + "------------------------\n"
-								   + "Enter option: ");
-						switch(sc.nextLine()) {
-							case "1": 
-								System.out.println("Cash payment successful!\n");
-								payingGuest.setPaid(1);
-								break;
-							case "2":
-								gm.displayBillingDetails(payingGuest);
-								System.out.println("Card payment successful!\n");
-								payingGuest.setPaid(1);
-								break;
-							default:
-								System.out.println("Invalid choice.");
+		try{
+			rv = resm.searchReserv(reservCode);
+			System.out.println("Hello " + payingGuest.getFName());
+			
+			Payment pay = new Payment(rv);
+			
+			do {
+				System.out.print("------------------------\n"
+							   + "Payment Menu:\n"
+							   + "(1) Make Payment\n"
+							   + "(2) Print Invoice\n"
+							   + "(3) Checkout\n"
+							   + "(4) Occupancy Report\n"
+							   + "(5) Exit\n"
+							   + "------------------------\n"
+							   + "Enter option: ");
+				
+				choice = sc.nextLine();
+				switch(choice) {
+					case "1":
+						if(payingGuest.getPaid() == 1){
+							System.out.println("Payment already made!\n");
 						}
-					}
-					break;
-				case "2":
-					if(payingGuest.getPaid() == 0) {
-						System.out.println("Payment has not been made!\n");
-					}
-					else {
-						//print final invoice
-						pay.printInvoice(guestRoom);
-					}
-					break;
-				case "3": 
-					if (payingGuest.getPaid() == 1) {
-						rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
-						resm.removeReservRecord(reservCode);
-						gm.removeGuest(reservCode);
-					}
-					else {
-						System.out.println("Payment has not been made!\n");
-					}
-					break;
-				case "4":
-					rm.printOccupancyReport();
-					break;
-				case "5":
-					break;
-				default:
-					System.out.println("Invalid choice.");
-			}
-		} while (!choice.equals("5"));
+						else{
+							// bill before promo code
+							pay.calculateTotal(rv);
+							pay.printBill();
+							
+							// bill after promo code
+							System.out.print("------------------------\n"
+									   + "Promo Available:\n"
+									   + "(0) NIL\n"
+									   + "(1) 10%\n"
+									   + "(2) 15%\n"
+									   + "(3) 20%\n"
+									   + "------------------------\n"
+									   + "Enter option: ");
+							pay.setPromo(sc.nextInt());
+							pay.calculateTotal(rv);
+							pay.printBill();
+							
+							// payment type
+							System.out.print("------------------------\n"
+									   + "Payment Type:\n"
+									   + "(1) Cash\n"
+									   + "(2) Credit Card\n"
+									   + "------------------------\n"
+									   + "Enter option: ");
+							switch(sc.nextInt()) {
+								case 1: 
+									System.out.println("Cash payment successful!\n");
+									payingGuest.setPaid(1);
+									break;
+								case 2:
+									gm.displayBillingDetails(payingGuest);
+									System.out.println("Card payment successful!\n");
+									payingGuest.setPaid(1);
+									break;
+								default:
+									System.out.println("Invalid choice.");
+							}
+						}
+						break;
+					case "2":
+						if(payingGuest.getPaid() == 0) {
+							System.out.println("Payment has not been made!\n");
+						}
+						else {
+							//print final invoice
+							pay.printInvoice(guestRoom);
+						}
+						break;
+					case "3": 
+						if (payingGuest.getPaid() == 1) {
+							rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
+							resm.removeReservRecord(reservCode);
+							gm.removeGuest(reservCode);
+						}
+						else {
+							System.out.println("Payment has not been made!\n");
+						}
+						break;
+					case "4":
+						rm.printOccupancyReport();
+						break;
+					case "5":
+						break;
+					default:
+						System.out.println("Invalid choice.");
+				}
+			} while (!choice.equals("5"));
+		}
+		catch(NullPointerException e)
+        {
+            System.out.print("No guest!!\n");
+        }
 	}
 }
