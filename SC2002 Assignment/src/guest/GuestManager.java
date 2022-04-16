@@ -148,9 +148,9 @@ public class GuestManager implements ReadWrite {
 		guestList.add(g);
 	}
 
-	public void removeGuest(String id) {
+	public void removeGuest(String reservCode) {
 		for(Guest g: guestList)
-			if(g.getId().toLowerCase().equals(id.toLowerCase())) {
+			if(g.getReservCode().toLowerCase().equals(reservCode.toLowerCase())) {
 			   guestList.remove(g);
 			   System.out.println("Guest removed.");
 			   return;
@@ -349,7 +349,7 @@ public class GuestManager implements ReadWrite {
 	public void displayBillingDetails(Guest g) {
 		String strReplacement = "************";
 		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
-        	String newString = strReplacement + lastFourNum;
+        String newString = strReplacement + lastFourNum;
 		System.out.println("Billing Details: ");
 		System.out.println("Holder Name: " + g.getHolderFName() + " " + g.getHolderLName());
 		System.out.println("Credit Card Number: " + newString);
