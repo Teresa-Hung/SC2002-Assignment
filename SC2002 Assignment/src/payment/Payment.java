@@ -87,7 +87,7 @@ public class Payment {
 		}
 	}
 	
-	private void getRoomServiceCharge(String roomId) throws IOException {
+	private void getRoomServiceCharge(String roomId){
 		OrderManager om = new OrderManager();
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
@@ -98,7 +98,7 @@ public class Payment {
 		
 	}
 	
-	private void printAllItems(String roomId) throws IOException{
+	private void printAllItems(String roomId){
 		OrderManager om = new OrderManager();
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
@@ -123,7 +123,7 @@ public class Payment {
 		
 	}
 	
-	public void calculateTotal(Reservation rv) throws IOException {
+	public void calculateTotal(Reservation rv) {
 		getRoomCharge(rv.getReservCode());
 		getRoomServiceCharge(rv.getRoom().getRoomNumber());
 		totalBill = (roomCharge + roomServiceCharge)*tax*(1.0-discountPromo);
@@ -142,7 +142,7 @@ public class Payment {
 		}
 	}
 	
-	public void printInvoice(String roomNum) throws IOException {
+	public void printInvoice(String roomNum){
 		System.out.println("Number of days stayed: " + numOfDays);
 		System.out.println("Room service charges: " + roomServiceCharge);
 		System.out.println("Tax: " + tax);
