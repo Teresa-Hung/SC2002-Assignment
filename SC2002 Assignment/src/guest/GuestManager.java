@@ -235,7 +235,7 @@ public class GuestManager implements ReadWrite {
 			System.out.println("Guest does not exist.");
 			return;
 		}
-		g.displayGuestDetails();
+		gm.displayGuestDetails();
 		System.out.println("-------------------------------\n"
 						 + "Update Guest Menu:\n"
 						 + "(1) Update first and last name.\n"
