@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.FileInputStream;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -96,6 +97,24 @@ public class OrderManager implements ReadWrite {
 		for (Order order: orderList) {
 			if (order.getRoom().equals(roomNumber))
 				order.printOrder();
+		}
+	}
+	
+	public ArrayList<Order> getRoomCurrentOrders(String roomNumber) {
+		ArrayList<Order> roomOrders = new ArrayList<>();
+		for (Order order: orderList) {
+			if (order.getRoom().equals(roomNumber))
+				roomOrders.add(order);
+		}
+		return roomOrders;
+	}
+	
+	public void removeRoomCurrentOrders(String roomNumber) {
+		Iterator<Order> itr = orderList.iterator();
+		while (itr.hasNext()) {
+			Order order = itr.next();
+			if (order.getRoom().equals(roomNumber))
+				itr.remove();
 		}
 	}
 	
