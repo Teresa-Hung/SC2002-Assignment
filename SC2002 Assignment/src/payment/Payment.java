@@ -15,7 +15,7 @@ import reservation.ReservationManager;
 
 public class Payment {
 	
-	private int i, promoCode;
+	private int i;
 	private long numOfItems;
 	private long numOfDays;
 	private double baseCharge;
@@ -30,7 +30,7 @@ public class Payment {
 	private final double tax = 0.07;
 	
 	public Payment(Reservation rv) {
-		numOfDays = numOfItems = i = promoCode = 0;
+		numOfDays = numOfItems = i = 0;
 		baseCharge = dayTypeCharge = roomCharge = roomServiceCharge = discountPromo = totalBill = 0.0;
 		dateIn = rv.getCheckInDate();
 		dateOut = rv.getCheckOutDate();
