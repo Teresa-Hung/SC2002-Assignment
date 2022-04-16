@@ -15,7 +15,7 @@ import reservation.ReservationManager;
 
 public class Payment {
 	
-	int i, promoCode;
+	private int i, promoCode;
 	private long numOfItems;
 	private long numOfDays;
 	private double baseCharge;
