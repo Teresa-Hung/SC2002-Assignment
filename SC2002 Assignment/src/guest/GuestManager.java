@@ -160,8 +160,8 @@ public class GuestManager implements ReadWrite {
 	}
 	
 	
-	public void searchGuest(GuestManager gm, Scanner sc) { 
-		if(gm.getGuestList().size() == 0) {
+	public void searchGuest() { 
+		if(getGuestList().size() == 0) {
 			System.out.println("There are no guests registered in the hotel.");
 			return;
 		}
@@ -172,7 +172,7 @@ public class GuestManager implements ReadWrite {
 			case "1":
 				System.out.print("Enter guest ID: ");
 				String tempId = sc.nextLine();
-				g = gm.findById(tempId);
+				g = findById(tempId);
 				break;
 			case "2":
 				System.out.println("Enter first name and last name: ");
@@ -180,14 +180,14 @@ public class GuestManager implements ReadWrite {
 				String lname = sc.next();
 				if (sc.hasNextLine()) 
 					sc.nextLine();
-				g = gm.findByName(fname, lname);
+				g = findByName(fname, lname);
 				break;
 			default:
 				System.out.println("Invalid option.");
 		}
 		if(g != null) {
 			System.out.println("Guest found.");
-			g.displayGuestDetails();
+			displayGuestDetails(g);
 			return;
 		}
 		else{
@@ -196,15 +196,15 @@ public class GuestManager implements ReadWrite {
 		}
 	}
 	
-	public void updateGuest(GuestManager gm, Scanner sc) {
+	public void updateGuest() {
 		System.out.print("Enter guest ID: ");
 		String id = sc.nextLine();
-		Guest g = gm.findById(id);
+		Guest g = findById(id);
 		if (g == null) {
 			System.out.println("Guest does not exist.");
 			return;
 		}
-		gm.displayGuestDetails(g);
+		displayGuestDetails(g);
 		System.out.println("-------------------------------\n"
 						 + "Update Guest Menu:\n"
 						 + "(1) Update first and last name.\n"
@@ -280,10 +280,10 @@ public class GuestManager implements ReadWrite {
 			default:
 				System.out.println("Invalid option.");
 		}
-		gm.saveGuest();
+		saveGuest();
 	}
 	
-	public Guest createGuest(GuestManager gm, Scanner sc) {
+	public Guest createGuest() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		try {
 			Guest guest = new Guest();
