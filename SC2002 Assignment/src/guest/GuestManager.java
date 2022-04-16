@@ -358,34 +358,34 @@ public class GuestManager implements ReadWrite {
 		return null;
 	}
 	
-	public void displayGuestDetails() {
+	public void displayGuestDetails(Guest g) {
 		String strReplacement = "************";
-        	String lastFourNum = ccNum.substring(ccNum.length() - 4);
+       		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
         	String newString = strReplacement + lastFourNum;
-		System.out.println("First Name: " + firstName);
-		System.out.println("Last Name: " + lastName);
-		System.out.println("ID: " + id);
-		System.out.println("Contact Number: " + contactNum);
-		System.out.println("Email: " + email);
-		System.out.println("Country: " + country);
-		System.out.println("Gender: " + gender);
-		System.out.println("Nationality: " + nationality);
+		System.out.println("First Name: " + g.getFName());
+		System.out.println("Last Name: " + g.getLName());
+		System.out.println("ID: " + g.getId());
+		System.out.println("Contact Number: " + g.getContact());
+		System.out.println("Email: " + g.getEmail());
+		System.out.println("Country: " + g.getCountry());
+		System.out.println("Gender: " + g.getGender());
+		System.out.println("Nationality: " + g.getNatlity());
 		System.out.println("Credit Card Details: ");
-		System.out.println("Holder Name: " + holderFName + " " + holderLName);
+		System.out.println("Holder Name: " + g.getHolderFName() + " " + g.getHolderLName());
 		System.out.println("Credit Card Number: " + newString);
-		System.out.println("Expiry Date: " + expiryDate);
-		System.out.println("Billing Address: " + billAddr);
-		System.out.println("Reservation Code: " + reservCode);
-		System.out.println("Room Number: " + roomNum);
+		System.out.println("Expiry Date: " + g.getExpDate());
+		System.out.println("Billing Address: " + g.getBillAddr());
+		System.out.println("Reservation Code: " + g.getReservCode());
+		System.out.println("Room Number: " + g.getRoomNum());
 	}
 	
-	public void displayBillingDetails() {
+	public void displayBillingDetails(Guest g) {
 		String strReplacement = "************";
-        	String lastFourNum = ccNum.substring(ccNum.length() - 4);
+		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
         	String newString = strReplacement + lastFourNum;
-		System.out.println("Credit Card Details: ");
-		System.out.println("Holder Name: " + holderFName + " " + holderLName);
+		System.out.println("Billing Details: ");
+		System.out.println("Holder Name: " + g.getHolderFName() + " " + g.getHolderLName());
 		System.out.println("Credit Card Number: " + newString);
-		System.out.println("Billing Address: " + billAddr);
+		System.out.println("Billing Address: " + g.getBillAddr());
 	}
 }
