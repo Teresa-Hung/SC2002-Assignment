@@ -26,13 +26,14 @@ public class UserInterface {
 	public static void guestUI(GuestManager gm, Scanner sc) {
 		String choice;
 		do {
-			System.out.print("-------------------------\n"
-						   + "Guest Menu:\n"
-						   + "(1) Update Guest Details.\n"
-						   + "(2) Search Guest.\n"
-						   + "(3) Remove Guest.\n"
-						   + "(4) Exit.\n"
-						   + "-------------------------\n"
+			System.out.print("========================\n"
+						   + "      Guest Menu:\n"
+						   + "========================\n"
+						   + "(1) Update Guest Details\n"
+						   + "(2) Search Guest\n"
+						   + "(3) Remove Guest\n"
+						   + "(4) Return to Main Menu\n"
+						   + "========================\n"
 						   + "Enter option: ");
 			choice = sc.nextLine();
 			switch(choice) {
@@ -86,14 +87,16 @@ public class UserInterface {
 	public static void reservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
 		String choice;
 		do {
-			System.out.println("-----------------------------\n"
-							 + "Reservation Menu:\n"
-							 + "(1) Create Reservation.\n"
-							 + "(2) Update Reservation.\n"
-							 + "(3) Remove Reservation.\n"
-							 + "(4) Print Reservation Status.\n"
-							 + "(5) Exit\n"
-							 + "-----------------------------");
+			System.out.print("============================\n"
+						   + "     Reservation Menu:\n"
+						   + "============================\n"
+						   + "(1) Create Reservation\n"
+						   + "(2) Update Reservation\n"
+						   + "(3) Remove Reservation\n"
+						   + "(4) Print Reservation Status\n"
+						   + "(5) Return to Main Menu\n"
+						   + "============================\n"
+						   + "Enter option: ");
 			choice = sc.nextLine();
 			switch(choice) {
 			case "1":
@@ -105,7 +108,6 @@ public class UserInterface {
 				reserv.setReservCode(reservCode);
 				
 				// create guest
-				
 				Guest g = gm.createGuest(sc);
 				if (g == null) return;
 				reserv.setGuest(g);
@@ -134,26 +136,36 @@ public class UserInterface {
 						continue;
 					}
 				}
-				
-				try {
-					// get check-in and check-out date
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-					System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
-					reserv.setCheckInDate(LocalDate.parse(sc.nextLine(), formatter));
-					System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
-					reserv.setCheckOutDate(LocalDate.parse(sc.nextLine(), formatter));
-					
-					// get number of adults/children
-					System.out.println("Enter the Number of Adults: ");
-					reserv.setNumAdult(Integer.parseInt(sc.nextLine()));
-					System.out.println("Enter the Number of Children: ");
-					reserv.setNumChild(Integer.parseInt(sc.nextLine()));
-				} catch (NumberFormatException e) {
-					System.out.println("Invalid number entered.");
-					return;
-				} catch (DateTimeParseException e) {
-					System.out.println("The date is invalid.");
-					return;
+				while (true) {
+					try {
+						// get check-in and check-out date
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
+						LocalDate checkInDate = LocalDate.parse(sc.nextLine(), formatter);
+						System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
+						LocalDate checkOutDate = LocalDate.parse(sc.nextLine(), formatter);
+						if (resm.checkDates(checkInDate, checkOutDate)) {
+							reserv.setCheckInDate(checkInDate);
+							reserv.setCheckOutDate(checkOutDate);
+							break;
+						}
+					} catch (DateTimeParseException e) {
+						System.out.println("The date is invalid.");
+						continue;
+					}
+				}
+				while (true) {
+					try {
+						// get number of adults/children
+						System.out.println("Enter the Number of Adults: ");
+						reserv.setNumAdult(Integer.parseInt(sc.nextLine()));
+						System.out.println("Enter the Number of Children: ");
+						reserv.setNumChild(Integer.parseInt(sc.nextLine()));
+						break;
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid number entered.");
+						continue;
+					}
 				}
 				
 				// success
@@ -186,8 +198,7 @@ public class UserInterface {
 	}
 	
 	public static void updateReservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
-		System.out.println("Update reservation...");
-		System.out.println("Please enter the reservation code: ");
+		System.out.print("Enter the reservation code: ");
 		String code = sc.nextLine();
 
 		// find the target reservation
@@ -195,14 +206,17 @@ public class UserInterface {
 		if (target == null) return; // target does not exist
 
 		// update
-		System.out.println("--------------------------------------------------\n"
-						 + "Please choose the detail you would like to update."
-						 + "(1): Check-in date\n"
-						 + "(2): Check-out date\n"
-						 + "(3): Room\n"
-						 + "(4): Number of Adults\n"
-						 + "(5): Number of Children\n"
-						 + "--------------------------------------------------");
+		System.out.print("==============================\n"
+					   + "     Update Details Menu:\n"
+					   + "==============================\n"
+					   + "(1) Check-in date\n"
+					   + "(2) Check-out date\n"
+					   + "(3) Room\n"
+					   + "(4) Number of Adults\n"
+					   + "(5) Number of Children\n"
+					   + "(6) Return to Reservation Menu\n"
+					   + "==============================\n"
+					   + "Enter option: ");
 		switch (sc.nextLine()) {
 		case "1":
 			System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
@@ -253,6 +267,8 @@ public class UserInterface {
 			}
 			System.out.println("Number of Children updated to " + target.getNumChild());
 			break;
+		case "6":
+			break;
 		default:
 			System.out.println("Invalid option.");
 		}
@@ -261,16 +277,17 @@ public class UserInterface {
 	public static void roomUI(RoomManager rm, Scanner sc) {
 		String choice;
 		do {
-			System.out.print("-------------------------------\n"
-						+ "Room Menu:\n"
-			        	+ "(1) Print Room Occupancy Report\n"
-			        	+ "(2) Print Room Status Report\n"
-			        	+ "(3) Print Room Report\n"
-			        	+ "(4) Print Room Details\n"
-			        	+ "(5) Update Room Details\n"
-			        	+ "(6) Return to Main Menu\n"
-			        	+ "-------------------------------\n"
-			        	+ "Enter option: ");
+			System.out.print("===============================\n"
+						   + "           Room Menu:\n"
+						   + "===============================\n"
+			        	   + "(1) Print Room Occupancy Report\n"
+			        	   + "(2) Print Room Status Report\n"
+			        	   + "(3) Print Room Report\n"
+			        	   + "(4) Print Room Details\n"
+			        	   + "(5) Update Room Details\n"
+			        	   + "(6) Return to Main Menu\n"
+			        	   + "===============================\n"
+			        	   + "Enter option: ");
 			choice = sc.nextLine();
 			switch (choice) {
 			case "1":
@@ -302,18 +319,20 @@ public class UserInterface {
 		System.out.print("Enter room number: ");
 		String roomNumber = sc.nextLine();
 		if (rm.findRoom(roomNumber) == null) return;
-		System.out.print("--------------------\n"
-				+ "Update Details Menu:\n"
-				+ "(1) Room Number\n"
-				+ "(2) Room Type\n"
-				+ "(3) Bed Type\n"
-				+ "(4) Room Status\n"
-				+ "(5) Toggle WiFi\n"
-				+ "(6) Toggle Smoking\n"
-				+ "(7) Toggle Balcony\n"
-				+ "(8) Max Size\n"
-				+ "--------------------\n"
-				+ "Enter option: ");
+		System.out.print("=======================\n"
+					   + "  Update Details Menu:\n"
+					   + "=======================\n"
+					   + "(1) Room Number\n"
+					   + "(2) Room Type\n"
+					   + "(3) Bed Type\n"
+					   + "(4) Room Status\n"
+					   + "(5) Toggle WiFi\n"
+					   + "(6) Toggle Smoking\n"
+					   + "(7) Toggle Balcony\n"
+					   + "(8) Max Size\n"
+					   + "(9) Return to Room Menu\n"
+					   + "=======================\n"
+					   + "Enter option: ");
 		switch (sc.nextLine()) {
 		case "1":
 			System.out.print("Enter new room number: ");
@@ -347,6 +366,8 @@ public class UserInterface {
 			System.out.print("Enter new max size: ");
 			rm.updateRoomMaxSize(roomNumber, sc.nextLine());
 			break;
+		case "9":
+			break;
 		default:
 			System.out.println("Invalid option.");
 		}
@@ -358,8 +379,9 @@ public class UserInterface {
 		double price;
 		int number;
 		do {
-			System.out.print("------------------------\n"
-						   + "Room Service Menu:\n"
+			System.out.print("========================\n"
+						   + "   Room Service Menu:\n"
+						   + "========================\n"
 						   + "(1) Create Order\n"
 						   + "(2) Delete Order\n"
 						   + "(3) Print Order List\n"
@@ -368,8 +390,8 @@ public class UserInterface {
 						   + "(6) Remove Menu Item\n"
 						   + "(7) Print Menu\n"
 						   + "(8) Update Menu Item\n"
-						   + "(9) Exit\n"
-						   + "------------------------\n"
+						   + "(9) Return to Main Menu\n"
+						   + "========================\n"
 						   + "Enter option: ");
 			choice = sc.nextLine();
 			switch(choice) {
@@ -528,101 +550,102 @@ public class UserInterface {
 		}
 		guestRoom = payingGuest.getRoomNum();
 		reservCode = payingGuest.getReservCode();
-		try{
-			rv = resm.searchReserv(reservCode);
-			System.out.println("Hello " + payingGuest.getFName());
-			
-			Payment pay = new Payment(rv);
-			
-			do {
-				System.out.print("------------------------\n"
-							   + "Payment Menu:\n"
-							   + "(1) Make Payment\n"
-							   + "(2) Print Invoice\n"
-							   + "(3) Checkout\n"
-							   + "(4) Occupancy Report\n"
-							   + "(5) Exit\n"
-							   + "------------------------\n"
-							   + "Enter option: ");
-				
-				choice = sc.nextLine();
-				switch(choice) {
-					case "1":
-						if(payingGuest.getPaid() == 1){
-							System.out.println("Payment already made!\n");
-						}
-						else{
-							// bill before promo code
-							pay.calculateTotal(rv);
-							pay.printBill();
-							
-							// bill after promo code
-							System.out.print("------------------------\n"
-									   + "Promo Available:\n"
-									   + "(0) NIL\n"
-									   + "(1) 10%\n"
-									   + "(2) 15%\n"
-									   + "(3) 20%\n"
-									   + "------------------------\n"
-									   + "Enter option: ");
-							pay.setPromo(sc.nextInt());
-							pay.calculateTotal(rv);
-							pay.printBill();
-							
-							// payment type
-							System.out.print("------------------------\n"
-									   + "Payment Type:\n"
-									   + "(1) Cash\n"
-									   + "(2) Credit Card\n"
-									   + "------------------------\n"
-									   + "Enter option: ");
-							switch(sc.nextInt()) {
-								case 1: 
-									System.out.println("Cash payment successful!\n");
-									payingGuest.setPaid(1);
-									break;
-								case 2:
-									gm.displayBillingDetails(payingGuest);
-									System.out.println("Card payment successful!\n");
-									payingGuest.setPaid(1);
-									break;
-								default:
-									System.out.println("Invalid choice.");
-							}
-						}
-						break;
-					case "2":
-						if(payingGuest.getPaid() == 0) {
-							System.out.println("Payment has not been made!\n");
-						}
-						else {
-							//print final invoice
-							pay.printInvoice(guestRoom);
-						}
-						break;
-					case "3": 
-						if (payingGuest.getPaid() == 1) {
-							rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
-							resm.removeReservRecord(reservCode);
-							gm.removeGuest(reservCode);
-						}
-						else {
-							System.out.println("Payment has not been made!\n");
-						}
-						break;
-					case "4":
-						rm.printOccupancyReport();
-						break;
-					case "5":
-						break;
-					default:
-						System.out.println("Invalid choice.");
+
+		rv = resm.searchReserv(reservCode);
+		Payment pay = new Payment(rv);
+		
+		do {
+			System.out.print("=======================\n"
+						   + "     Payment Menu:\n"
+						   + "=======================\n"
+						   + "(1) Make Payment\n"
+						   + "(2) Print Invoice\n"
+						   + "(3) Checkout\n"
+						   + "(4) Occupancy Report\n"
+						   + "(5) Return to Main Menu\n"
+						   + "=======================\n"
+						   + "Enter option: ");
+			choice = sc.nextLine();
+			switch(choice) {
+			case "1":
+				if(payingGuest.getPaid() == 1){
+					System.out.println("Payment already made!\n");
 				}
-			} while (!choice.equals("5"));
-		}
-		catch(NullPointerException e)
-        {
-            System.out.print("No guest!!\n");
-        }
+				else {
+					// bill before promo code
+					pay.calculateTotal(rv);
+					pay.printBill();
+					
+					// bill after promo code
+					System.out.print("================\n"
+								   + "Promo Available:\n"
+								   + "================\n"
+								   + "(0) NIL\n"
+								   + "(1) 10%\n"
+								   + "(2) 15%\n"
+								   + "(3) 20%\n"
+								   + "================\n"
+								   + "Enter option: ");
+					try {
+						pay.setPromo(Integer.parseInt(sc.nextLine()));
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid option.");
+						return;
+					}
+					pay.calculateTotal(rv);
+					System.out.println("---new bill after promo---");
+					pay.printBill();
+					
+					// payment type
+					System.out.print("===============\n"
+								   + " Payment Type:\n"
+								   + "===============\n"
+								   + "(1) Cash\n"
+								   + "(2) Credit Card\n"
+								   + "===============\n"
+								   + "Enter option: ");
+					switch(sc.nextLine()) {
+						case "1": 
+							System.out.println("Cash payment successful!\n");
+							payingGuest.setPaid(1);
+							break;
+						case "2":
+							gm.displayBillingDetails(payingGuest);
+							System.out.println("Card payment successful!\n");
+							payingGuest.setPaid(1);
+							break;
+						default:
+							System.out.println("Invalid option.");
+					}
+				}
+				break;
+			case "2":
+				if(payingGuest.getPaid() == 0) {
+					System.out.println("Payment has not been made!\n");
+				}
+				else {
+					//print final invoice
+					pay.printInvoice(guestRoom);
+				}
+				break;
+			case "3": 
+				if (payingGuest.getPaid() == 1) {
+					rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
+					resm.removeReservRecord(reservCode);
+					gm.removeGuest(reservCode);
+				}
+				else {
+					System.out.println("Payment has not been made!\n");
+				}
+				break;
+			case "4":
+				rm.printOccupancyReport();
+				break;
+			case "5":
+				break;
+			default:
+				System.out.println("Invalid option.");
+			}
+		} while (!choice.equals("5"));
 	}
 }

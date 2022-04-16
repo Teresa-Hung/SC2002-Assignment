@@ -1,4 +1,4 @@
-0201|SINGLE|QUEEN|VACANT|true|false|false|1|
+0201|SINGLE|QUEEN|RESERVED|true|false|false|1|
 0202|SINGLE|QUEEN|VACANT|true|false|false|1|
 0203|SINGLE|QUEEN|VACANT|true|false|false|1|
 0204|SINGLE|QUEEN|VACANT|true|false|false|1|

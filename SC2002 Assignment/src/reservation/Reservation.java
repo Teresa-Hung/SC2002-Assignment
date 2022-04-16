@@ -5,7 +5,6 @@ import java.time.*;
 import room.*;
 import room.Room.*;
 import guest.*;
-import guest.GuestManager;
 
 public class Reservation {
 
@@ -51,30 +50,39 @@ public class Reservation {
 	public int getNumChild() {return numChild;}
 
 	// other methods
-	// check check-in/out dates are valid
-	public boolean checkDates(LocalDate dCI, LocalDate dCO) {
-		if (dCI.compareTo(dCO) > 0) {
-			System.out.println("The scheduled check-in and check-out dates are invalid.");
-			return false;
-		}
-		return true;
-	}
-	
 	public void printReceipt() {
 		System.out.println("\n-----the reservation acknowledgement receipt is shown as below-----");
-		//System.out.printf("Reservation Code: %s\n", reservCode);
+		
 		// guest details & billing info
-		GuestManager gm = new GuestManager();
-		gm.displayGuestDetails(guest);
-		//System.out.printf("Room number: %s\n", room.getRoomNumber());
+		System.out.println("\n---Guest Details---");
+		System.out.println("First Name: " + guest.getFName());
+		System.out.println("Last Name: " + guest.getLName());
+		System.out.println("Gender: " + guest.getGender());
+		System.out.println("ID: " + guest.getId());
+		System.out.println("Contact Number: " + guest.getContact());
+		System.out.println("Email: " + guest.getEmail());
+		System.out.println("Country: " + guest.getCountry());
+		System.out.println("Nationality: " + guest.getNatlity());
+		
+		String strReplacement = "************";
+       	String lastFourNum = guest.getCcNum().substring(guest.getCcNum().length() - 4);
+        String newString = strReplacement + lastFourNum;
+		System.out.println("\n---Credit Card Details---");
+		System.out.println("Holder Name: " + guest.getHolderFName() + " " + guest.getHolderLName());
+		System.out.println("Credit Card Number: " + newString);
+		System.out.println("Expiry Date: " + guest.getExpDate());
+		System.out.println("Billing Address: " + guest.getBillAddr());
+		
+		// reservation details
+		System.out.println("\n---Reservation Details---");
+		System.out.println("Reservation Code: " + guest.getReservCode());
+		System.out.println("Room Number: " + guest.getRoomNum());
 		System.out.printf("Room type: %s\n", room.getRoomType());
 		System.out.printf("Bed type: %s\n", room.getBedType());
 		System.out.printf("Check-in Date: %s %s\n", dateCheckIn, getCheckInDay());
 		System.out.printf("Check-out Date: %s %s\n", dateCheckOut, getCheckOutDay());
 		System.out.printf("No. of Adults: %d\n", numAdult);
 		System.out.printf("No. of Children: %d\n", numChild);
-		System.out.printf("Reservation Status: ");
-		System.out.println(reservStatus);
-		System.out.printf("\n\n");
+		System.out.println("Reservation Status: " + reservStatus + "\n");
 	}
 }

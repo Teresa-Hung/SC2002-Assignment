@@ -16,15 +16,23 @@ public class mainApp {
 		OrderManager om = new OrderManager();
 		
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Hotel reservation system!");
+		System.out.println("========================\n"
+						 + " Hotel Reservation and\n"
+						 + "    Payment System!\n"
+						 + "========================");
 		String choice;
 		do {
-			System.out.println("(1) Guest Information.\n"
-							 + "(2) Reservation Information.\n"
-							 + "(3) Room Information.\n"
-							 + "(4) Room Service Information.\n"
-							 + "(5) Payment Information.\n"
-							 + "(6) Quit");
+			System.out.print("========================\n"
+						   + "       Main Menu:\n"
+						   + "========================\n"
+						   + "(1) Manage Guests\n"
+						   + "(2) Manage Reservations\n"
+						   + "(3) Manage Rooms\n"
+						   + "(4) Manage Room Services\n"
+						   + "(5) Make Payment\n"
+						   + "(6) Save and Quit\n"
+						   + "========================\n"
+						   + "Enter option: ");
 			choice = sc.nextLine();
 			switch(choice) {
 				case "1":
@@ -45,6 +53,7 @@ public class mainApp {
 				case "6":
 					resm.writeReservation();// save reservation list
 					gm.saveGuest(); 		//save guest list
+					rm.saveRoomList();
 					System.out.print("Quitting...");
 					break;
 				default:

@@ -22,19 +22,19 @@ public class Guest {
 
 	//constructor
 	public Guest(){
-		firstName = null;
-		lastName = null;
-		contactNum = null;
-		country = null;
-		gender = null;
-		nationality = null;
-		id = null;
-		email = null;
-		holderFName = null;
-		holderLName = null;
-		ccNum = null;
+		firstName = "-";
+		lastName = "-";
+		contactNum = "-";
+		country = "-";
+		gender = "-";
+		nationality = "-";
+		id = "-";
+		email = "-";
+		holderFName = "-";
+		holderLName = "-";
+		ccNum = "-";
 		expiryDate = null;
-		billAddr = null;
+		billAddr = "-";
 		roomNum = "0";
 		paid = 0;
 		reservCode = "0";

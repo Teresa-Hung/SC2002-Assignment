@@ -2,4 +2,4 @@
 15.0|Fish|Steamed|
 20.0|Beef|Fried|
 25.0|Salmon|Fried|
-30.0|Chickin|Roasted|
+30.0|Chicken|Roasted|

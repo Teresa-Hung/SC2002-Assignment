@@ -103,10 +103,9 @@ public class GuestManager implements ReadWrite {
 	public void write(String filename, List<String> data) {
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(filename));
-			for(int i=0;i<data.size();i++) {
+			for(int i=0;i<data.size();i++)
 				out.println(data.get(i));
 			out.close();
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -116,9 +115,8 @@ public class GuestManager implements ReadWrite {
 		ArrayList<String> data = new ArrayList<>();
 		try {
 			Scanner scanner = new Scanner(new FileInputStream(filename));
-			while(scanner.hasNextLine()) {
+			while(scanner.hasNextLine())
 				data.add(scanner.nextLine());
-			}
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -203,19 +201,20 @@ public class GuestManager implements ReadWrite {
 			return;
 		}
 		displayGuestDetails(g);
-		System.out.println("-------------------------------\n"
-						 + "Update Guest Menu:\n"
-						 + "(1) Update first and last name.\n"
-						 + "(2) Update ID.\n"
-						 + "(3) Update contact number.\n"
-						 + "(4) Update email.\n"
-						 + "(5) Update country.\n"
-					 	 + "(6) Update gender.\n"
-					 	 + "(7) Update nationality.\n"
-			 			 + "(8) Update credit card details.\n"
-			 			 + "(9) Exit\n"
-			 			 + "-------------------------------\n"
-		 				 + "Enter option:");
+		System.out.print("==============================\n"
+					   + "     Update Guest Menu:\n"
+					   + "==============================\n"
+					   + "(1) Update first and last name\n"
+					   + "(2) Update ID\n"
+					   + "(3) Update contact number\n"
+					   + "(4) Update email\n"
+					   + "(5) Update country\n"
+					   + "(6) Update gender\n"
+					   + "(7) Update nationality\n"
+					   + "(8) Update credit card details\n"
+					   + "(9) Return to Guest Menu\n"
+					   + "===============================\n"
+					   + "Enter option: ");
 		switch(sc.nextLine()) {
 			case "1":
 				System.out.println("Enter new first name: ");
@@ -312,7 +311,7 @@ public class GuestManager implements ReadWrite {
 			guest.setCcNum(sc.next());
 			System.out.println("Expiry Date(dd/mm/yyyy): ");
 			guest.setExpDate(LocalDate.parse(sc.next(), formatter));
-			sc.nextLine();
+			if (sc.hasNextLine()) sc.nextLine();
 			System.out.println("Billing Address: ");
 			String s = sc.nextLine();
 			guest.setBillAddr(s);
@@ -327,8 +326,8 @@ public class GuestManager implements ReadWrite {
 	
 	public void displayGuestDetails(Guest g) {
 		String strReplacement = "************";
-       		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
-        	String newString = strReplacement + lastFourNum;
+		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
+       	String newString = strReplacement + lastFourNum;
 		System.out.println("First Name: " + g.getFName());
 		System.out.println("Last Name: " + g.getLName());
 		System.out.println("ID: " + g.getId());

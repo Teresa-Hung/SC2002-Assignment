@@ -151,19 +151,29 @@ public class ReservationManager implements ReadWrite {
 		reservlist.add(reserv);
 	}
 	
+	// check check-in/out dates are valid
+	public boolean checkDates(LocalDate dCI, LocalDate dCO) {
+		if (dCI.compareTo(dCO) > 0) {
+			System.out.println("The scheduled check-in and check-out dates are invalid.");
+			return false;
+		}
+		return true;
+	}
+	
 	public void updateCheckInDate(String reservCode, String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		Reservation reserv = searchReserv(reservCode);
 		try {
 			LocalDate checkOutDate =  reserv.getCheckOutDate();
 			LocalDate checkInDate = LocalDate.parse(date, formatter);
-			if (reserv.checkDates(checkInDate, checkOutDate))
+			if (checkDates(checkInDate, checkOutDate))
 				reserv.setCheckInDate(checkInDate);
+			else return;
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
 			return;
 		}
-		System.out.println("Check-out Date updated to " + date);
+		System.out.println("Check-in Date updated to " + date);
 	}
 	
 	public void updateCheckOutDate(String reservCode, String date) {
@@ -172,8 +182,9 @@ public class ReservationManager implements ReadWrite {
 		try {
 			LocalDate checkInDate =  reserv.getCheckInDate();
 			LocalDate checkOutDate = LocalDate.parse(date, formatter);
-			if (reserv.checkDates(checkInDate, checkOutDate))
+			if (checkDates(checkInDate, checkOutDate))
 				reserv.setCheckOutDate(checkOutDate);
+			else return;
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
 			return;
