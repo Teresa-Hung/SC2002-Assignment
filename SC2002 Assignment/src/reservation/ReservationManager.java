@@ -261,7 +261,7 @@ public class ReservationManager implements ReadWrite {
 				reserv.setReservCode(reservCode);
 				
 				// create guest
-				Guest g = gm.createGuestUI(gm, sc);
+				Guest g = gm.createGuest(gm, sc);
 				if (g == null) return;
 				reserv.setGuest(g);
 				g.setReservCode(reservCode);
