@@ -87,15 +87,17 @@ public class UserInterface {
 	public static void reservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
 		String choice;
 		do {
-			System.out.println("-----------------------------\n"
-							 + "Reservation Menu:\n"
-							 + "(1) Create Reservation.\n"
-							 + "(2) Update Reservation.\n"
-							 + "(3) Remove Reservation.\n"
-							 + "(4) Check In.\n"
-							 + "(5) Print Reservation Status.\n"
-							 + "(6) Exit\n"
-							 + "-----------------------------");
+			System.out.print("============================\n"
+					 	   + "     Reservation Menu:\n"
+					 	   + "============================\n"
+					 	   + "(1) Create Reservation\n"
+					 	   + "(2) Update Reservation\n"
+					 	   + "(3) Remove Reservation\n"
+					 	   + "(4) Print Reservation Status\n"
+					 	   + "(5) Check In\n"
+					 	   + "(6) Return to Main Menu\n"
+					 	   + "============================\n"
+					 	   + "Enter option: ");
 			choice = sc.nextLine();
 			switch(choice) {
 			case "1":
@@ -107,7 +109,7 @@ public class UserInterface {
 				reserv.setReservCode(reservCode);
 				
 				// create guest
-				Guest g = createGuestUI(gm, sc);
+				Guest g = gm.createGuest(sc);
 				if (g == null) return;
 				reserv.setGuest(g);
 				g.setReservCode(reservCode);
@@ -135,26 +137,36 @@ public class UserInterface {
 						continue;
 					}
 				}
-				
-				try {
-					// get check-in and check-out date
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-					System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
-					reserv.setCheckInDate(LocalDate.parse(sc.nextLine(), formatter));
-					System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
-					reserv.setCheckOutDate(LocalDate.parse(sc.nextLine(), formatter));
-					
-					// get number of adults/children
-					System.out.println("Enter the Number of Adults: ");
-					reserv.setNumAdult(Integer.parseInt(sc.nextLine()));
-					System.out.println("Enter the Number of Children: ");
-					reserv.setNumChild(Integer.parseInt(sc.nextLine()));
-				} catch (NumberFormatException e) {
-					System.out.println("Invalid number entered.");
-					return;
-				} catch (DateTimeParseException e) {
-					System.out.println("The date is invalid.");
-					return;
+				while (true) {
+					try {
+						// get check-in and check-out date
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
+						LocalDate checkInDate = LocalDate.parse(sc.nextLine(), formatter);
+						System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
+						LocalDate checkOutDate = LocalDate.parse(sc.nextLine(), formatter);
+						if (resm.checkDates(checkInDate, checkOutDate)) {
+							reserv.setCheckInDate(checkInDate);
+							reserv.setCheckOutDate(checkOutDate);
+							break;
+						}
+					} catch (DateTimeParseException e) {
+						System.out.println("The date is invalid.");
+						continue;
+					}
+				}
+				while (true) {
+					try {
+						// get number of adults/children
+						System.out.println("Enter the Number of Adults: ");
+						reserv.setNumAdult(Integer.parseInt(sc.nextLine()));
+						System.out.println("Enter the Number of Children: ");
+						reserv.setNumChild(Integer.parseInt(sc.nextLine()));
+						break;
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid number entered.");
+						continue;
+					}
 				}
 				
 				// success
@@ -179,32 +191,30 @@ public class UserInterface {
 				break;
 			case "5":
 				System.out.println("Checking in...");
-				System.out.println("-----------------------------\n"
-						 + "Check-in Menu:\n"
-						 + "(1) Check In With Reservation.\n"
-						 + "(2) Walk In.\n"
-						 + "(3) Exit\n"
-						 + "-----------------------------");
-				String Choice = sc.nextLine();
-				switch(Choice)
-				{
+				System.out.print("==============================\n"
+						 	   + "       Check-in Menu:\n"
+						 	   + "==============================\n"
+						 	   + "(1) Check In With Reservation\n"
+						 	   + "(2) Walk In\n"
+						 	   + "(3) Return to Reservation Menu\n"
+						 	   + "==============================\n"
+						 	   + "Enter option: ");
+				switch(sc.nextLine()) {
 				case "1":
 					System.out.println("Enter reservation code to check in:");
-					String reservCode2 = sc.nextLine();
 					Reservation reserv2 = resm.searchReserv(sc.nextLine());
 					if(reserv2 == null) break;
 					resm.checkIn(reserv2);
 					break;
-					
 				case "2":
 					Reservation reserv3 = new Reservation();
 					
 					// generate reservation code
 					String reservCode3 = resm.createReservCode();
-					reserv.setReservCode(reservCode3);
+					reserv3.setReservCode(reservCode3);
 					
 					// create guest
-					Guest g2 = createGuestUI(gm, sc);
+					Guest g2 = gm.createGuest(sc);
 					if (g2 == null) return;
 					reserv3.setGuest(g2);
 					g2.setReservCode(reservCode3);
@@ -232,25 +242,36 @@ public class UserInterface {
 							continue;
 						}
 					}
-					
-					try {
-						// get check-in and check-out date
-						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-						reserv3.setCheckInDate(LocalDate.now());
-						System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
-						reserv3.setCheckOutDate(LocalDate.parse(sc.nextLine(), formatter));
-						
-						// get number of adults/children
-						System.out.println("Enter the Number of Adults: ");
-						reserv3.setNumAdult(Integer.parseInt(sc.nextLine()));
-						System.out.println("Enter the Number of Children: ");
-						reserv3.setNumChild(Integer.parseInt(sc.nextLine()));
-					} catch (NumberFormatException e) {
-						System.out.println("Invalid number entered.");
-						return;
-					} catch (DateTimeParseException e) {
-						System.out.println("The date is invalid.");
-						return;
+					while (true) {
+						try {
+							// get check-in and check-out date
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+							System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
+							LocalDate checkInDate = LocalDate.parse(sc.nextLine(), formatter);
+							System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
+							LocalDate checkOutDate = LocalDate.parse(sc.nextLine(), formatter);
+							if (resm.checkDates(checkInDate, checkOutDate)) {
+								reserv3.setCheckInDate(checkInDate);
+								reserv3.setCheckOutDate(checkOutDate);
+								break;
+							}
+						} catch (DateTimeParseException e) {
+							System.out.println("The date is invalid.");
+							continue;
+						}
+					}
+					while (true) {
+						try {
+							// get number of adults/children
+							System.out.println("Enter the Number of Adults: ");
+							reserv3.setNumAdult(Integer.parseInt(sc.nextLine()));
+							System.out.println("Enter the Number of Children: ");
+							reserv3.setNumChild(Integer.parseInt(sc.nextLine()));
+							break;
+						} catch (NumberFormatException e) {
+							System.out.println("Invalid number entered.");
+							continue;
+						}
 					}
 					
 					// success
@@ -258,11 +279,12 @@ public class UserInterface {
 					resm.addReserv(reserv3);
 					resm.checkIn(reserv3);
 					break;
-					
 				case "3":
 					break;
+				default:
+					System.out.println("Invalid option.");
 				}
-				
+				break;
 			case "6":
 				resm.writeReservation();
 				break;
@@ -567,13 +589,14 @@ public class UserInterface {
 						return;
 					}
 					item = om.findMenuItem(number);
-					System.out.println("-----------------------\n"
-									 + "Enter detail to update:\n"
-									 + "(1) Price\n"
-									 + "(2) Name\n"
-									 + "(3) Preparation Method\n"
-									 + "-----------------------\n"
-									 + "Enter option: ");
+					System.out.print("=======================\n"
+								   + "Enter detail to update:\n"
+								   + "=======================\n"
+								   + "(1) Price\n"
+								   + "(2) Name\n"
+								   + "(3) Preparation Method\n"
+								   + "=======================\n"
+								   + "Enter option: ");
 					switch (sc.nextLine()) {
 					case "1":
 						System.out.print("Enter new price: ");

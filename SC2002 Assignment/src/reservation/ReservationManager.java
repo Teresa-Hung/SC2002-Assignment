@@ -40,9 +40,6 @@ public class ReservationManager implements ReadWrite {
 	 */
 	private ArrayList<Reservation> reservlist;
 	
-	Scanner sc = new Scanner(System.in);
-	GuestManager gm = new GuestManager();
-	
 	/**
 	 * Sets the reservation list by reading from file.
 	 */
@@ -76,7 +73,7 @@ public class ReservationManager implements ReadWrite {
 			reserv.setReservCode(star.nextToken().trim());
 			// retrieve room details
 			String roomnum = star.nextToken().trim();
-			if(roomnum != "0000")
+			if(!roomnum.equals("0000"))
 				reserv.setRoom(Rm.findRoom(roomnum, false));
 			reserv.setRType(RoomType.valueOf(star.nextToken().trim()));
 			reserv.setBType(BedType.valueOf(star.nextToken().trim()));
@@ -227,7 +224,7 @@ public class ReservationManager implements ReadWrite {
 		try {
 			LocalDate checkOutDate =  reserv.getCheckOutDate();
 			LocalDate checkInDate = LocalDate.parse(date, formatter);
-			if (reserv.checkDates(checkInDate, checkOutDate))
+			if (checkDates(checkInDate, checkOutDate))
 				reserv.setCheckInDate(checkInDate);
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
@@ -247,7 +244,7 @@ public class ReservationManager implements ReadWrite {
 		try {
 			LocalDate checkInDate =  reserv.getCheckInDate();
 			LocalDate checkOutDate = LocalDate.parse(date, formatter);
-			if (reserv.checkDates(checkInDate, checkOutDate))
+			if (checkDates(checkInDate, checkOutDate))
 				reserv.setCheckOutDate(checkOutDate);
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
@@ -271,21 +268,7 @@ public class ReservationManager implements ReadWrite {
 		return null;
 	}
 	
-	/**
-	 * Prints all Reservation in the reservation list.
-	 * Reservation with status CHECKED_IN or EXPIRED will not be printed.
-	 */
-	public void printAllReserv()
-	{
-		System.out.println("-------------------------------------------------------\n"
-				 + "Print All Reservation Records");
-		for(Reservation reserv: reservlist)
-		{
-			if(reserv.getReservStatus() != ReservStatus.EXPIRED && reserv.getReservStatus()!=ReservStatus.CHECKED_IN)
-				reserv.printReceipt();
-		}
-		System.out.println("-------------------------------------------------------\n");
-	}
+	// method to manage waitlist
 
 	/**
 	 * Updates the reservation in waitlist.
@@ -338,8 +321,6 @@ public class ReservationManager implements ReadWrite {
 		}
 
 		reserv.setReservStatus(ReservStatus.CHECKED_IN);
-		reserv.getRoom().setRoomStatus(RoomStatus.OCCUPIED);
-		System.out.println("Check in successfully.");
 		return true;
 	}
 
@@ -358,5 +339,4 @@ public class ReservationManager implements ReadWrite {
 		// empty the room
 		reserv.getRoom().setRoomStatus(RoomStatus.VACANT);
 	}
-	
 }

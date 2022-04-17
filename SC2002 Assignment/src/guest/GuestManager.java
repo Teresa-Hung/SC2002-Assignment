@@ -149,6 +149,7 @@ public class GuestManager implements ReadWrite {
 			Scanner scanner = new Scanner(new FileInputStream(fileName));
 			while(scanner.hasNextLine())
 				data.add(scanner.nextLine());
+			scanner.close();
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -404,21 +405,22 @@ public class GuestManager implements ReadWrite {
 		String strReplacement = "************";
 		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
        	String newString = strReplacement + lastFourNum;
-		System.out.println("First Name: " + g.getFName());
-		System.out.println("Last Name: " + g.getLName());
-		System.out.println("ID: " + g.getId());
-		System.out.println("Contact Number: " + g.getContact());
-		System.out.println("Email: " + g.getEmail());
-		System.out.println("Country: " + g.getCountry());
-		System.out.println("Gender: " + g.getGender());
-		System.out.println("Nationality: " + g.getNatlity());
-		System.out.println("Credit Card Details: ");
-		System.out.println("Holder Name: " + g.getHolderFName() + " " + g.getHolderLName());
-		System.out.println("Credit Card Number: " + newString);
-		System.out.println("Expiry Date: " + g.getExpDate());
-		System.out.println("Billing Address: " + g.getBillAddr());
-		System.out.println("Reservation Code: " + g.getReservCode());
-		System.out.println("Room Number: " + g.getRoomNum());
+       	System.out.println("===Guest Details===");
+		System.out.println("First Name:          " + g.getFName());
+		System.out.println("Last Name:           " + g.getLName());
+		System.out.println("ID:                  " + g.getId());
+		System.out.println("Contact Number:      " + g.getContact());
+		System.out.println("Email:               " + g.getEmail());
+		System.out.println("Country:             " + g.getCountry());
+		System.out.println("Gender:              " + g.getGender());
+		System.out.println("Nationality:         " + g.getNatlity());
+		System.out.println("\n===Credit Card Details===");
+		System.out.println("Holder Name:         " + g.getHolderFName() + " " + g.getHolderLName());
+		System.out.println("Credit Card Number:  " + newString);
+		System.out.println("Expiry Date:         " + g.getExpDate());
+		System.out.println("Billing Address:     " + g.getBillAddr());
+		System.out.println("Reservation Code:    " + g.getReservCode());
+		System.out.println("Room Number:         " + g.getRoomNum());
 	}
 	
 	/**

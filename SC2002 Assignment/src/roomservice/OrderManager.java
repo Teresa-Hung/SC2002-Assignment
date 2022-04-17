@@ -52,8 +52,8 @@ public class OrderManager implements ReadWrite {
 	 */
 	public MenuItems findMenuItem(String itemName) {
 		for (MenuItems menuItem: menuList) {
-			if (menuItem.getItemName().equals(itemName));
-			return menuItem;
+			if (menuItem.getItemName().equals(itemName))
+				return menuItem;
 		}
 		return null;
 	}
@@ -80,7 +80,7 @@ public class OrderManager implements ReadWrite {
 	 * @param i the index of the item to remove
 	 */
 	public void removeMenuItem(int i) {
-		if (i > menuList.size()) {
+		if (i <= 0 || i > menuList.size()) {
 			System.out.println("Invalid number.");
 			return;
 		}

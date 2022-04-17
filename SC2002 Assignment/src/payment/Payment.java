@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 
 import room.Room;
-import room.Room.RoomType;
 import roomservice.Order;
 import roomservice.OrderManager;
 import reservation.Reservation;
@@ -50,10 +49,6 @@ public class Payment {
 	 */
 	private DayOfWeek day;
 	/**
-	 * The type of room of this Payment.
-	 */
-	private RoomType rtype;
-	/**
 	 * The total room charge of this payment. 
 	 */
 	private double roomCharge;
@@ -88,7 +83,6 @@ public class Payment {
 		dateIn = rv.getCheckInDate();
 		dateOut = rv.getCheckOutDate();
 		day = rv.getCheckInDay();
-		rtype = rv.getRType();
 	}
 	
 	/**
@@ -96,10 +90,7 @@ public class Payment {
 	 * @param room The associated Room of this Payment.
 	 */
 	private void setBaseCharge(Room room) {
-		rtype = room.getRoomType();
-		
-		
-		switch(rtype) {
+		switch(room.getRoomType()) {
 		case SINGLE:
 			baseCharge = 100.0;
 			break;
@@ -251,7 +242,7 @@ public class Payment {
 	 * @param roomNum The associated room number of this payment.
 	 */
 	public void printInvoice(String roomNum) {
-		System.out.println("------------Invoice------------\n");
+		System.out.println("============Invoice============\n");
 		System.out.println("Number of days stayed:\t" + numOfDays);
 		System.out.println("Room charges:\t\t$" + df.format(roomCharge));	
 		System.out.println("Room service charges:\t$" + df.format(roomServiceCharge));
