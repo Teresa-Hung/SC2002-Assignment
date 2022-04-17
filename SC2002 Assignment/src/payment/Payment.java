@@ -167,6 +167,7 @@ public class Payment {
 			System.out.println("No room service items.");
 		}
 		else {
+			System.out.println("Room Service Items: \t");
 			printAllItems(roomNum);
 		}
 		System.out.println("Tax (" + df.format(tax*100) + "%):\t\t$" + df.format(taxCharge));
