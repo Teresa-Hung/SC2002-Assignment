@@ -15,10 +15,27 @@ import java.util.StringTokenizer;
 
 import main.FileIO.ReadWrite;
 
+/**
+ * Contains control methods to manage the guest records.
+ * Implements ReadWrite interface to do file input and output.
+ * @author BRYAN WU JIAHE
+ * @version 1.0
+ * @since 2022-04-17
+ */
 public class RoomManager implements ReadWrite {
+	/**
+	 * The separator specifies the delimiter used in file input and output.
+	 */
 	public static final String SEPARATOR = "|";
+	/**
+	 * The roomList contains all the records of Room.
+	 */
 	private ArrayList<Room> roomList = new ArrayList<>();
 	
+	/**
+	 * Sets the roomList by reading from file "roomlist.txt".
+	 * Prints error message if reading is failed.
+	 */
 	public RoomManager() {
 		try {
 			this.readRoomList("roomlist.txt");
@@ -27,7 +44,11 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	// reads room data from file
-	private void readRoomList(String filename) {
+	/**
+	 * Reads in the guest records from file and creates the roomList.
+	 * @param fileName The file to be read from.
+	 */
+	private void readRoomList(String fileName) {
 		ArrayList<String> stringArray = read("roomlist.txt");
     	for (String s: stringArray) {
 			StringTokenizer star = new StringTokenizer(s , SEPARATOR);
@@ -51,6 +72,9 @@ public class RoomManager implements ReadWrite {
     	}
 	}
 	// saves room data to file
+	/**
+	 * Output the records in roomList to the file "roomlist.txt".
+	 */
 	public void saveRoomList() {
 		ArrayList<String> stringArray = new ArrayList<>();
         for (Room r: roomList) {
@@ -68,11 +92,15 @@ public class RoomManager implements ReadWrite {
         write("roomlist.txt", stringArray);
 	}
 	
+	/**
+	 * The method to input data from a file.
+	 * @param fileName The name of the file to be read from.
+	 */
 	@Override
-	public ArrayList<String> read(String filename) {
+	public ArrayList<String> read(String fileName) {
 		ArrayList<String> data = new ArrayList<>();
 		try {
-			Scanner sc = new Scanner(new FileInputStream(filename));
+			Scanner sc = new Scanner(new FileInputStream(fileName));
 			while(sc.hasNextLine())
 				data.add(sc.nextLine());
 			sc.close();
@@ -81,8 +109,13 @@ public class RoomManager implements ReadWrite {
 		}
 		return data;
 	}
+	/**
+	 * The method to output data to a file.
+	 * @param fileName The name of the file to be written in.
+	 * @param data The data to be written.
+	 */
 	@Override
-	public void write(String filename, List<String> data) {
+	public void write(String fileName, List<String> data) {
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter("roomlist.txt"));
 			for (String s: data)
@@ -93,14 +126,29 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Gets the records of guest list.
+	 * @return the room list.
+	 */
 	public ArrayList<Room> getRoomList() {
 		return roomList;
 	}
 	
+	/**
+	 * Searches a Room record in the roomList by room number and prints this Room's details.
+	 * @param roomNumber The room number to search.
+	 * @return the found Room object, or null if not found.
+	 */
 	public Room findRoom(String roomNumber) {
 		return findRoom(roomNumber, true);
 	}
 	
+	/**
+	 * Searches a Room record in the roomList by room number.
+	 * @param roomNumber The room number to search.
+	 * @param print The variable indicating whether to print this Room's details.
+	 * @return the found Room object, or null if not found.
+	 */
 	public Room findRoom(String roomNumber, boolean print) {
 		for (Room r: roomList)
 			if (roomNumber.equals(r.getRoomNumber()))
@@ -109,6 +157,12 @@ public class RoomManager implements ReadWrite {
 		return null;
 	}
 	
+	/**
+	 * Gets an available Room with the requested room type and bed type.
+	 * @param roomType The requested room type.
+	 * @param bedType The requested room type.
+	 * @return the available Room if any, otherwise return null.
+	 */
 	public Room getAvailableRoom(RoomType roomType, BedType bedType) {
 		for (Room r: roomList) {
 			if (r.getRoomType() == roomType && r.getBedType() == bedType && r.getRoomStatus() == RoomStatus.VACANT)
@@ -118,6 +172,11 @@ public class RoomManager implements ReadWrite {
 		return null;
 	}
 	
+	/**
+	 * Checks whether a room number exists in the hotel.
+	 * @param roomNumber The room number to check.
+	 * @return true if exists, otherwise false.
+	 */
 	public boolean roomNumberExists(String roomNumber) {
 		if (findRoom(roomNumber) != null)
 			return true;
@@ -125,6 +184,10 @@ public class RoomManager implements ReadWrite {
 			return false;
 	}
 	
+	/**
+	 * Prints the occupancy report of each room type in the hotel.
+	 * Lists out in order of Single, Double, Suite and VIP Suite. 
+	 */
 	public void printOccupancyReport() {
 		ArrayList<Room> single = new ArrayList<>();
 		ArrayList<Room> doublee = new ArrayList<>();
@@ -167,6 +230,10 @@ public class RoomManager implements ReadWrite {
 		System.out.println("-------------------------------------------------------\n");
 	}
 	
+	/**
+	 * Prints the details of the occupancy report of one room type.
+	 * @param list The room list of a specific room type.
+	 */
 	private void printOccupancyUtil(ArrayList<Room> list) {
 		int i = 0;
 		ArrayList<Room> listv = new ArrayList<>();
@@ -186,6 +253,10 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Prints the status report of the hotel rooms.
+	 * Lists out in order of Vacant, Occupied, Reserved and Under Maintenance. 
+	 */
 	public void printStatusReport() {
 		ArrayList<Room> vacant = new ArrayList<>();
 		ArrayList<Room> occupied = new ArrayList<>();
@@ -232,6 +303,10 @@ public class RoomManager implements ReadWrite {
 		System.out.println("-------------------------------------------------------");
 	}
 
+	/**
+	 * Prints the room report of the hotel rooms.
+	 * The details include the room's WIFI availability, smoking policies and balcony information.
+	 */
 	public void printRoomReport() {
 		ArrayList<Room> wifiEnabled = new ArrayList<>();
 		ArrayList<Room> wifiDisabled = new ArrayList<>();
@@ -272,6 +347,10 @@ public class RoomManager implements ReadWrite {
 		System.out.println("-------------------------------------------------------");
 	}
 	
+	/**
+	 * Prints all the room numbers of a list of specific type of rooms.
+	 * @param list The list of specific type of rooms. 
+	 */
 	private void printRoomUtil(ArrayList<Room> list) {
 		for (int i = 0; i < list.size(); i++) {
 			if (i == 0) System.out.print("\tRooms: ");
@@ -281,6 +360,11 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Prints the room details of a Room.
+	 * Reads in the room number to access the Room's record.
+	 * @param roomNumber The number of the Room to print. 
+	 */
 	public void printRoomDetails(String roomNumber) {
 		Room r = findRoom(roomNumber);
 		if (r != null) {
@@ -298,30 +382,67 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Gets the room type of the given room number.
+	 * @param roomNumber The room number of the Room.
+	 * @return the Room's room type.
+	 */
 	public RoomType getRoomType(String roomNumber) {
 		return findRoom(roomNumber).getRoomType();
 	}
 	
+	/**
+	 * Gets the bed type of the given room number.
+	 * @param roomNumber The room number of the Room.
+	 * @return the Room's bed type.
+	 */
 	public BedType getBedType(String roomNumber) {
 		return findRoom(roomNumber).getBedType();
 	}
 	
+	/**
+	 * Gets the status of the given room number.
+	 * @param roomNumber The room number of the Room.
+	 * @return the Room's status.
+	 */
 	public RoomStatus getRoomStatus(String roomNumber) {
 		return findRoom(roomNumber).getRoomStatus();
 	}
 	
+	/**
+	 * Gets the WIFI availability of the given room number.
+	 * @param roomNumber The room number of the Room.
+	 * @return the Room's WIFI availability.
+	 */
 	public boolean isRoomWifiEnabled(String roomNumber) {
 		return findRoom(roomNumber).isWifiEnabled();
 	}
 	
+	/**
+	 * Gets the smoking policies of the given room number.
+	 * @param roomNumber The room number of the Room.
+	 * @return the Room's smoking policies.
+	 */
 	public boolean isRoomSmoking(String roomNumber) {
 		return findRoom(roomNumber).isSmoking();
 	}
 	
+	/**
+	 * Gets the balcony information of the given room number.
+	 * @param roomNumber The room number of the Room.
+	 * @return the Room's balcony information.
+	 */
 	public boolean roomHasBalcony(String roomNumber) {
 		return findRoom(roomNumber).hasBalcony();
 	}
 	
+	/**
+	 * Updates the room number of a Room.
+	 * The new room number should be four digits and not overlap an existing room number.
+	 * Prints error message if the room number is invalid.
+	 * @param roomNumber The number of the Room to update.
+	 * @param newRoomNumber The updated room number.
+	 */
 	public void updateRoomNumber(String roomNumber, String newRoomNumber) {
 		Room r = findRoom(roomNumber);
 		if (r == null)
@@ -350,12 +471,23 @@ public class RoomManager implements ReadWrite {
 		System.out.println("Room number set to " + newRoomNumber);
 	}
 	
+	/**
+	 * Updates a room type of a Room with the enum RoomType.
+	 * @param roomNumber The number of the Room to update.
+	 * @param roomType The updated room type.
+	 */
 	public void updateRoomType(String roomNumber, RoomType roomType) {
 		Room r = findRoom(roomNumber);
 		if (r != null)
 			r.setRoomType(roomType);
 	}
 	
+	/**
+	 * Updates the room type of a Room with String.
+	 * Prints error message if the new room type is invalid.
+	 * @param roomNumber The number of the Room to update.
+	 * @param roomType The updated room type.
+	 */
 	public void updateRoomType(String roomNumber, String roomType) {
 		Room r = findRoom(roomNumber);
 		if (r == null)
@@ -369,12 +501,23 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Updates the bed type of a Room with the enum BedType.
+	 * @param roomNumber The number of the Room to update.
+	 * @param bedType The updated bed type.
+	 */
 	public void updateBedType(String roomNumber, BedType bedType) {
 		Room r = findRoom(roomNumber);
 		if (r != null)
 			r.setBedType(bedType);
 	}
 	
+	/**
+	 * Updates the bed type of a Room with String.
+	 * Prints error message if the new bed type is invalid.
+	 * @param roomNumber The number of the Room to update.
+	 * @param bedType
+	 */
 	public void updateBedType(String roomNumber, String bedType) {
 		Room r = findRoom(roomNumber);
 		if (r == null)
@@ -388,12 +531,23 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Updates the room status of a Room with the enum RoomStatus.
+	 * @param roomNumber The number of the Room to update.
+	 * @param roomStatus The updated room status.
+	 */
 	public void updateRoomStatus(String roomNumber, RoomStatus roomStatus) {
 		Room r = findRoom(roomNumber);
 		if (r != null)
 			r.setRoomStatus(roomStatus);
 	}
 	
+	/**
+	 * Updates the room status of a Room with String.
+	 * Prints error message if the new room status is invalid.
+	 * @param roomNumber The number of the Room to update.
+	 * @param roomStatus The updated room status.
+	 */
 	public void updateRoomStatus(String roomNumber, String roomStatus) {
 		Room r = findRoom(roomNumber);
 		if (r == null)
@@ -401,18 +555,28 @@ public class RoomManager implements ReadWrite {
 		try {
 			RoomStatus newRoomStatus = RoomStatus.valueOf(roomStatus.toUpperCase());
 			updateRoomStatus(roomNumber, newRoomStatus);
-			System.out.println("Bed type set to " + newRoomStatus);
+			System.out.println("Room status set to " + newRoomStatus);
 		} catch (IllegalArgumentException e) {
 			System.out.println("Invalid room status.");
 		}
 	}
 	
+	/**
+	 * Updates the WIFI availability of a Room.
+	 * @param roomNumber The number of the Room to update.
+	 * @param wifiEnabled The updated WIFI availability.
+	 */
 	public void updateRoomWifi(String roomNumber, boolean wifiEnabled) {
 		Room r = findRoom(roomNumber);
 		if (r != null)
 			r.setWifi(wifiEnabled);
 	}
 	
+	/**
+	 * Toggles the WIFI availability of a Room.
+	 * Sets to the opposite of the original status.
+	 * @param roomNumber The number of the Room to toggle.
+	 */
 	public void toggleRoomWifi(String roomNumber) {
 		Room r = findRoom(roomNumber);
 		if (r != null) {
@@ -421,12 +585,22 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Updates the balcony information of a Room.
+	 * @param roomNumber The number of the Room to update.
+	 * @param balcony The updated balcony information.
+	 */
 	public void updateRoomBalcony(String roomNumber, boolean balcony) {
 		Room r = findRoom(roomNumber);
 		if (r != null)
 			r.setBalcony(balcony);
 	}
 	
+	/**
+	 * Toggles the balcony information of a Room.
+	 * Sets to the opposite of the original status.
+	 * @param roomNumber The number of the Room to toggle.
+	 */
 	public void toggleRoomBalcony(String roomNumber) {
 		Room r = findRoom(roomNumber);
 		if (r != null) {
@@ -435,12 +609,22 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Updates the smoking policies of a Room.
+	 * @param roomNumber The number of the Room to update.
+	 * @param smoking The updated smoking policies.
+	 */
 	public void updateRoomSmoking(String roomNumber, boolean smoking) {
 		Room r = findRoom(roomNumber);
 		if (r != null)
 			r.setSmoking(smoking);
 	}
 	
+	/**
+	 * Toggles the smoking policies of a Room.
+	 * Sets to the opposite of the original status.
+	 * @param roomNumber The number of the Room to toggle.
+	 */
 	public void toggleRoomSmoking(String roomNumber) {
 		Room r = findRoom(roomNumber);
 		if (r != null) {
@@ -449,12 +633,23 @@ public class RoomManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Updates the maximum size of a Room with integer.
+	 * @param roomNumber The number of the Room to update.
+	 * @param maxSize The updated maximum size.
+	 */
 	public void updateRoomMaxSize(String roomNumber, int maxSize) {
 		Room r = findRoom(roomNumber);
 		if (r != null)
 			r.setMaxSize(maxSize);
 	}
 	
+	/**
+	 * Updates the maximum size of a Room with String.
+	 * Prints error message if the new maximum size is invalid.
+	 * @param roomNumber The number of the Room to update.
+	 * @param maxSize The updated maximum size.
+	 */
 	public void updateRoomMaxSize(String roomNumber, String maxSize) {
 		Room r = findRoom(roomNumber);
 		if (r == null)
