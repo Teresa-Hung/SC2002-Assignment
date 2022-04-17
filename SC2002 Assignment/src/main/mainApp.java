@@ -8,6 +8,13 @@ import reservation.*;
 import room.*;
 import roomservice.*;
 
+/**
+ * The main application of the Hotel Reservation and Payment System.
+ * Contains five main applications-Guest, Room, Reservation, Room Service, and Payment.
+ * @author BRYAN WU JIAHE, DERRICK NG CHOON SENG, EVANGELINE NG XUAN HUI, HUNG KUO-CHEN, NGUYEN TUNG BACH
+ * @version 1.0
+ * @since 2022-04-17
+ */
 public class mainApp {
 	public static void main(String[] args) throws IOException {
 		GuestManager gm = new GuestManager();
