@@ -170,7 +170,7 @@ public class Payment {
 			printAllItems(roomNum);
 		}
 		System.out.println("Tax (" + df.format(tax*100) + "%):\t\t$" + df.format(taxCharge));
-		System.out.println("Total amount due:\t" + df.format(totalBill));
+		System.out.println("Total amount due:\t$" + df.format(totalBill));
 	}
 	
 }
