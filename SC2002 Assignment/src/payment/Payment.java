@@ -160,6 +160,7 @@ public class Payment {
 	}
 	
 	public void printInvoice(String roomNum) {
+		System.out.println("------------Invoice------------\n");
 		System.out.println("Number of days stayed:\t" + numOfDays);
 		System.out.println("Room charges:\t\t$" + df.format(roomCharge));	
 		System.out.println("Room service charges:\t$" + df.format(roomServiceCharge));
