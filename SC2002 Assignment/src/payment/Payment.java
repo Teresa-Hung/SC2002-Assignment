@@ -167,7 +167,6 @@ public class Payment {
 		numOfItems = roomServiceItems.size();
 		for(i=0;i<numOfItems;i++) {
 			roomServiceCharge = roomServiceCharge + roomServiceItems.get(i).getItem().getPrice();
-			System.out.println(roomServiceItems.get(i).getItem().getItemName());
 		}
 	}
 	
