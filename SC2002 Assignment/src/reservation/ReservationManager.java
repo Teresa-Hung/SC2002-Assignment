@@ -271,7 +271,21 @@ public class ReservationManager implements ReadWrite {
 		return null;
 	}
 	
-	// method to manage waitlist
+	/**
+	 * Prints all Reservation in the reservation list.
+	 * Reservation with status CHECKED_IN or EXPIRED will not be printed.
+	 */
+	public void printAllReserv()
+	{
+		System.out.println("-------------------------------------------------------\n"
+				 + "Print All Reservation Records");
+		for(Reservation reserv: reservlist)
+		{
+			if(reserv.getReservStatus() != ReservStatus.EXPIRED && reserv.getReservStatus()!=ReservStatus.CHECKED_IN)
+				reserv.printReceipt();
+		}
+		System.out.println("-------------------------------------------------------\n");
+	}
 
 	/**
 	 * Updates the reservation in waitlist.
@@ -324,6 +338,8 @@ public class ReservationManager implements ReadWrite {
 		}
 
 		reserv.setReservStatus(ReservStatus.CHECKED_IN);
+		reserv.getRoom().setRoomStatus(RoomStatus.OCCUPIED);
+		System.out.println("Check in successfully.");
 		return true;
 	}
 
