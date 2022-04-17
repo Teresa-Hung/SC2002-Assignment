@@ -33,7 +33,7 @@ public class OrderManager implements ReadWrite {
 	
 	public MenuItems findMenuItem(String itemName) {
 		for (MenuItems menuItem: menuList) {
-			if (menuItem.getItemName().equals(itemName));
+			if (menuItem.getItemName().equals(itemName))
 			return menuItem;
 		}
 		return null;
