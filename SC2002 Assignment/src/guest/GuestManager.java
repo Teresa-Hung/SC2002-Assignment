@@ -432,10 +432,10 @@ public class GuestManager implements ReadWrite {
 		String strReplacement = "************";
 		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
         String newString = strReplacement + lastFourNum;
-		System.out.println("Billing Details: ");
-		System.out.println("Holder Name: " + g.getHolderFName() + " " + g.getHolderLName());
+		System.out.println("Billing Details:");
+		System.out.println("Holder Name:        " + g.getHolderFName() + " " + g.getHolderLName());
 		System.out.println("Credit Card Number: " + newString);
-		System.out.println("Billing Address: " + g.getBillAddr());
+		System.out.println("Billing Address:    " + g.getBillAddr());
 	}
 
 }
