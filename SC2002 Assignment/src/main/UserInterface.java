@@ -87,16 +87,15 @@ public class UserInterface {
 	public static void reservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
 		String choice;
 		do {
-			System.out.print("============================\n"
-						   + "     Reservation Menu:\n"
-						   + "============================\n"
-						   + "(1) Create Reservation\n"
-						   + "(2) Update Reservation\n"
-						   + "(3) Remove Reservation\n"
-						   + "(4) Print Reservation Status\n"
-						   + "(5) Return to Main Menu\n"
-						   + "============================\n"
-						   + "Enter option: ");
+			System.out.println("-----------------------------\n"
+							 + "Reservation Menu:\n"
+							 + "(1) Create Reservation.\n"
+							 + "(2) Update Reservation.\n"
+							 + "(3) Remove Reservation.\n"
+							 + "(4) Check In.\n"
+							 + "(5) Print Reservation Status.\n"
+							 + "(6) Exit\n"
+							 + "-----------------------------");
 			choice = sc.nextLine();
 			switch(choice) {
 			case "1":
@@ -108,7 +107,7 @@ public class UserInterface {
 				reserv.setReservCode(reservCode);
 				
 				// create guest
-				Guest g = gm.createGuest(sc);
+				Guest g = createGuestUI(gm, sc);
 				if (g == null) return;
 				reserv.setGuest(g);
 				g.setReservCode(reservCode);
@@ -136,36 +135,26 @@ public class UserInterface {
 						continue;
 					}
 				}
-				while (true) {
-					try {
-						// get check-in and check-out date
-						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-						System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
-						LocalDate checkInDate = LocalDate.parse(sc.nextLine(), formatter);
-						System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
-						LocalDate checkOutDate = LocalDate.parse(sc.nextLine(), formatter);
-						if (resm.checkDates(checkInDate, checkOutDate)) {
-							reserv.setCheckInDate(checkInDate);
-							reserv.setCheckOutDate(checkOutDate);
-							break;
-						}
-					} catch (DateTimeParseException e) {
-						System.out.println("The date is invalid.");
-						continue;
-					}
-				}
-				while (true) {
-					try {
-						// get number of adults/children
-						System.out.println("Enter the Number of Adults: ");
-						reserv.setNumAdult(Integer.parseInt(sc.nextLine()));
-						System.out.println("Enter the Number of Children: ");
-						reserv.setNumChild(Integer.parseInt(sc.nextLine()));
-						break;
-					} catch (NumberFormatException e) {
-						System.out.println("Invalid number entered.");
-						continue;
-					}
+				
+				try {
+					// get check-in and check-out date
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
+					reserv.setCheckInDate(LocalDate.parse(sc.nextLine(), formatter));
+					System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
+					reserv.setCheckOutDate(LocalDate.parse(sc.nextLine(), formatter));
+					
+					// get number of adults/children
+					System.out.println("Enter the Number of Adults: ");
+					reserv.setNumAdult(Integer.parseInt(sc.nextLine()));
+					System.out.println("Enter the Number of Children: ");
+					reserv.setNumChild(Integer.parseInt(sc.nextLine()));
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid number entered.");
+					return;
+				} catch (DateTimeParseException e) {
+					System.out.println("The date is invalid.");
+					return;
 				}
 				
 				// success
@@ -189,12 +178,98 @@ public class UserInterface {
 					reserv1.printReceipt();
 				break;
 			case "5":
+				System.out.println("Checking in...");
+				System.out.println("-----------------------------\n"
+						 + "Check-in Menu:\n"
+						 + "(1) Check In With Reservation.\n"
+						 + "(2) Walk In.\n"
+						 + "(3) Exit\n"
+						 + "-----------------------------");
+				String Choice = sc.nextLine();
+				switch(Choice)
+				{
+				case "1":
+					System.out.println("Enter reservation code to check in:");
+					String reservCode2 = sc.nextLine();
+					Reservation reserv2 = resm.searchReserv(sc.nextLine());
+					if(reserv2 == null) break;
+					resm.checkIn(reserv2);
+					break;
+					
+				case "2":
+					Reservation reserv3 = new Reservation();
+					
+					// generate reservation code
+					String reservCode3 = resm.createReservCode();
+					reserv.setReservCode(reservCode3);
+					
+					// create guest
+					Guest g2 = createGuestUI(gm, sc);
+					if (g2 == null) return;
+					reserv3.setGuest(g2);
+					g2.setReservCode(reservCode3);
+					
+					// assign room for guest
+					while (true) {
+						try {
+							System.out.print("Options: SINGLE, DOUBLE, SUITE, VIP_SUITE\n"
+									   	   + "Enter the room type: ");
+							RoomType roomType = RoomType.valueOf(sc.nextLine().toUpperCase());
+							System.out.print("Options: TWIN, QUEEN, KING\n"
+									   	   + "Enter the bed type: ");
+							BedType bedType = BedType.valueOf(sc.nextLine().toUpperCase());
+							Room r = rm.getAvailableRoom(roomType, bedType);
+							if (r != null) {
+								reserv3.setRoom(r);
+								reserv3.setRType(roomType);
+								reserv3.setBType(bedType);
+								r.setRoomStatus(RoomStatus.RESERVED);
+								g2.setRoomNum(r.getRoomNumber());
+								break;
+							}
+						} catch (IllegalArgumentException e) {
+							System.out.println("Invalid type entered.");
+							continue;
+						}
+					}
+					
+					try {
+						// get check-in and check-out date
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						reserv3.setCheckInDate(LocalDate.now());
+						System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
+						reserv3.setCheckOutDate(LocalDate.parse(sc.nextLine(), formatter));
+						
+						// get number of adults/children
+						System.out.println("Enter the Number of Adults: ");
+						reserv3.setNumAdult(Integer.parseInt(sc.nextLine()));
+						System.out.println("Enter the Number of Children: ");
+						reserv3.setNumChild(Integer.parseInt(sc.nextLine()));
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid number entered.");
+						return;
+					} catch (DateTimeParseException e) {
+						System.out.println("The date is invalid.");
+						return;
+					}
+					
+					// success
+					reserv3.setReservStatus(ReservStatus.CONFIRMED);
+					resm.addReserv(reserv3);
+					resm.checkIn(reserv3);
+					break;
+					
+				case "3":
+					break;
+				}
+				
+			case "6":
 				resm.writeReservation();
 				break;
 			default:
 				System.out.println("Invalid option.");
 			}
-		} while (!choice.equals("5"));
+		} while (!choice.equals("6"));
 	}
 	
 	public static void updateReservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
