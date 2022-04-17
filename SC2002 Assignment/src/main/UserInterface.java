@@ -687,9 +687,10 @@ public class UserInterface {
 	 * @param gm GuestManager object to call methods.
 	 * @param resm ReservationManager object to call methods.
 	 * @param rm RoomManager object to call methods.
+	 * @param om OrderManager object to call methods.
 	 * @param sc Scanner object to scan inputs.
 	 */
-	public static void paymentUI(GuestManager gm, ReservationManager resm, RoomManager rm, Scanner sc){
+	public static void paymentUI(GuestManager gm, ReservationManager resm, RoomManager rm, OrderManager om, Scanner sc){
 		String fn, ln, guestRoom, reservCode, choice;
 		Guest payingGuest;
 		Reservation rv;
@@ -787,6 +788,7 @@ public class UserInterface {
 					rm.updateRoomStatus(guestRoom, RoomStatus.VACANT);
 					resm.removeReservRecord(reservCode);
 					gm.removeGuest(reservCode);
+					om.removeRoomCurrentOrders(guestRoom);
 				}
 				else {
 					System.out.println("Payment has not been made!\n");
