@@ -22,7 +22,19 @@ import roomservice.Order;
 import roomservice.OrderManager;
 import roomservice.Order.OrderStatus;
 
+/**
+ * Contains the user interfaces to operate the system.
+ * @author BRYAN WU JIAHE, DERRICK NG CHOON SENG, EVANGELINE NG XUAN HUI, HUNG KUO-CHEN, NGUYEN TUNG BACH 
+ * @version 1.0
+ * @since 2022-04-17
+ */
 public class UserInterface {
+	/**
+	 * Gets user's inputs and calls corresponding methods to manage the Guest.
+	 * The user can update guest details, search guest, and remove guest.
+	 * @param gm GuestManager object to call methods.
+	 * @param sc Scanner object to scan inputs.
+	 */
 	public static void guestUI(GuestManager gm, Scanner sc) {
 		String choice;
 		do {
@@ -84,6 +96,14 @@ public class UserInterface {
 		} while (!choice.equals("4"));
 	}
 	
+	/**
+	 * Gets user's inputs and calls corresponding methods to manage the Reservation.
+	 * The user can update create, update, and remove reservation, print reservation status, and check in to the hotel.
+	 * @param resm ReservationManager object to call methods.
+	 * @param rm RoomManager object to call methods.
+	 * @param gm GuestManager object to call methods.
+	 * @param sc Scanner object to scan inputs.
+	 */
 	public static void reservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
 		String choice;
 		do {
@@ -294,6 +314,14 @@ public class UserInterface {
 		} while (!choice.equals("6"));
 	}
 	
+	/**
+	 * Gets user's inputs and calls corresponding methods to update the Reservation.
+	 * The user can update date of check in and check out, room as well as number of adults and children.
+	 * @param resm ReservationManager object to call methods.
+	 * @param rm RoomManager object to call methods.
+	 * @param gm GuestManager object to call methods.
+	 * @param sc Scanner object to scan inputs.
+	 */
 	public static void updateReservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
 		System.out.print("Enter the reservation code: ");
 		String code = sc.nextLine();
@@ -371,6 +399,12 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * Gets user's inputs and calls corresponding methods to manage the Room.
+	 * The user can print room occupancy report, room status report and room details as well as update room details.
+	 * @param rm RoomManager object to call methods.
+	 * @param sc Scanner object to scan inputs.
+	 */
 	public static void roomUI(RoomManager rm, Scanner sc) {
 		String choice;
 		do {
@@ -412,6 +446,13 @@ public class UserInterface {
 		} while (!choice.equals("6"));
 	}
 
+	/**
+	 * Gets user's inputs and calls corresponding methods to update the Room.
+	 * The user can update room number, room type, bed type, room status, 
+	 * WIFI availability, smoking policies, balcony information, and maximum size of group.
+	 * @param rm RoomManager object to call methods.
+	 * @param sc Scanner object to scan inputs.
+	 */
 	private static void updateRoomDetailsUI(RoomManager rm, Scanner sc) {
 		System.out.print("Enter room number: ");
 		String roomNumber = sc.nextLine();
@@ -470,6 +511,13 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * Gets user's inputs and calls corresponding methods to manage the Order.
+	 * The user can create and delete order, print order list, update order status, create, update, remove, and print menu items.
+	 * @param om OrderManager object to call methods.
+	 * @param rm RoomManager object to call methods.
+	 * @param sc Scanner object to scan inputs.
+	 */
 	public static void roomServiceUI(OrderManager om, RoomManager rm, Scanner sc) {
 		String choice, room;
 		MenuItems item;
@@ -633,6 +681,14 @@ public class UserInterface {
 		} while (!choice.equals("9"));
 	}
 	
+	/**
+	 * Gets user's inputs and calls corresponding methods to manage the Payment.
+	 * The user can make payment, print invoice, check out, and print occupancy report.
+	 * @param gm GuestManager object to call methods.
+	 * @param resm ReservationManager object to call methods.
+	 * @param rm RoomManager object to call methods.
+	 * @param sc Scanner object to scan inputs.
+	 */
 	public static void paymentUI(GuestManager gm, ReservationManager resm, RoomManager rm, Scanner sc){
 		String fn, ln, guestRoom, reservCode, choice;
 		Guest payingGuest;
