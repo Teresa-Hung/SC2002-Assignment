@@ -747,7 +747,7 @@ public class UserInterface {
 						return;
 					}
 					pay.calculateTotal(rv);
-					System.out.println("---new bill after promo---");
+					System.out.println("====== new bill after promo ======");
 					pay.printBill();
 					
 					// payment type
@@ -759,7 +759,7 @@ public class UserInterface {
 								   + "===============\n"
 								   + "Enter option: ");
 					switch(sc.nextLine()) {
-						case "1": 
+						case "1":
 							System.out.println("Cash payment successful!\n");
 							payingGuest.setPaid(1);
 							break;
