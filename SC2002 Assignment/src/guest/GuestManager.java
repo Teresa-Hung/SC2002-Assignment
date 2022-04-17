@@ -13,18 +13,38 @@ import java.io.FileInputStream;
 import java.util.StringTokenizer;
 import main.FileIO.ReadWrite;
 
+/**
+ * Contains control methods to manage the guest records.
+ * Implements ReadWrite interface to do file input and output.
+ * @author EVANGELINE NG XUAN HUI
+ * @version 1.0
+ * @since 2022-04-17
+ */
 public class GuestManager implements ReadWrite {
 	
+	/**
+	 * The separator specifies the delimiter used in file input and output.
+	 */
 	public static final String SEPARATOR = "|";	
-	private ArrayList<Guest> guestList;
+	/**
+	 * The guest list contains all the records of guest details.
+	 */
+	private ArrayList<Guest> guestList; 
 	Scanner sc = new Scanner(System.in);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+	/**
+	 * Sets the guest list by reading from file.
+	 */
 	public GuestManager()
 	{
 		guestList = readGuests();
 	}
 	
+	/**
+	 * Reads in the guest records from file "guestListDetails.txt" and creates the guest list.
+	 * @return guest list.
+	 */
 	public ArrayList<Guest> readGuests(){
 		ArrayList<Guest> alr = new ArrayList<>(); //store guests data
 		
@@ -57,6 +77,9 @@ public class GuestManager implements ReadWrite {
 		return alr;
 	}
 	
+	/**
+	 * Output the records in guest list to the file "guestListDetails.txt".
+	 */
 	public void saveGuest() {
 		ArrayList<String> alw = new ArrayList<>();
 		
@@ -100,9 +123,14 @@ public class GuestManager implements ReadWrite {
 		write("guestListDetails.txt", alw);
 	}
 
-	public void write(String filename, List<String> data) {
+	/**
+	 * The method to output data to a file.
+	 * @param fileName The name of the file to be written in.
+	 * @param data The data to be written.
+	 */
+	public void write(String fileName, List<String> data) {
 		try {
-			PrintWriter out = new PrintWriter(new FileWriter(filename));
+			PrintWriter out = new PrintWriter(new FileWriter(fileName));
 			for(int i=0;i<data.size();i++)
 				out.println(data.get(i));
 			out.close();
@@ -111,10 +139,14 @@ public class GuestManager implements ReadWrite {
 		}
 	}
 	
-	public ArrayList<String> read(String filename) {
+	/**
+	 * The method to input data from a file.
+	 * @param fileName The name of the file to be read from.
+	 */
+	public ArrayList<String> read(String fileName) {
 		ArrayList<String> data = new ArrayList<>();
 		try {
-			Scanner scanner = new Scanner(new FileInputStream(filename));
+			Scanner scanner = new Scanner(new FileInputStream(fileName));
 			while(scanner.hasNextLine())
 				data.add(scanner.nextLine());
 		} catch (IOException e){
@@ -123,10 +155,19 @@ public class GuestManager implements ReadWrite {
 		return data;
 	}
 	
+	/**
+	 * Gets the records of guest list.
+	 * @return guest list.
+	 */
 	public ArrayList<Guest> getGuestList() {
 		return guestList;
 	}
 	
+	/**
+	 * Searches a guest record in the guest list by identification number.
+	 * @param id The identification number of the guest to search.
+	 * @return the found guest object, or null if not found.
+	 */
 	public Guest findById(String id) {
 		for(Guest g: guestList)
 			if(g.getId().toLowerCase().equals(id.toLowerCase()))
@@ -134,6 +175,12 @@ public class GuestManager implements ReadWrite {
 		return null;
 	}
 	
+	/**
+	 * Searches a guest record in the guest list by the guest's full name.
+	 * @param firstName The guest's first name.
+	 * @param lastName The guest's last name.
+	 * @return the found guest object, or null if not found.
+	 */
 	public Guest findByName(String firstName, String lastName) {
 		for(Guest g: guestList) {
 			if(g.getFName().toLowerCase().equals(firstName.toLowerCase()) && g.getLName().toLowerCase().equals(lastName.toLowerCase()))
@@ -142,10 +189,18 @@ public class GuestManager implements ReadWrite {
 		return null;
 	}
 	
+	/**
+	 * Adds a guest record to the guest list.
+	 * @param g The guest object to be added.
+	 */
 	public void addGuest(Guest g) {
 		guestList.add(g);
 	}
 
+	/**
+	 * Removes a guest record from the guest list.
+	 * @param reservCode The corresponding reservation code of the guest to be removed.
+	 */
 	public void removeGuest(String reservCode) {
 		for(Guest g: guestList)
 			if(g.getReservCode().toLowerCase().equals(reservCode.toLowerCase())) {
@@ -156,6 +211,11 @@ public class GuestManager implements ReadWrite {
 		System.out.println("Guest does not exist.");
 	}
 	
+	/**
+	 * Searches a guest record in the guest list.
+	 * Searches can be done by either the guest's id or full name.
+	 * @param sc The scanner object to scan user's input.
+	 */
 	public void searchGuest(Scanner sc) { 
 		if(guestList.size() == 0) {
 			System.out.println("There are no guests registered in the hotel.");
@@ -192,6 +252,11 @@ public class GuestManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Updates a guest's details in the guest list and output to the file.
+	 * Reads in the guest's id to access the guest record.
+	 * @param sc The scanner object to scan user's input.
+	 */
 	public void updateGuest(Scanner sc) {
 		System.out.print("Enter guest ID: ");
 		String id = sc.nextLine();
@@ -280,6 +345,11 @@ public class GuestManager implements ReadWrite {
 		saveGuest();
 	}
 	
+	/**
+	 * Creates a guest record in the guest list.
+	 * @param sc The scanner object to scan user's input.
+	 * @return the created guest record, or null if not successful.
+	 */
 	public Guest createGuest(Scanner sc) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		try {
@@ -324,6 +394,12 @@ public class GuestManager implements ReadWrite {
 		return null;
 	}
 	
+	/**
+	 * Displays the details of a guest record.
+	 * The information includes the guest's full name, id, country, gender, nationality, 
+	 * the billing details, the corresponding reservation code, and the number of the room the guest is staying 
+	 * @param g The guest to display details.
+	 */
 	public void displayGuestDetails(Guest g) {
 		String strReplacement = "************";
 		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
@@ -345,6 +421,11 @@ public class GuestManager implements ReadWrite {
 		System.out.println("Room Number: " + g.getRoomNum());
 	}
 	
+	/**
+	 * Displays the billing details of a guest.
+	 * The information include the credit card holder's name, card number and the billing address.
+	 * @param g The guest to display billing details.
+	 */
 	public void displayBillingDetails(Guest g) {
 		String strReplacement = "************";
 		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
@@ -354,4 +435,5 @@ public class GuestManager implements ReadWrite {
 		System.out.println("Credit Card Number: " + newString);
 		System.out.println("Billing Address: " + g.getBillAddr());
 	}
+
 }
