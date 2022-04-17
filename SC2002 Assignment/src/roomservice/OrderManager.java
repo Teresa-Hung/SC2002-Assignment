@@ -63,7 +63,7 @@ public class OrderManager implements ReadWrite {
 	 * @return a MenuItems object if the search is successful, null if the index is out of range
 	 */
 	public MenuItems findMenuItem(int i) {
-		if (i > menuList.size())
+		if (i <= 0 || i > menuList.size())
 			return null;
 		else
 			return menuList.get(i-1);
