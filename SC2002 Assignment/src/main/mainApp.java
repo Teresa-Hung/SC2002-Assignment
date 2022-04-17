@@ -55,12 +55,14 @@ public class mainApp {
 					UserInterface.roomServiceUI(om, rm, sc);
 					break;
 				case "5":
-					UserInterface.paymentUI(gm, resm, rm, sc);
+					UserInterface.paymentUI(gm, resm, rm, om, sc);
 					break;
 				case "6":
-					resm.writeReservation();// save reservation list
-					gm.saveGuest(); 		//save guest list
+					resm.writeReservation();
+					gm.saveGuest();
 					rm.saveRoomList();
+					om.saveMenuList();
+					om.saveOrderList();
 					System.out.print("Quitting...");
 					break;
 				default:
