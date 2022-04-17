@@ -22,21 +22,45 @@ import room.Room.BedType;
 import guest.*;
 import main.FileIO.ReadWrite;
 
+/**
+ * Contains control methods to manage the reservation records.
+ * Implements ReadWrite interface to do file input and output.
+ * @author TeresaHung
+ * @version 1.0
+ * @since 2022-04-16
+ */
 public class ReservationManager implements ReadWrite {
 
+	/**
+	 * The separator specifies the delimiter used in file input and output.
+	 */
 	public static final String SEPARATOR = "|";
+	/**
+	 * The reservation list contains all the records of reservation.
+	 */
 	private ArrayList<Reservation> reservlist;
 	
 	Scanner sc = new Scanner(System.in);
 	GuestManager gm = new GuestManager();
 	
+	/**
+	 * Sets the reservation list by reading from file.
+	 */
 	public ReservationManager()
 	{
 		reservlist = readReservation();
 	}
 	
+	/**
+	 * Gets the records of reservation list.
+	 * @return reservation list.
+	 */
 	public ArrayList<Reservation> getReservList() {return reservlist;}
 	
+	/**
+	 * Reads in the reservation record from file "reservation.txt" and creates the reservation list.
+	 * @return reservation list.
+	 */
 	public ArrayList<Reservation> readReservation() {
 		ArrayList<String> stringArray = read("reservation.txt"); // read String from text file
 		ArrayList<Reservation> alr = new ArrayList<>() ; // to store Reservation data
@@ -69,6 +93,9 @@ public class ReservationManager implements ReadWrite {
 		return alr;
 	}
 	
+	/**
+	 * Output the records in reservation list to the file "reservation.txt".
+	 */
 	public void writeReservation() {
 		ArrayList<String> alw = new ArrayList<String>() ;// to store Reservation data
 		for (int i = 0 ; i < reservlist.size() ; i++) {
@@ -101,6 +128,11 @@ public class ReservationManager implements ReadWrite {
 		write("reservation.txt", alw);
 	}
 	
+	/**
+	 * The method to output data to a file.
+	 * @param fileName The name of the file to be written in.
+	 * @param data The data to be written.
+	 */
 	public void write(String fileName, List<String> data) {
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(fileName));
@@ -112,6 +144,10 @@ public class ReservationManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * The method to input data from a file.
+	 * @param fileName The name of the file to be read from.
+	 */
 	public ArrayList<String> read(String fileName) {
 		ArrayList<String> data = new ArrayList<>();
 	    try {
@@ -125,6 +161,10 @@ public class ReservationManager implements ReadWrite {
 	    return data;
 	}
 	
+	/**
+	 * Removes a reservation record from the file.
+	 * @param reservCode The corresponding code of the reservation to be removed.
+	 */
 	public void removeReservRecord(String reservCode)
 	{
 		for(Reservation reserv: reservlist)
@@ -140,6 +180,11 @@ public class ReservationManager implements ReadWrite {
 		System.out.printf("The reservation record %s is not found.\n",reservCode);
 	}
 
+	/**
+	 * Generates an unique reservation code randomly.
+	 * The reservation code consists of an uppercase letter and a random number from 1 to 999.
+	 * @return reservation code.
+	 */
 	public String createReservCode() {
 		Random rand = new Random();
 		char c = (char) (rand.nextInt(26) + 'A');
@@ -147,11 +192,22 @@ public class ReservationManager implements ReadWrite {
 		return c + Integer.toString(i);
 	}
 	
+	/**
+	 * Adds a reservation record to the reservation list.
+	 * @param reserv The reservation object to be added.
+	 */
 	public void addReserv(Reservation reserv) {
 		reservlist.add(reserv);
 	}
 	
 	// check check-in/out dates are valid
+	/**
+	 * Checks whether the scheduled length of stay is valid.
+	 * Invalid length of stay refers that date of departure from the hotel is earlier than the date of arrival.
+	 * @param dCI The check-in date.
+	 * @param dCO The check-out date.
+	 * @return true if the length of stay is valid; Otherwise, return false.
+	 */
 	public boolean checkDates(LocalDate dCI, LocalDate dCO) {
 		if (dCI.compareTo(dCO) > 0) {
 			System.out.println("The scheduled check-in and check-out dates are invalid.");
@@ -160,15 +216,19 @@ public class ReservationManager implements ReadWrite {
 		return true;
 	}
 	
+	/**
+	 * Updates the date of check in of a reservation.
+	 * @param reservCode The code of the reservation to be updated.
+	 * @param date The new check-in date.
+	 */
 	public void updateCheckInDate(String reservCode, String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		Reservation reserv = searchReserv(reservCode);
 		try {
 			LocalDate checkOutDate =  reserv.getCheckOutDate();
 			LocalDate checkInDate = LocalDate.parse(date, formatter);
-			if (checkDates(checkInDate, checkOutDate))
+			if (reserv.checkDates(checkInDate, checkOutDate))
 				reserv.setCheckInDate(checkInDate);
-			else return;
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
 			return;
@@ -176,15 +236,19 @@ public class ReservationManager implements ReadWrite {
 		System.out.println("Check-in Date updated to " + date);
 	}
 	
+	/**
+	 * Updates the date of check out of a reservation.
+	 * @param reservCode The code of the reservation to be updated.
+	 * @param date The new check-out date.
+	 */
 	public void updateCheckOutDate(String reservCode, String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		Reservation reserv = searchReserv(reservCode);
 		try {
 			LocalDate checkInDate =  reserv.getCheckInDate();
 			LocalDate checkOutDate = LocalDate.parse(date, formatter);
-			if (checkDates(checkInDate, checkOutDate))
+			if (reserv.checkDates(checkInDate, checkOutDate))
 				reserv.setCheckOutDate(checkOutDate);
-			else return;
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
 			return;
@@ -192,6 +256,11 @@ public class ReservationManager implements ReadWrite {
 		System.out.println("Check-out Date updated to " + date);
 	}
 	
+	/**
+	 * Searches a reservation record by the reservation code.
+	 * @param code The code of the target reservation.
+	 * @return the corresponding reservation object or null if the reservation record is not found.
+	 */
 	public Reservation searchReserv(String code) {
 		for(Reservation reserv: reservlist)
 		{
@@ -201,8 +270,16 @@ public class ReservationManager implements ReadWrite {
 		System.out.printf("The reservation code %s does not exist.\n",code);
 		return null;
 	}
+	
 	// method to manage waitlist
-	public void updateWaitlist(ArrayList<Reservation> reservlist, ArrayList<Room> roomlist)
+
+	/**
+	 * Updates the reservation in waitlist.
+	 * If there is any vacant room which meets the requested type, then assign the room to this reservation.
+	 * Changes the reservation status to CONFIRMED when successfully assigned a room. 
+	 * @param roomlist The list of hotel rooms.
+	 */
+	public void updateWaitlist(ArrayList<Room> roomlist)
 	{
 		System.out.println("Updating waitlist...");
 		// for testing
@@ -227,6 +304,12 @@ public class ReservationManager implements ReadWrite {
 		}
 	}
 	
+	/**
+	 * Checks in to the hotel.
+	 * Guests are allowed to check in from 2 p.m. on the scheduled date of check in with a confirmed reservation. 
+	 * @param reserv The associated reservation of check-in.
+	 * @return true if check in successfully; Otherwise, return false.
+	 */
 	public boolean checkIn(Reservation reserv) {
 		Timestamp now = Timestamp.from(Instant.now());
 		Timestamp scheduledCheckIn = Timestamp.valueOf(reserv.getCheckInDate() + " 14:00:00"); // 2pm on check-in date
@@ -244,6 +327,11 @@ public class ReservationManager implements ReadWrite {
 		return true;
 	}
 
+	/**
+	 * Sets the status of the reservation to EXPIRED and free the room.
+	 * The reservation will be expired if no one checks in by 2 a.m. on the next day of scheduled date of check in.
+	 * @param reserv The reservation that is expired.
+	 */
 	public void expire(Reservation reserv) {
 		Timestamp now = Timestamp.from(Instant.now());
 		Timestamp deadlineCheckIn = Timestamp.valueOf(reserv.getCheckInDate().plusDays(1) + " 02:00:00"); // 2am on the next day
