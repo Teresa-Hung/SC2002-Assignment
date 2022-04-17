@@ -13,25 +13,75 @@ import roomservice.OrderManager;
 import reservation.Reservation;
 import reservation.ReservationManager;
 
+/**
+ * Represents the billing details of the hotel fees.
+ * @author DERRICK NG CHOON SENG
+ * @version 1.0
+ * @since 2022-04-17
+ */
 public class Payment {
 	
 	private static final DecimalFormat df = new DecimalFormat("0.00");
 	
 	private int i;
+	/**
+	 * The number of items ordered from room service of this Payment.
+	 */
 	private long numOfItems;
+	/**
+	 * The length of stay in the hotel of this Payment.
+	 */
 	private long numOfDays;
+	/**
+	 * The base charge of the room type of this Payment.
+	 */
 	private double baseCharge;
+	/**
+	 * The charge of different types of day.
+	 * Weekdays and weekends will be charged differently.
+	 */
 	private double dayTypeCharge;
+	/**
+	 * The date of check in and check out of this Payment.
+	 */
 	private LocalDate dateIn, dateOut;
+	/**
+	 * The day of check in of this Payment.
+	 */
 	private DayOfWeek day;
+	/**
+	 * The type of room of this Payment.
+	 */
 	private RoomType rtype;
+	/**
+	 * The total room charge of this payment. 
+	 */
 	private double roomCharge;
+	/**
+	 * The total room service charge of this payment. 
+	 */
 	private double roomServiceCharge;
+	/**
+	 * The total tax charge of this payment.
+	 */
 	private double taxCharge;
+	/**
+	 * The discount rate of the promotion applied for this payment.
+	 */
 	private double discountPromo;
+	/**
+	 * The total charge of this payment.
+	 */
 	private double totalBill;
+	/**
+	 * The fixed 7% tax rate.
+	 */
 	private final double tax = 0.07;
 	
+	/**
+	 * Creates a new Payment object with default settings.
+	 * @param rv The corresponding Reservation record of this Payment.
+	 */
 	public Payment(Reservation rv) {
 		numOfDays = numOfItems = i = 0;
 		baseCharge = dayTypeCharge = roomCharge = roomServiceCharge = discountPromo = totalBill = 0.0;
@@ -41,6 +91,10 @@ public class Payment {
 		rtype = rv.getRType();
 	}
 	
+	/**
+	 * Sets the base charge of this Payment based on the room type.
+	 * @param room The associated Room of this Payment.
+	 */
 	private void setBaseCharge(Room room) {
 		rtype = room.getRoomType();
 		
@@ -61,12 +115,22 @@ public class Payment {
 		}
 	}
 	
-	private void setNumOfDays( Reservation rv) {
+	/**
+	 * Sets the length of stay of this Payment based on check-in and check-out date.
+	 * Gets the check-in and check-out dates from the Reservation record.
+	 * @param rv The corresponding Reservation record of this Payment.
+	 */
+	private void setNumOfDays(Reservation rv) {
 		dateIn = rv.getCheckInDate();
 		dateOut = rv.getCheckOutDate();
 		numOfDays = ChronoUnit.DAYS.between(dateIn, dateOut);
 	}
 	
+	/**
+	 * Gets the charge of the given day type.
+	 * @param day The day type.
+	 * @return the charge of the given day type.
+	 */
 	private double getTypeCharge(DayOfWeek day) {
 		DayOfWeek dayType = day;
 		
@@ -81,6 +145,10 @@ public class Payment {
 		return dayTypeCharge;
 	}
 	
+	/**
+	 * Computes and gets the total room charge based on the Reservation record.
+	 * @param reservCode The corresponding reservation code of this Payment.
+	 */
 	private void getRoomCharge(String reservCode) {
 		ReservationManager rvm = new ReservationManager();
 		Reservation rv = rvm.searchReserv(reservCode);
@@ -97,6 +165,10 @@ public class Payment {
 		}
 	}
 	
+	/**
+	 * Computes and gets the total room service charge based on the Order record of this Payment.
+	 * @param roomId The room number to access the Order record.
+	 */
 	private void getRoomServiceCharge(String roomId) {
 		OrderManager om = new OrderManager();
 		ArrayList<Order> roomServiceItems;
@@ -108,6 +180,10 @@ public class Payment {
 		}
 	}
 	
+	/**
+	 * Prints all the items ordered for this Payment.
+	 * @param roomId The room number to access the Order record.
+	 */
 	private void printAllItems(String roomId) {
 		OrderManager om = new OrderManager();
 		ArrayList<Order> roomServiceItems;
@@ -117,6 +193,10 @@ public class Payment {
 		}
 	}
 	
+	/**
+	 * Sets the promoted discount rate provided for this Payment. 
+	 * @param code The option for the discount rate.
+	 */
 	public void setPromo(int code) {
 		switch(code) {
 		case 0:
@@ -137,6 +217,10 @@ public class Payment {
 		
 	}
 	
+	/**
+	 * Calculates the total charge of this Payment.
+	 * @param rv The corresponding Reservation record of this Payment.
+	 */
 	public void calculateTotal(Reservation rv) {
 		roomCharge = 0.0;
 		roomServiceCharge = 0.0;
@@ -146,6 +230,9 @@ public class Payment {
 		totalBill = (roomCharge + roomServiceCharge + taxCharge)*(1.0-discountPromo);
 	}
 	
+	/**
+	 * Prints the bill of this payment.
+	 */
 	public void printBill() {
 		System.out.println("Room charges:\t\t$" + df.format(roomCharge));	
 		System.out.println("Room service charges:\t$" + df.format(roomServiceCharge)); 
@@ -159,6 +246,10 @@ public class Payment {
 		}
 	}
 	
+	/**
+	 * Prints the invoice of this payment.
+	 * @param roomNum The associated room number of this payment.
+	 */
 	public void printInvoice(String roomNum) {
 		System.out.println("Number of days stayed:\t" + numOfDays);
 		System.out.println("Room charges:\t\t$" + df.format(roomCharge));	
