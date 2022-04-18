@@ -553,8 +553,12 @@ public class UserInterface {
 					String orderID1 = sc.nextLine(); 
 					System.out.println("(1) Preparing");
 					System.out.println("(2) Ready");
-					OrderStatus status1 = OrderStatus.valueOf(sc.nextLine().toUpperCase());
-					om.updateStatus(orderID1, status1);
+					try {
+						OrderStatus status1 = OrderStatus.valueOf(sc.nextLine().toUpperCase());
+						om.updateStatus(orderID1, status1);
+					} catch (IllegalArgumentException e) {
+						System.out.println("Invalid input.");
+					}
 					break;
 				case "5":
 					System.out.println("Creating new menu item...");
