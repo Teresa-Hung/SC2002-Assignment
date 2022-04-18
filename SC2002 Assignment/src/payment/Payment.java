@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 
 import room.Room;
-import roomservice.Order;
-import roomservice.OrderManager;
-import reservation.Reservation;
-import reservation.ReservationManager;
+import roomservice.*;
+import reservation.*;
 
 /**
  * Represents the billing details of the hotel fees.
@@ -20,8 +18,14 @@ import reservation.ReservationManager;
  */
 public class Payment {
 	
+	/**
+	* The fixed decimal format for the charges.
+	*/
 	private static final DecimalFormat df = new DecimalFormat("0.00");
 	
+	/**
+	* The variable for iteration in a loop.
+	*/
 	private int i;
 	/**
 	 * The number of items ordered from room service of this Payment.
@@ -141,7 +145,7 @@ public class Payment {
 	 * @param reservCode The corresponding reservation code of this Payment.
 	 */
 	private void getRoomCharge(String reservCode) {
-		ReservationManager rvm = new ReservationManager();
+		ReservationManager rvm = ReservationManager.getInstance();
 		Reservation rv = rvm.searchReserv(reservCode);
 		Room rm = rv.getRoom();
 		
@@ -161,7 +165,7 @@ public class Payment {
 	 * @param roomId The room number to access the Order record.
 	 */
 	private void getRoomServiceCharge(String roomId) {
-		OrderManager om = new OrderManager();
+		OrderManager om = OrderManager.getInstance();
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
 		numOfItems = roomServiceItems.size();
@@ -175,11 +179,11 @@ public class Payment {
 	 * @param roomId The room number to access the Order record.
 	 */
 	private void printAllItems(String roomId) {
-		OrderManager om = new OrderManager();
+		OrderManager om = OrderManager.getInstance();
 		ArrayList<Order> roomServiceItems;
 		roomServiceItems = om.getRoomCurrentOrders(roomId);
 		for(i=0;i<numOfItems;i++) {
-			System.out.println(roomServiceItems.get(i).getItem().getItemName());
+			System.out.println(roomServiceItems.get(i).getItem().getItemName() + ": $" + df.format(roomServiceItems.get(i).getItem().getPrice()));
 		}
 	}
 	

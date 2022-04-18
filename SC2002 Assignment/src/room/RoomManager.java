@@ -31,24 +31,36 @@ public class RoomManager implements ReadWrite {
 	 * The roomList contains all the records of Room.
 	 */
 	private ArrayList<Room> roomList = new ArrayList<>();
+	/**
+	 * Private static instance of RoomManager to ensure only 1 instance is created during runtime.
+	 */
+	private static RoomManager instance = null;
 	
 	/**
-	 * Sets the roomList by reading from file "roomlist.txt".
+	 * Private constructor that loads the roomList by reading from file "roomlist.txt".
 	 * Prints error message if reading is failed.
 	 */
-	public RoomManager() {
+	private RoomManager() {
 		try {
 			this.readRoomList("roomlist.txt");
 		} catch (Exception e) {
 			System.out.println("readRoomList() failed.");
 		}
 	}
-	// reads room data from file
 	/**
-	 * Reads in the guest records from file and creates the roomList.
-	 * @param fileName The file to be read from.
+	 * Returns the instance of RoomManager.
+	 * @return RoomManager instance.
 	 */
-	private void readRoomList(String fileName) {
+	public static RoomManager getInstance() {
+        if (instance == null)
+            instance = new RoomManager();
+        return instance;
+	}
+	/**
+	 * Reads in the room records from file and creates the roomList.
+	 * @param filename The file to be read from.
+	 */
+	private void readRoomList(String filename) {
 		ArrayList<String> stringArray = read("roomlist.txt");
     	for (String s: stringArray) {
 			StringTokenizer star = new StringTokenizer(s , SEPARATOR);
@@ -71,7 +83,6 @@ public class RoomManager implements ReadWrite {
 			roomList.add(r);
     	}
 	}
-	// saves room data to file
 	/**
 	 * Output the records in roomList to the file "roomlist.txt".
 	 */
@@ -94,13 +105,13 @@ public class RoomManager implements ReadWrite {
 	
 	/**
 	 * The method to input data from a file.
-	 * @param fileName The name of the file to be read from.
+	 * @param filename The name of the file to be read from.
 	 */
 	@Override
-	public ArrayList<String> read(String fileName) {
+	public ArrayList<String> read(String filename) {
 		ArrayList<String> data = new ArrayList<>();
 		try {
-			Scanner sc = new Scanner(new FileInputStream(fileName));
+			Scanner sc = new Scanner(new FileInputStream(filename));
 			while(sc.hasNextLine())
 				data.add(sc.nextLine());
 			sc.close();
@@ -111,11 +122,11 @@ public class RoomManager implements ReadWrite {
 	}
 	/**
 	 * The method to output data to a file.
-	 * @param fileName The name of the file to be written in.
+	 * @param filename The name of the file to be written in.
 	 * @param data The data to be written.
 	 */
 	@Override
-	public void write(String fileName, List<String> data) {
+	public void write(String filename, List<String> data) {
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter("roomlist.txt"));
 			for (String s: data)

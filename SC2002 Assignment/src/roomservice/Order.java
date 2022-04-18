@@ -4,7 +4,7 @@ import java.time.LocalTime;
 /**
  * Represents one order instance in a list of orders. As of now one order can only have one menu item.
  *
- * @author User
+ * @author Bach Nguyen
  *
  */
 public class Order {

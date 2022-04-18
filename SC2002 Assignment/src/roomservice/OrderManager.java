@@ -16,7 +16,7 @@ import roomservice.Order.OrderStatus;
 import java.time.LocalTime;
 /**
  * Manages functionalities regarding the orders and menu items
- * @author User
+ * @author Bach Nguyen
  *
  */
 public class OrderManager implements ReadWrite {
@@ -33,17 +33,31 @@ public class OrderManager implements ReadWrite {
 	 */
 	private ArrayList<Order> orderList = new ArrayList<>();
 	/**
+	 * Private static instance of OrderManager to ensure only 1 instance is created during runtime.
+	 */
+	private static OrderManager instance = null;
+	/**
 	 * Constructor. Creates menuList from "menu.txt" and orderList from "order.txt"
 	 */
-	public OrderManager() {
+	
+	private OrderManager() {
 		try {
 			menuList = readMenu("menu.txt");
 			orderList = readOrder("order.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("read from file failed");
+			System.out.println("readMenu()/readOrder() failed");
 		}
+	}
+	/**
+	 * Returns the instance of OrderManager.
+	 * @return OrderManager instance.
+	 */
+	public static OrderManager getInstance() {
+        if (instance == null)
+            instance = new OrderManager();
+        return instance;
 	}
 	/**
 	 * Gets an item from the menu with the given name

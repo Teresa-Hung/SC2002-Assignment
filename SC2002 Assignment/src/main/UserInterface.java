@@ -6,36 +6,18 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import guest.Guest;
-import guest.GuestManager;
+import guest.*;
 import payment.Payment;
-import reservation.Reservation;
-import reservation.ReservationManager;
+import reservation.*;
 import reservation.Reservation.ReservStatus;
-import room.Room;
-import room.RoomManager;
-import room.Room.BedType;
-import room.Room.RoomStatus;
-import room.Room.RoomType;
-import roomservice.MenuItems;
-import roomservice.Order;
-import roomservice.OrderManager;
+import room.*;
+import room.Room.*;
+import roomservice.*;
 import roomservice.Order.OrderStatus;
 
-/**
- * Contains the user interfaces to operate the system.
- * @author BRYAN WU JIAHE, DERRICK NG CHOON SENG, EVANGELINE NG XUAN HUI, HUNG KUO-CHEN, NGUYEN TUNG BACH 
- * @version 1.0
- * @since 2022-04-17
- */
 public class UserInterface {
-	/**
-	 * Gets user's inputs and calls corresponding methods to manage the Guest.
-	 * The user can update guest details, search guest, and remove guest.
-	 * @param gm GuestManager object to call methods.
-	 * @param sc Scanner object to scan inputs.
-	 */
-	public static void guestUI(GuestManager gm, Scanner sc) {
+	public static void guestUI(Scanner sc) {
+		GuestManager gm = GuestManager.getInstance();
 		String choice;
 		do {
 			System.out.print("========================\n"
@@ -84,11 +66,11 @@ public class UserInterface {
 						System.out.println("Guest does not exist.");
 					break;
 				case "3":
-					System.out.print("Enter guest ID to remove: ");
+					System.out.print("Enter reservation code to remove: ");
 					gm.removeGuest(sc.nextLine());
 					break;
 				case "4":
-					gm.saveGuest();
+//					gm.saveGuest();
 					break;
 				default:
 					System.out.println("Invalid option.");
@@ -96,15 +78,10 @@ public class UserInterface {
 		} while (!choice.equals("4"));
 	}
 	
-	/**
-	 * Gets user's inputs and calls corresponding methods to manage the Reservation.
-	 * The user can update create, update, and remove reservation, print reservation status, and check in to the hotel.
-	 * @param resm ReservationManager object to call methods.
-	 * @param rm RoomManager object to call methods.
-	 * @param gm GuestManager object to call methods.
-	 * @param sc Scanner object to scan inputs.
-	 */
-	public static void reservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
+	public static void reservationUI(Scanner sc) {
+		ReservationManager resm = ReservationManager.getInstance();
+		GuestManager gm = GuestManager.getInstance();
+		RoomManager rm = RoomManager.getInstance();
 		String choice;
 		do {
 			System.out.print("============================\n"
@@ -113,9 +90,10 @@ public class UserInterface {
 					 	   + "(1) Create Reservation\n"
 					 	   + "(2) Update Reservation\n"
 					 	   + "(3) Remove Reservation\n"
-					 	   + "(4) Print Reservation Status\n"
-					 	   + "(5) Check In\n"
-					 	   + "(6) Return to Main Menu\n"
+					 	   + "(4) Print Selected Reservation Status\n"
+					 	   + "(5) Print All Reservation\n"
+					 	   + "(6) Check In\n"
+					 	   + "(7) Return to Main Menu\n"
 					 	   + "============================\n"
 					 	   + "Enter option: ");
 			choice = sc.nextLine();
@@ -196,7 +174,7 @@ public class UserInterface {
 				break;
 			case "2":
 				System.out.println("Updating reservation...");
-				updateReservationUI(resm, rm, gm, sc);
+				updateReservationUI(sc);
 				break;
 			case "3":
 				System.out.println("Enter reservation code to remove:");
@@ -210,6 +188,9 @@ public class UserInterface {
 					reserv1.printReceipt();
 				break;
 			case "5":
+				resm.printAllReserv();
+				break;
+			case "6":
 				System.out.println("Checking in...");
 				System.out.print("==============================\n"
 						 	   + "       Check-in Menu:\n"
@@ -266,8 +247,7 @@ public class UserInterface {
 						try {
 							// get check-in and check-out date
 							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-							System.out.println("Enter Check-in Date (dd/mm/yyyy): ");
-							LocalDate checkInDate = LocalDate.parse(sc.nextLine(), formatter);
+							LocalDate checkInDate = LocalDate.now();
 							System.out.println("Enter Check-out Date (dd/mm/yyyy): ");
 							LocalDate checkOutDate = LocalDate.parse(sc.nextLine(), formatter);
 							if (resm.checkDates(checkInDate, checkOutDate)) {
@@ -305,24 +285,19 @@ public class UserInterface {
 					System.out.println("Invalid option.");
 				}
 				break;
-			case "6":
-				resm.writeReservation();
+			case "7":
+//				resm.writeReservation();
+//				rm.saveRoomList();
+//				gm.saveGuest();
 				break;
 			default:
 				System.out.println("Invalid option.");
 			}
-		} while (!choice.equals("6"));
+		} while (!choice.equals("7"));
 	}
 	
-	/**
-	 * Gets user's inputs and calls corresponding methods to update the Reservation.
-	 * The user can update date of check in and check out, room as well as number of adults and children.
-	 * @param resm ReservationManager object to call methods.
-	 * @param rm RoomManager object to call methods.
-	 * @param gm GuestManager object to call methods.
-	 * @param sc Scanner object to scan inputs.
-	 */
-	public static void updateReservationUI(ReservationManager resm, RoomManager rm, GuestManager gm, Scanner sc) {
+	public static void updateReservationUI(Scanner sc) {
+		ReservationManager resm = ReservationManager.getInstance();
 		System.out.print("Enter the reservation code: ");
 		String code = sc.nextLine();
 
@@ -364,6 +339,7 @@ public class UserInterface {
 					System.out.println("Invalid type entered.");
 					return;
 				}
+				RoomManager rm = RoomManager.getInstance();
 				Room r = rm.getAvailableRoom(roomType, bedType);
 				if (r != null) {
 					target.setRoom(r);
@@ -399,13 +375,8 @@ public class UserInterface {
 		}
 	}
 	
-	/**
-	 * Gets user's inputs and calls corresponding methods to manage the Room.
-	 * The user can print room occupancy report, room status report and room details as well as update room details.
-	 * @param rm RoomManager object to call methods.
-	 * @param sc Scanner object to scan inputs.
-	 */
-	public static void roomUI(RoomManager rm, Scanner sc) {
+	public static void roomUI(Scanner sc) {
+		RoomManager rm = RoomManager.getInstance();
 		String choice;
 		do {
 			System.out.print("===============================\n"
@@ -435,10 +406,10 @@ public class UserInterface {
 				rm.printRoomDetails(sc.nextLine());
 				break;
 			case "5":
-				updateRoomDetailsUI(rm, sc);
+				updateRoomDetailsUI(sc);
 				break;
 			case "6":
-				rm.saveRoomList();
+//				rm.saveRoomList();
 				break;
 			default:
 				System.out.println("Invalid option.");
@@ -446,14 +417,8 @@ public class UserInterface {
 		} while (!choice.equals("6"));
 	}
 
-	/**
-	 * Gets user's inputs and calls corresponding methods to update the Room.
-	 * The user can update room number, room type, bed type, room status, 
-	 * WIFI availability, smoking policies, balcony information, and maximum size of group.
-	 * @param rm RoomManager object to call methods.
-	 * @param sc Scanner object to scan inputs.
-	 */
-	private static void updateRoomDetailsUI(RoomManager rm, Scanner sc) {
+	private static void updateRoomDetailsUI(Scanner sc) {
+		RoomManager rm = RoomManager.getInstance();
 		System.out.print("Enter room number: ");
 		String roomNumber = sc.nextLine();
 		if (rm.findRoom(roomNumber) == null) return;
@@ -511,14 +476,9 @@ public class UserInterface {
 		}
 	}
 	
-	/**
-	 * Gets user's inputs and calls corresponding methods to manage the Order.
-	 * The user can create and delete order, print order list, update order status, create, update, remove, and print menu items.
-	 * @param om OrderManager object to call methods.
-	 * @param rm RoomManager object to call methods.
-	 * @param sc Scanner object to scan inputs.
-	 */
-	public static void roomServiceUI(OrderManager om, RoomManager rm, Scanner sc) {
+	public static void roomServiceUI(Scanner sc) {
+		OrderManager om = OrderManager.getInstance();
+		RoomManager rm = RoomManager.getInstance();
 		String choice, room;
 		MenuItems item;
 		double price;
@@ -672,8 +632,8 @@ public class UserInterface {
 					}
 					break;
 				case "9":
-					om.saveMenuList();
-					om.saveOrderList();
+//					om.saveMenuList();
+//					om.saveOrderList();
 					break;
 				default:
 					System.out.println("Invalid option.");
@@ -681,16 +641,11 @@ public class UserInterface {
 		} while (!choice.equals("9"));
 	}
 	
-	/**
-	 * Gets user's inputs and calls corresponding methods to manage the Payment.
-	 * The user can make payment, print invoice, check out, and print occupancy report.
-	 * @param gm GuestManager object to call methods.
-	 * @param resm ReservationManager object to call methods.
-	 * @param rm RoomManager object to call methods.
-	 * @param om OrderManager object to call methods.
-	 * @param sc Scanner object to scan inputs.
-	 */
-	public static void paymentUI(GuestManager gm, ReservationManager resm, RoomManager rm, OrderManager om, Scanner sc){
+	public static void paymentUI(Scanner sc){
+		ReservationManager resm = ReservationManager.getInstance();
+		GuestManager gm = GuestManager.getInstance();
+		RoomManager rm = RoomManager.getInstance();
+		OrderManager om = OrderManager.getInstance();
 		String fn, ln, guestRoom, reservCode, choice;
 		Guest payingGuest;
 		Reservation rv;
@@ -748,7 +703,7 @@ public class UserInterface {
 						return;
 					}
 					pay.calculateTotal(rv);
-					System.out.println("====== new bill after promo ======");
+					System.out.println("---new bill after promo---");
 					pay.printBill();
 					
 					// payment type
@@ -760,7 +715,7 @@ public class UserInterface {
 								   + "===============\n"
 								   + "Enter option: ");
 					switch(sc.nextLine()) {
-						case "1":
+						case "1": 
 							System.out.println("Cash payment successful!\n");
 							payingGuest.setPaid(1);
 							break;

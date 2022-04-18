@@ -16,9 +16,7 @@ import java.util.StringTokenizer;
 
 import reservation.Reservation.ReservStatus;
 import room.*;
-import room.Room.RoomStatus;
-import room.Room.RoomType;
-import room.Room.BedType;
+import room.Room.*;
 import guest.*;
 import main.FileIO.ReadWrite;
 
@@ -39,13 +37,27 @@ public class ReservationManager implements ReadWrite {
 	 * The reservation list contains all the records of reservation.
 	 */
 	private ArrayList<Reservation> reservlist;
+	/**
+	 * Private static instance of ReservationManager to ensure only 1 instance is created during runtime.
+	 */
+	private static ReservationManager instance = null;
 	
 	/**
 	 * Sets the reservation list by reading from file.
 	 */
-	public ReservationManager()
+	private ReservationManager()
 	{
 		reservlist = readReservation();
+	}
+	
+	/**
+	 * Returns the instance of ReservationManager.
+	 * @return ReservationManager instance.
+	 */
+	public static ReservationManager getInstance() {
+        if (instance == null)
+            instance = new ReservationManager();
+        return instance;
 	}
 	
 	/**
@@ -61,22 +73,26 @@ public class ReservationManager implements ReadWrite {
 	public ArrayList<Reservation> readReservation() {
 		ArrayList<String> stringArray = read("reservation.txt"); // read String from text file
 		ArrayList<Reservation> alr = new ArrayList<>() ; // to store Reservation data
+		
+		GuestManager gm = GuestManager.getInstance();
+		RoomManager rm = RoomManager.getInstance();
+		
 		for (int i = 0 ; i < stringArray.size() ; i++) {
 			String st = (String)stringArray.get(i);
 			// get individual 'fields' of the string separated by SEPARATOR
 			StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
 			Reservation reserv = new Reservation();
-			GuestManager gm = new GuestManager();
-			RoomManager Rm = new RoomManager();
 			
 			reserv.setReservStatus(ReservStatus.valueOf(star.nextToken().trim()));
 			reserv.setReservCode(star.nextToken().trim());
+			
 			// retrieve room details
 			String roomnum = star.nextToken().trim();
 			if(!roomnum.equals("0000"))
-				reserv.setRoom(Rm.findRoom(roomnum, false));
+				reserv.setRoom(rm.findRoom(roomnum, false));
 			reserv.setRType(RoomType.valueOf(star.nextToken().trim()));
 			reserv.setBType(BedType.valueOf(star.nextToken().trim()));
+			
 			// retrieve guest details
 			String id = star.nextToken().trim();
 			reserv.setGuest(gm.findById(id));
@@ -127,12 +143,12 @@ public class ReservationManager implements ReadWrite {
 	
 	/**
 	 * The method to output data to a file.
-	 * @param fileName The name of the file to be written in.
+	 * @param filename The name of the file to be written in.
 	 * @param data The data to be written.
 	 */
-	public void write(String fileName, List<String> data) {
+	public void write(String filename, List<String> data) {
 		try {
-			PrintWriter out = new PrintWriter(new FileWriter(fileName));
+			PrintWriter out = new PrintWriter(new FileWriter(filename));
 			for (String s: data)
 				out.println(s);
 			out.close();
@@ -143,12 +159,12 @@ public class ReservationManager implements ReadWrite {
 	
 	/**
 	 * The method to input data from a file.
-	 * @param fileName The name of the file to be read from.
+	 * @param filename The name of the file to be read from.
 	 */
-	public ArrayList<String> read(String fileName) {
+	public ArrayList<String> read(String filename) {
 		ArrayList<String> data = new ArrayList<>();
 	    try {
-	    	Scanner scanner = new Scanner(new FileInputStream(fileName));
+	    	Scanner scanner = new Scanner(new FileInputStream(filename));
 	    	while (scanner.hasNextLine())
 	    		data.add(scanner.nextLine());
 	    	scanner.close();
@@ -224,13 +240,14 @@ public class ReservationManager implements ReadWrite {
 		try {
 			LocalDate checkOutDate =  reserv.getCheckOutDate();
 			LocalDate checkInDate = LocalDate.parse(date, formatter);
-			if (checkDates(checkInDate, checkOutDate))
+			if (checkDates(checkInDate, checkOutDate)) {
 				reserv.setCheckInDate(checkInDate);
+				System.out.println("Check-in Date updated to " + date);
+			}
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
 			return;
 		}
-		System.out.println("Check-in Date updated to " + date);
 	}
 	
 	/**
@@ -244,13 +261,14 @@ public class ReservationManager implements ReadWrite {
 		try {
 			LocalDate checkInDate =  reserv.getCheckInDate();
 			LocalDate checkOutDate = LocalDate.parse(date, formatter);
-			if (checkDates(checkInDate, checkOutDate))
+			if (checkDates(checkInDate, checkOutDate)) {
 				reserv.setCheckOutDate(checkOutDate);
+				System.out.println("Check-out Date updated to " + date);
+			}
 		} catch (DateTimeParseException e) {
 			System.out.println("The date is invalid.");
 			return;
 		}
-		System.out.println("Check-out Date updated to " + date);
 	}
 	
 	/**
@@ -310,8 +328,14 @@ public class ReservationManager implements ReadWrite {
 	public boolean checkIn(Reservation reserv) {
 		Timestamp now = Timestamp.from(Instant.now());
 		Timestamp scheduledCheckIn = Timestamp.valueOf(reserv.getCheckInDate() + " 14:00:00"); // 2pm on check-in date
-		if(reserv.getReservStatus() != ReservStatus.CONFIRMED)
-		{
+		if (reserv.getReservStatus() == ReservStatus.CHECKED_IN) {
+			System.out.println("Guest already checked in.");
+			return false;
+		}
+		
+		expire(reserv);
+		
+		if (reserv.getReservStatus() != ReservStatus.CONFIRMED) {
 			System.out.println("The reservation is not confirmed.");
 			return false;
 		}
@@ -321,6 +345,8 @@ public class ReservationManager implements ReadWrite {
 		}
 
 		reserv.setReservStatus(ReservStatus.CHECKED_IN);
+		reserv.getRoom().setRoomStatus(RoomStatus.OCCUPIED);
+		System.out.println("Checked in successfully");
 		return true;
 	}
 
@@ -333,10 +359,22 @@ public class ReservationManager implements ReadWrite {
 		Timestamp now = Timestamp.from(Instant.now());
 		Timestamp deadlineCheckIn = Timestamp.valueOf(reserv.getCheckInDate().plusDays(1) + " 02:00:00"); // 2am on the next day
 		// of check-in date
-		if (now.after(deadlineCheckIn) == true)
+		if (now.after(deadlineCheckIn) == true) {
 			reserv.setReservStatus(ReservStatus.EXPIRED);
-
-		// empty the room
-		reserv.getRoom().setRoomStatus(RoomStatus.VACANT);
+			reserv.getRoom().setRoomStatus(RoomStatus.VACANT);
+		}
 	}
+	
+	public void printAllReserv()
+	 {
+	  System.out.println("-------------------------------------------------------\n"
+	     + "Print All Reservation Records");
+	  for(Reservation reserv: reservlist)
+	  {
+	   expire(reserv);
+	   if(reserv.getReservStatus() != ReservStatus.EXPIRED && reserv.getReservStatus()!=ReservStatus.CHECKED_IN)
+	    reserv.printReceipt();
+	  }
+	  System.out.println("-------------------------------------------------------\n");
+	 }
 }

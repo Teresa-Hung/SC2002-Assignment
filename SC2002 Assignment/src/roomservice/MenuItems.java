@@ -1,7 +1,7 @@
 package roomservice;
 /**
  * Represents one item on the menu.
- * @author User
+ * @author Bach Nguyen
  *
  */
 public class MenuItems {

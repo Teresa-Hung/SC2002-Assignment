@@ -186,7 +186,7 @@ public class Reservation {
 	 */
 	// other methods
 	public void printReceipt() {
-		System.out.println("\n===the reservation acknowledgement receipt is shown as below===");
+		System.out.println("\n===the reservation receipt is shown as below===");
 		
 		// guest details & billing info
 		System.out.println("\n===Guest Details===");

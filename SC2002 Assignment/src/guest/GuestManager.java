@@ -30,15 +30,26 @@ public class GuestManager implements ReadWrite {
 	 * The guest list contains all the records of guest details.
 	 */
 	private ArrayList<Guest> guestList; 
-	Scanner sc = new Scanner(System.in);
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+	/**
+	 * Private static instance of GuestManager to ensure only 1 instance is created during runtime.
+	 */
+	private static GuestManager instance = null;
 	/**
 	 * Sets the guest list by reading from file.
 	 */
-	public GuestManager()
+	private GuestManager()
 	{
 		guestList = readGuests();
+	}
+	
+	/**
+	 * Returns the instance of GuestManager.
+	 * @return GuestManager instance.
+	 */
+	public static GuestManager getInstance() {
+        if (instance == null)
+            instance = new GuestManager();
+        return instance;
 	}
 	
 	/**
@@ -125,12 +136,12 @@ public class GuestManager implements ReadWrite {
 
 	/**
 	 * The method to output data to a file.
-	 * @param fileName The name of the file to be written in.
+	 * @param filename The name of the file to be written in.
 	 * @param data The data to be written.
 	 */
-	public void write(String fileName, List<String> data) {
+	public void write(String filename, List<String> data) {
 		try {
-			PrintWriter out = new PrintWriter(new FileWriter(fileName));
+			PrintWriter out = new PrintWriter(new FileWriter(filename));
 			for(int i=0;i<data.size();i++)
 				out.println(data.get(i));
 			out.close();
@@ -141,12 +152,12 @@ public class GuestManager implements ReadWrite {
 	
 	/**
 	 * The method to input data from a file.
-	 * @param fileName The name of the file to be read from.
+	 * @param filename The name of the file to be read from.
 	 */
-	public ArrayList<String> read(String fileName) {
+	public ArrayList<String> read(String filename) {
 		ArrayList<String> data = new ArrayList<>();
 		try {
-			Scanner scanner = new Scanner(new FileInputStream(fileName));
+			Scanner scanner = new Scanner(new FileInputStream(filename));
 			while(scanner.hasNextLine())
 				data.add(scanner.nextLine());
 			scanner.close();
@@ -380,8 +391,16 @@ public class GuestManager implements ReadWrite {
 			if (sc.hasNextLine()) sc.nextLine();
 			System.out.println("Credit Card Number: ");
 			guest.setCcNum(sc.next());
-			System.out.println("Expiry Date(dd/mm/yyyy): ");
-			guest.setExpDate(LocalDate.parse(sc.next(), formatter));
+			
+			try {
+				System.out.println("Expiry Date(dd/mm/yyyy): ");
+				guest.setExpDate(LocalDate.parse(sc.next(), formatter));
+			} catch (DateTimeParseException e) {
+				System.out.println("The date is invalid.");
+				System.out.println("Expiry Date(dd/mm/yyyy): ");
+				guest.setExpDate(LocalDate.parse(sc.next(), formatter));
+			}
+			
 			if (sc.hasNextLine()) sc.nextLine();
 			System.out.println("Billing Address: ");
 			String s = sc.nextLine();
@@ -432,10 +451,10 @@ public class GuestManager implements ReadWrite {
 		String strReplacement = "************";
 		String lastFourNum = g.getCcNum().substring(g.getCcNum().length() - 4);
         String newString = strReplacement + lastFourNum;
-		System.out.println("Billing Details:");
-		System.out.println("Holder Name:        " + g.getHolderFName() + " " + g.getHolderLName());
+		System.out.println("Billing Details: ");
+		System.out.println("Holder Name: " + g.getHolderFName() + " " + g.getHolderLName());
 		System.out.println("Credit Card Number: " + newString);
-		System.out.println("Billing Address:    " + g.getBillAddr());
+		System.out.println("Billing Address: " + g.getBillAddr());
 	}
 
 }

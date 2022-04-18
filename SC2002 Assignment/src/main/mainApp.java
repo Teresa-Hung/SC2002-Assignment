@@ -17,10 +17,6 @@ import roomservice.*;
  */
 public class mainApp {
 	public static void main(String[] args) throws IOException {
-		GuestManager gm = new GuestManager();
-		ReservationManager resm = new ReservationManager();
-		RoomManager rm = new RoomManager();
-		OrderManager om = new OrderManager();
 		
 		Scanner sc = new Scanner(System.in);
 		System.out.println("========================\n"
@@ -43,26 +39,26 @@ public class mainApp {
 			choice = sc.nextLine();
 			switch(choice) {
 				case "1":
-					UserInterface.guestUI(gm, sc);
+					UserInterface.guestUI(sc);
 					break;
 				case "2":
-					UserInterface.reservationUI(resm, rm, gm, sc);
+					UserInterface.reservationUI(sc);
 					break;
 				case "3":
-					UserInterface.roomUI(rm, sc);
+					UserInterface.roomUI(sc);
 					break;
 				case "4":
-					UserInterface.roomServiceUI(om, rm, sc);
+					UserInterface.roomServiceUI(sc);
 					break;
 				case "5":
-					UserInterface.paymentUI(gm, resm, rm, om, sc);
+					UserInterface.paymentUI(sc);
 					break;
 				case "6":
-					resm.writeReservation();
-					gm.saveGuest();
-					rm.saveRoomList();
-					om.saveMenuList();
-					om.saveOrderList();
+					ReservationManager.getInstance().writeReservation();
+					GuestManager.getInstance().saveGuest();
+					RoomManager.getInstance().saveRoomList();
+					OrderManager.getInstance().saveMenuList();
+					OrderManager.getInstance().saveOrderList();
 					System.out.print("Quitting...");
 					break;
 				default:
